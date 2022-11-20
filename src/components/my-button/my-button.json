@@ -1,0 +1,20 @@
+{
+  "version": 1.1,
+  "tags": [
+    {
+      "name": "my-button",
+      "description": "My button. You should use it as in `<my-button type='alert'></mybutton>`.",
+      "attributes": [
+        {
+          "name": "text",
+          "description": "My button text"
+        },
+        {
+          "name": "disabled",
+          "description": "Disable the button",
+          "values": [{ "name": "" }]
+        }
+      ]
+    }
+  ]
+}

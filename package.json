@@ -1,0 +1,13 @@
+{
+  "name": "accords-library.com",
+  "private": true,
+  "scripts": {
+    "eslint": "eslint .",
+    "prettier": "prettier --end-of-line auto --write .",
+    "precommit": "npm run prettier && npm run eslint && echo ALL PRECOMMIT CHECKS PASSED SUCCESSFULLY"
+  },
+  "devDependencies": {
+    "eslint": "^8.28.0",
+    "prettier": "^2.7.1"
+  }
+}

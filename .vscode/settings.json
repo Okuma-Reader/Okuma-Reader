@@ -1,0 +1,9 @@
+{
+  "html.customData": ["./src/components/my-button/my-button.json"],
+  "eslint.enable": true,
+  "javascript.updateImportsOnFileMove.enabled": "always",
+  "javascript.preferences.importModuleSpecifierEnding": "js",
+  "javascript.preferences.importModuleSpecifier": "non-relative",
+  "javascript.preferences.quoteStyle": "double",
+  "eslint.validate": ["javascript"]
+}
