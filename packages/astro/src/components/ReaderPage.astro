@@ -1,0 +1,42 @@
+---
+interface Props {
+  side: "left" | "right";
+}
+
+const { side } = Astro.props;
+---
+
+<div class="page" data-page={side} data-empty="true">
+  <span class="page-stack">
+    <span class="page-shell">
+      {
+        side === "left" ? (
+          <>
+            <span class="page-edge" aria-hidden="true" />
+            <span class="page-face">
+              <canvas />
+              <div class="textLayer" hidden />
+              <div class="annotationLayer" hidden />
+              <div class="searchLayer" hidden />
+            </span>
+          </>
+        ) : (
+          <>
+            <span class="page-face">
+              <canvas />
+              <div class="textLayer" hidden />
+              <div class="annotationLayer" hidden />
+              <div class="searchLayer" hidden />
+            </span>
+            <span class="page-edge" aria-hidden="true" />
+          </>
+        )
+      }
+    </span>
+    <span class="page-paper" aria-hidden="true"></span>
+    <span class="page-tint" aria-hidden="true"></span>
+    <span class="page-pastedown" aria-hidden="true"></span>
+    <span class="page-fold" aria-hidden="true"></span>
+    <span class="page-specular" aria-hidden="true"></span>
+  </span>
+</div>

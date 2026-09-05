@@ -1,0 +1,59 @@
+---
+import OkumaReader from "@okuma-reader/astro/OkumaReader.astro";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Petit Prince (images) — okuma-reader demo</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+      }
+      .demo-nav {
+        position: fixed;
+        top: 0.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 40;
+        display: flex;
+        gap: 0.5rem;
+        padding: 0.35rem 0.6rem;
+        background: white;
+        border: 2px solid #333;
+        font-size: 0.85rem;
+      }
+      .demo-nav a {
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="demo-nav">
+      <strong>Images</strong>
+      <a href="/pdf">PDF demo</a>
+    </nav>
+    <OkumaReader
+      bookId="petit-prince"
+      title="Le Petit Prince"
+      subtitle="Image sequence demo"
+      coverImageUrl="/fixtures/petit-prince/inner-cover.png"
+      darkColor="#3a2a1a"
+      lightColor="#f3e7d3"
+      backHref="/"
+    />
+    <script>
+      import { mountOkumaReader } from "@okuma-reader/astro/client";
+      import { createImageBookSource } from "@okuma-reader/source-images";
+
+      const pages = Array.from({ length: 108 }, (_, i) => ({
+        src: `/fixtures/petit-prince/${i + 1}.webp`,
+      }));
+      const source = createImageBookSource({ pages });
+      const root = document.getElementById("reader");
+      if (root) void mountOkumaReader(root, { source, bookId: "petit-prince" });
+    </script>
+  </body>
+</html>

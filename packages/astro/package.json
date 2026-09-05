@@ -1,0 +1,24 @@
+{
+  "name": "@okuma-reader/astro",
+  "version": "0.0.1",
+  "description": "Astro UI wrapper for okuma-reader.",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts",
+    "./OkumaReader.astro": "./src/OkumaReader.astro",
+    "./client": "./src/client.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@okuma-reader/core": "0.0.1"
+  },
+  "peerDependencies": {
+    "astro": "^5.0.0 || ^6.0.0 || ^7.0.0"
+  },
+  "scripts": {
+    "check": "tsc --noEmit -p tsconfig.json"
+  }
+}

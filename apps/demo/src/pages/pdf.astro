@@ -1,0 +1,67 @@
+---
+import OkumaReader from "@okuma-reader/astro/OkumaReader.astro";
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>NGE Genocide Vol.1 (PDF) — okuma-reader demo</title>
+    <style>
+      body {
+        margin: 0;
+        font-family: system-ui, sans-serif;
+      }
+      .demo-nav {
+        position: fixed;
+        top: 0.5rem;
+        left: 50%;
+        transform: translateX(-50%);
+        z-index: 40;
+        display: flex;
+        gap: 0.5rem;
+        padding: 0.35rem 0.6rem;
+        background: white;
+        border: 2px solid #333;
+        font-size: 0.85rem;
+      }
+      .demo-nav a {
+        color: #333;
+      }
+    </style>
+  </head>
+  <body>
+    <nav class="demo-nav">
+      <a href="/">Images demo</a>
+      <strong>PDF</strong>
+    </nav>
+    <OkumaReader
+      bookId="nge-genocide-vol1"
+      title="NGE Genocide"
+      subtitle="Vol. 1 — PDF demo"
+      coverImageUrl="/fixtures/nge-genocide-vol1/inner-cover.png"
+      darkColor="#694588"
+      lightColor="#DDCDE9"
+      backHref="/pdf"
+      downloadUrl="/fixtures/nge-genocide-vol1/nge-genocide-vol1.pdf"
+      downloadFilename="nge-genocide-vol1.pdf"
+    />
+    <script>
+      import { mountOkumaReader } from "@okuma-reader/astro/client";
+      import { createPdfBookSource } from "@okuma-reader/source-pdf";
+      import pdfWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
+
+      const source = await createPdfBookSource({
+        url: "/fixtures/nge-genocide-vol1.pdf",
+        workerSrc: pdfWorker,
+      });
+      const root = document.getElementById("reader");
+      if (root) {
+        void mountOkumaReader(root, {
+          source,
+          bookId: "nge-genocide-vol1",
+        });
+      }
+    </script>
+  </body>
+</html>

@@ -1,0 +1,113 @@
+---
+import ChapterScrubber from "./components/ChapterScrubber.astro";
+import ReaderToolbar from "./components/ReaderToolbar.astro";
+import ReaderSpread from "./components/ReaderSpread.astro";
+import ShortcutsDialog from "./components/ShortcutsDialog.astro";
+import SmallScreenOverlay from "./components/SmallScreenOverlay.astro";
+import paper2 from "@okuma-reader/core/assets/paper2.webp";
+import paperBook from "@okuma-reader/core/assets/paper-book-v2.webp";
+import specularSingle from "@okuma-reader/core/assets/specularSinglePage.webp";
+import specularDouble from "@okuma-reader/core/assets/specularDoublePage.webp";
+import sideBook from "@okuma-reader/core/assets/side-book.webp";
+import pastedown from "@okuma-reader/core/assets/pastedown.webp";
+import bookFold from "@okuma-reader/core/assets/bookFold.webp";
+import type { OkumaReaderProps } from "./types";
+
+export type { OkumaReaderProps };
+
+type Asset = string | { src: string };
+
+function cssUrl(asset: Asset): string {
+  const src = typeof asset === "string" ? asset : asset.src;
+  return `url(${JSON.stringify(src)})`;
+}
+
+const {
+  bookId,
+  title,
+  subtitle,
+  coverImageUrl,
+  darkColor,
+  lightColor,
+  backHref,
+  downloadUrl,
+  downloadFilename,
+  ownPage = true,
+} = Astro.props as OkumaReaderProps;
+
+const cssVars = [
+  `--light-color: ${lightColor}`,
+  `--dark-color: ${darkColor}`,
+  `--cover-image: url(${JSON.stringify(coverImageUrl)})`,
+  `--okuma-paper2: ${cssUrl(paper2)}`,
+  `--okuma-paper-book: ${cssUrl(paperBook)}`,
+  `--okuma-specular-single: ${cssUrl(specularSingle)}`,
+  `--okuma-specular-double: ${cssUrl(specularDouble)}`,
+  `--okuma-side-book: ${cssUrl(sideBook)}`,
+  `--okuma-pastedown: ${cssUrl(pastedown)}`,
+  `--okuma-book-fold: ${cssUrl(bookFold)}`,
+].join("; ");
+---
+
+<div
+  id="reader"
+  class:list={[{ "okuma-own-page": ownPage }]}
+  data-book-id={bookId}
+  style={cssVars}
+>
+  <ReaderToolbar
+    bookId={bookId}
+    title={title}
+    subtitle={subtitle}
+    backHref={backHref}
+    downloadUrl={downloadUrl}
+    downloadFilename={downloadFilename}
+  />
+  <ChapterScrubber />
+  <ReaderSpread />
+  <ShortcutsDialog />
+  <SmallScreenOverlay
+    bookId={bookId}
+    backHref={backHref}
+    darkColor={darkColor}
+    downloadUrl={downloadUrl}
+    downloadFilename={downloadFilename}
+  />
+</div>
+
+<style is:global>
+  @import "@okuma-reader/core/styles.css";
+
+  html:has(#reader.okuma-own-page),
+  body:has(#reader.okuma-own-page) {
+    margin: 0;
+    height: 100%;
+    overflow: hidden;
+  }
+
+  body:has(#reader.okuma-own-page) {
+    height: 100dvh;
+  }
+</style>
+
+<style>
+  #reader {
+    box-sizing: border-box;
+    height: 100dvh;
+    display: grid;
+    grid-template-rows: auto auto 1fr;
+    gap: 1.1rem;
+    position: relative;
+  }
+
+  #reader.okuma-own-page {
+    background-image:
+      var(--okuma-paper2),
+      radial-gradient(circle at top, white, rgb(0 0 0 / 0.2));
+    background-blend-mode: multiply;
+    background-size:
+      25cm,
+      100% 100%;
+    background-repeat: round, no-repeat;
+  }
+</style>

@@ -1,0 +1,20 @@
+{
+  "name": "@okuma-reader/source-pdf",
+  "version": "0.0.1",
+  "description": "pdf.js BookSource for okuma-reader.",
+  "type": "module",
+  "license": "MIT",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "files": [
+    "src"
+  ],
+  "dependencies": {
+    "@okuma-reader/core": "0.0.1",
+    "pdfjs-dist": "^6.3.289"
+  },
+  "scripts": {
+    "check": "tsc --noEmit -p tsconfig.json"
+  }
+}

@@ -1,0 +1,155 @@
+---
+
+---
+
+<div id="page-scrubber" data-page-scrubber>
+  <div
+    class="chapter-scrubber"
+    data-scrubber-slider
+    role="slider"
+    tabindex="0"
+    aria-label="Jump to page"
+    aria-valuemin="1"
+    aria-valuenow="1"
+    aria-valuemax="1"
+  >
+    <div class="chapter-scrubber-track" data-scrubber-track></div>
+    <span class="chapter-scrubber-thumb" aria-hidden="true"></span>
+    <div class="chapter-scrubber-tooltip" data-scrubber-tooltip hidden>
+      <span data-scrubber-tooltip-title></span>
+      <span data-scrubber-tooltip-page></span>
+    </div>
+  </div>
+</div>
+
+<style>
+  #page-scrubber {
+    display: block;
+    min-width: 0;
+    padding-inline: clamp(12px, 2vw, 28px);
+  }
+
+  .chapter-scrubber {
+    --scrubber-progress: 0;
+    position: relative;
+    display: flex;
+    align-items: center;
+    height: 28px;
+    cursor: pointer;
+    touch-action: none;
+    user-select: none;
+    outline: none;
+  }
+
+  .chapter-scrubber:focus-visible {
+    outline: 3px solid var(--dark-color);
+    outline-offset: 4px;
+  }
+
+  .chapter-scrubber-track {
+    display: flex;
+    align-items: stretch;
+    gap: 3px;
+    width: 100%;
+    height: 6px;
+    transition: height 120ms ease;
+  }
+
+  .chapter-scrubber:hover .chapter-scrubber-track,
+  .chapter-scrubber.is-dragging .chapter-scrubber-track,
+  .chapter-scrubber:focus-visible .chapter-scrubber-track {
+    height: 12px;
+  }
+
+  .chapter-scrubber :global(.chapter-scrubber-segment) {
+    position: relative;
+    flex: 1 1 0;
+    min-width: 2px;
+    overflow: hidden;
+    border-radius: 3px;
+  }
+
+  .chapter-scrubber :global(.chapter-scrubber-segment::after) {
+    content: "";
+    position: absolute;
+    inset: 0;
+    background: var(--light-color);
+    mix-blend-mode: multiply;
+  }
+
+  .chapter-scrubber :global(.chapter-scrubber-segment::before) {
+    content: "";
+    position: absolute;
+    inset: 0 auto 0 0;
+    z-index: 1;
+    width: calc(var(--played, 0) * 100%);
+    background: var(--dark-color);
+  }
+
+  .chapter-scrubber-thumb {
+    position: absolute;
+    top: 50%;
+    left: calc(var(--scrubber-progress) * 100%);
+    z-index: 1;
+    width: 16px;
+    height: 16px;
+    margin-left: -7px;
+    border-radius: 50%;
+    background: var(--dark-color);
+    box-shadow: 0 0 0 2px white;
+    transform: translateY(-50%) scale(0);
+    transition:
+      transform 120ms ease,
+      left 0s;
+    pointer-events: none;
+  }
+
+  .chapter-scrubber:hover .chapter-scrubber-thumb,
+  .chapter-scrubber.is-dragging .chapter-scrubber-thumb,
+  .chapter-scrubber:focus-visible .chapter-scrubber-thumb {
+    transform: translateY(-50%) scale(1);
+  }
+
+  .chapter-scrubber-tooltip {
+    position: absolute;
+    left: var(--tooltip-x, 50%);
+    top: calc(100% + 6px);
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    gap: 0.1em;
+    min-width: 0;
+    max-width: min(36ch, 70vw);
+    padding: 0.4em 0.7em;
+    border: 3px solid var(--dark-color);
+    background: white;
+    color: var(--dark-color);
+    font-weight: 600;
+    font-size: 0.95rem;
+    line-height: 1.25;
+    pointer-events: none;
+    transform: translateX(-50%);
+    white-space: nowrap;
+  }
+
+  .chapter-scrubber-tooltip[hidden] {
+    display: none;
+  }
+
+  .chapter-scrubber-tooltip [data-scrubber-tooltip-title] {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    text-align: center;
+  }
+
+  .chapter-scrubber-tooltip [data-scrubber-tooltip-title][hidden] {
+    display: none;
+  }
+
+  .chapter-scrubber-tooltip [data-scrubber-tooltip-page] {
+    font-weight: 500;
+    font-size: 0.85rem;
+    opacity: 0.75;
+    text-align: center;
+  }
+</style>

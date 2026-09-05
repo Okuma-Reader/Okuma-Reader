@@ -1,0 +1,23 @@
+---
+import { okumaIconSvg } from "@okuma-reader/core/icons";
+
+interface Props {
+  name: string;
+  class?: string;
+  size?: number | string;
+}
+
+const { name, class: className, size = "28px" } = Astro.props;
+const html = okumaIconSvg(name, {
+  size,
+  className: ["okuma-icon", className].filter(Boolean).join(" "),
+});
+---
+
+<span style="display: contents" set:html={html} />
+
+<style is:global>
+  :is(button, a):disabled .okuma-icon {
+    opacity: 0.35;
+  }
+</style>

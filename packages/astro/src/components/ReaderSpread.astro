@@ -1,0 +1,578 @@
+---
+import Icon from "./Icon.astro";
+import ReaderPage from "./ReaderPage.astro";
+import SearchBar from "./SearchBar.astro";
+---
+
+<div id="spread-area">
+  <button
+    type="button"
+    id="fullscreen-exit"
+    class="icon-button"
+    aria-label="Exit fullscreen"
+    title="Exit fullscreen"
+    aria-expanded="true"
+    hidden
+  >
+    <Icon name="fullscreen_exit" />
+  </button>
+  <button
+    type="button"
+    class="icon-button"
+    id="turn-prev"
+    data-turn="prev"
+    aria-label="Previous pages"
+  >
+    <Icon name="chevron_left" />
+  </button>
+  <div id="spread">
+    <div id="spread-stage">
+      <div id="book-zoom-shell">
+        <div
+          id="book"
+          data-closed="true"
+          data-cover="front"
+          data-zoomed="false"
+        >
+          <span id="book-hardcover" aria-hidden="true">
+            <span class="book-hardcover-specular"></span>
+          </span>
+          <ReaderPage side="left" />
+          <ReaderPage side="right" />
+        </div>
+      </div>
+    </div>
+  </div>
+  <button
+    type="button"
+    class="icon-button"
+    id="turn-next"
+    data-turn="next"
+    aria-label="Next pages"
+  >
+    <Icon name="chevron_right" />
+  </button>
+  <SearchBar />
+</div>
+
+<style>
+  #spread-area {
+    position: relative;
+    min-height: 0;
+    overflow: hidden;
+    touch-action: pan-x pan-y;
+
+    & > #fullscreen-exit {
+      position: absolute;
+      top: clamp(12px, 2vw, 28px);
+      right: clamp(12px, 2vw, 28px);
+      z-index: 6;
+      display: none;
+    }
+
+    &:fullscreen {
+      box-sizing: border-box;
+      width: 100%;
+      height: 100%;
+      background-image:
+        var(--okuma-paper2),
+        radial-gradient(circle at top, white, rgb(0 0 0 / 0.2));
+      background-blend-mode: multiply;
+      background-size:
+        25cm,
+        100% 100%;
+      background-repeat: round, no-repeat;
+
+      & > #fullscreen-exit {
+        display: flex;
+      }
+
+      & > #spread > #spread-stage {
+        padding-inline: clamp(12px, 2vw, 28px);
+        padding-block: 0;
+      }
+    }
+
+    & > #spread {
+      position: absolute;
+      inset: 0;
+      overflow: auto;
+      touch-action: pan-x pan-y;
+
+      & > #spread-stage {
+        box-sizing: border-box;
+        display: grid;
+        place-items: center;
+        min-width: 100%;
+        min-height: 100%;
+        width: max-content;
+        height: max-content;
+        /* Room for the book shadow inside the scrollport (incl. soft ambient). */
+        padding: clamp(0.5rem, 5vmin, 5rem);
+        padding-bottom: clamp(0.5rem, 4vmin, 4rem);
+        padding-top: 0;
+
+        & > #book-zoom-shell {
+          width: max-content;
+          height: max-content;
+          line-height: 0;
+        }
+      }
+    }
+
+    & > #turn-prev,
+    & > #turn-next {
+      position: absolute;
+      top: 50%;
+      z-index: 5;
+      transform: translateY(-50%);
+    }
+
+    & > #turn-prev {
+      left: clamp(12px, 2vw, 28px);
+    }
+
+    & > #turn-next {
+      right: clamp(12px, 2vw, 28px);
+    }
+  }
+
+  .icon-button {
+    box-sizing: border-box;
+    width: 50px;
+    height: 50px;
+    border: 3px solid var(--dark-color);
+    background: white;
+    color: var(--dark-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & :global(svg) {
+      width: 28px;
+      height: 28px;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled),
+    &:focus-visible:not(:disabled),
+    &[aria-expanded="true"]:not(:disabled) {
+      background: var(--dark-color);
+      color: white;
+    }
+  }
+</style>
+
+<style is:global>
+  #book {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    width: max-content;
+    max-width: none;
+    transform-origin: 0 0;
+    /* 1em ≈ 16px at a ~400px face; tracks zoom via --page-face-width. */
+    --shadow-em: calc(var(--page-face-width, 400px) / 25);
+  }
+
+  /* Single double-page inner cover behind both pages.
+     Sized to the unscaled face + overhang so thick stacks can protrude. */
+  #book-hardcover {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 50%;
+    height: calc(
+      var(--page-face-height, 0px) + var(--cover-overhang-top, 0px) +
+        var(--cover-overhang-bottom, 0px)
+    );
+    transform: translateY(-50%);
+    background-color: var(--dark-color);
+    background-image: var(--cover-image);
+    background-size: 100% 100%;
+    font-size: var(--shadow-em);
+    box-shadow:
+      0 0.2em 0.3em rgb(0 0 0 / 70%),
+      0 1em 1em rgb(0 0 0 / 30%),
+      0 2em 2em rgb(0 0 0 / 27%);
+    border-top-left-radius: 0.5% 0.8%;
+    border-bottom-left-radius: 0.5% 0.8%;
+    border-top-right-radius: 0.5% 0.8%;
+    border-bottom-right-radius: 0.5% 0.8%;
+    overflow: hidden;
+  }
+
+  /* Cover overlays: specular → spine shade */
+  #book-hardcover .book-hardcover-specular {
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    background-image: var(--okuma-specular-single);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-blend-mode: multiply;
+    mix-blend-mode: soft-light;
+    opacity: 1;
+  }
+
+  #book-hardcover::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    /* Spine band = full page-stack thickness (ratio × face width), centered. */
+    --spine-width: calc(
+      var(--spine-thickness, 0) * var(--page-face-width, 0px)
+    );
+    background-image: linear-gradient(
+      to left,
+      rgba(0, 0, 0, 0.5) 0%,
+      transparent 0.5%,
+      transparent calc(50% - var(--spine-width) / 2 - 0.5%),
+      rgba(0, 0, 0, 0.5) calc(50% - var(--spine-width) / 2),
+      rgba(0, 0, 0, 0.5) calc(50% + var(--spine-width) / 2),
+      transparent calc(50% + var(--spine-width) / 2 + 0.5%),
+      transparent 99.5%,
+      rgba(0, 0, 0, 0.5) 100%
+    );
+  }
+
+  #book[data-closed="true"] #book-hardcover {
+    display: none;
+  }
+
+  #book.is-preview-zoom {
+    will-change: transform;
+  }
+
+  #book[data-closed="true"] {
+    border-top-left-radius: 2% 1%;
+    border-bottom-left-radius: 2% 1%;
+    border-top-right-radius: 1% 0.5%;
+    border-bottom-right-radius: 1% 0.5%;
+    overflow: hidden;
+    font-size: var(--shadow-em);
+    box-shadow:
+      0 0.2em 0.3em rgb(0 0 0 / 70%),
+      0 1em 1em rgb(0 0 0 / 30%),
+      0 2em 2em rgb(0 0 0 / 27%),
+      0 6em 6em rgb(0 0 0 / 50%);
+  }
+
+  .page {
+    box-sizing: border-box;
+    flex: 0 0 auto;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    background: transparent;
+    display: block;
+    line-height: 0;
+    cursor: default;
+    position: relative;
+    z-index: 1;
+  }
+
+  .page[data-empty="true"] {
+    display: none;
+  }
+
+  .page-stack {
+    position: relative;
+    z-index: 1;
+    display: block;
+    line-height: 0;
+    /* Shadow em tracks this stack's face width (and thus zoom). */
+    font-size: calc(var(--page-face-width, 400px) / 25);
+
+    /* Full stack-scale at start/end; 1 at mid-book (progress 0.5). */
+    --scale-x: calc(
+      1 + (var(--stack-scale, 1) - 1) * abs(2 * var(--book-progress, 0) - 1)
+    );
+
+    box-shadow:
+      0 0.2em 0.3em rgb(0 0 0 / calc(40% * var(--stack-shade))),
+      0 1em 1em rgb(0 0 0 / calc(20% * var(--stack-shade))),
+      0 2em 2em rgb(0 0 0 / calc(27% * var(--stack-shade))),
+      0 6em 6em rgb(0 0 0 / calc(50% * var(--stack-shade)));
+  }
+
+  #book:not([data-closed="true"]) {
+    align-items: center;
+  }
+
+  #book:not([data-closed="true"]) .page[data-page="left"] .page-stack {
+    /* Outer edge fixed; X growth overlaps toward the spine (negative end margin). */
+    margin: var(--stack-margin-top, 0px) var(--stack-margin-end, 0px)
+      var(--stack-margin-bottom, 0px) var(--stack-margin-start, 0px);
+    overflow: hidden;
+    /* Spine-side curve */
+    border-top-right-radius: 50% calc(50% * (var(--stack-scale, 1) - 1));
+    border-bottom-right-radius: 50% calc(50% * (var(--stack-scale, 1) - 1));
+    /* Outer side: round with the edge stack (trapezoid-ish) */
+    border-top-left-radius: calc(0.5% + var(--edge-ratio, 0) * 100%)
+      calc(0.5% + var(--edge-ratio, 0) * 30% * var(--stack-scale, 1));
+    border-bottom-left-radius: calc(0.5% + var(--edge-ratio, 0) * 100%)
+      calc(0.5% + var(--edge-ratio, 0) * 30% * var(--stack-scale, 1));
+  }
+
+  #book:not([data-closed="true"]) .page[data-page="right"] .page-stack {
+    margin: var(--stack-margin-top, 0px) var(--stack-margin-start, 0px)
+      var(--stack-margin-bottom, 0px) var(--stack-margin-end, 0px);
+    overflow: hidden;
+    /* Spine-side curve */
+    border-top-left-radius: 50% calc(50% * (var(--stack-scale, 1) - 1));
+    border-bottom-left-radius: 50% calc(50% * (var(--stack-scale, 1) - 1));
+    /* Outer side: round with the edge stack (trapezoid-ish) */
+    border-top-right-radius: calc(0.5% + var(--edge-ratio, 0) * 100%)
+      calc(0.5% + var(--edge-ratio, 0) * 30% * var(--stack-scale, 1));
+    border-bottom-right-radius: calc(0.5% + var(--edge-ratio, 0) * 100%)
+      calc(0.5% + var(--edge-ratio, 0) * 30% * var(--stack-scale, 1));
+  }
+
+  .page-shell {
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    flex: 0 0 auto;
+    line-height: 0;
+  }
+
+  .page-edge {
+    position: relative;
+    flex: 0 0 auto;
+    width: calc(var(--edge-ratio, 0) * var(--page-face-width, 0px));
+    background-color: #d0d0d0;
+    background-image: var(--okuma-side-book);
+    background-repeat: repeat-x;
+    background-size: auto 100%;
+    background-position: center left;
+  }
+
+  .page-edge::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    /* Darken the outermost edge; intensity follows stack shade. */
+    background-image: linear-gradient(
+      to right,
+      rgb(0 0 0 / calc(45% * var(--stack-shade, 0))),
+      transparent 50%
+    );
+  }
+
+  .page[data-page="right"] .page-edge {
+    background-position: center right;
+  }
+
+  .page[data-page="right"] .page-edge::after {
+    background-image: linear-gradient(
+      to left,
+      rgb(0 0 0 / calc(45% * var(--stack-shade, 0))),
+      transparent 50%
+    );
+  }
+
+  .page-face {
+    position: relative;
+    flex: 0 0 auto;
+    display: block;
+    overflow: hidden;
+    /* Visible initially or while canvas catches up after a size change. */
+    background-color: #fff;
+  }
+
+  .page-face > canvas {
+    display: block;
+    position: relative;
+    z-index: 0;
+  }
+
+  .page-face > .textLayer {
+    z-index: 1;
+  }
+
+  .page-face > .annotationLayer {
+    position: absolute;
+    inset: 0;
+    z-index: 8;
+    overflow: clip;
+    pointer-events: none;
+    transform-origin: 0 0;
+  }
+
+  .page-face > .annotationLayer > a {
+    position: absolute;
+    pointer-events: auto;
+    cursor: pointer;
+    color: transparent;
+  }
+
+  .page-face > .annotationLayer > a:hover,
+  .page-face > .annotationLayer > a:focus-visible {
+    background-color: rgb(255 255 0 / 0.2);
+  }
+
+  .page-face > .searchLayer {
+    position: absolute;
+    inset: 0;
+    z-index: 7;
+    overflow: clip;
+    pointer-events: none;
+  }
+
+  .page-face > .searchLayer > span {
+    position: absolute;
+    background-color: rgb(255 210 0 / 0.45);
+  }
+
+  .page-face > .searchLayer > span.is-current {
+    background-color: rgb(255 140 0 / 0.55);
+  }
+
+  /* Apply order: paper → tint → fold → specular */
+  .page-paper {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    background-image: var(--okuma-paper-book);
+    background-size: calc(var(--page-face-width) / 6);
+    background-position: var(--paper-position, 0 0);
+    mix-blend-mode: exclusion;
+    opacity: 0.3;
+  }
+
+  .page-tint {
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background: #fffbf9;
+    mix-blend-mode: multiply;
+  }
+
+  #book[data-cover] .page-tint {
+    display: none;
+  }
+
+  #book[data-cover] .page-paper {
+    display: none;
+  }
+
+  /* Front end-sheet (page 2) / back end-sheet (pageCount − 1, mirrored). */
+  .page-pastedown {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 3;
+    pointer-events: none;
+    background-image: var(--okuma-pastedown);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    mix-blend-mode: overlay;
+    opacity: 0.3;
+  }
+
+  .page[data-pastedown] .page-pastedown {
+    display: block;
+  }
+
+  .page[data-pastedown="back"] .page-pastedown {
+    transform: scaleX(-1);
+  }
+
+  .page-fold {
+    position: absolute;
+    inset: 0;
+    z-index: 4;
+    pointer-events: none;
+    background-image: var(--okuma-book-fold);
+    background-repeat: no-repeat;
+    background-size: 200% 100%;
+    mix-blend-mode: multiply;
+  }
+
+  .page[data-page="left"] .page-fold {
+    background-position: left center;
+  }
+
+  .page[data-page="right"] .page-fold {
+    background-position: right center;
+  }
+
+  #book[data-cover] .page-fold {
+    display: none;
+  }
+
+  .page-specular {
+    position: absolute;
+    inset: 0;
+    z-index: 6;
+    pointer-events: none;
+    background-image: var(--okuma-specular-double);
+    background-repeat: no-repeat;
+    background-size: 200% 100%;
+    background-blend-mode: multiply;
+    mix-blend-mode: soft-light;
+    opacity: 0.5;
+  }
+
+  .page[data-page="left"] .page-specular {
+    background-position: left center;
+  }
+
+  .page[data-page="right"] .page-specular {
+    background-position: right center;
+  }
+
+  #book[data-cover] .page-specular {
+    background-image: var(--okuma-specular-single);
+    background-size: 100% 100%;
+    background-position: center;
+  }
+
+  /* Book cover gradient gutters and edges */
+
+  .page-face::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    z-index: 7;
+    pointer-events: none;
+  }
+
+  #book[data-cover="front"] .page[data-page="right"] .page-face::after {
+    background: linear-gradient(
+      to right,
+      rgb(0 0 0 / 0.5) 0%,
+      transparent 0.8%,
+      rgb(0 0 0 / 0.1) 3%,
+      rgb(0 0 0 / 0.25) 3.5%,
+      rgb(0 0 0 / 0.3) 4.5%,
+      transparent 5.2%,
+      transparent 99%,
+      rgb(0 0 0 / 0.3) 100%
+    );
+  }
+
+  #book[data-cover="back"] .page[data-page="left"] .page-face::after {
+    background: linear-gradient(
+      to left,
+      rgb(0 0 0 / 0.5) 0%,
+      transparent 0.8%,
+      rgb(0 0 0 / 0.1) 3%,
+      rgb(0 0 0 / 0.25) 3.5%,
+      rgb(0 0 0 / 0.3) 4.5%,
+      transparent 5.2%,
+      transparent 99%,
+      rgb(0 0 0 / 0.3) 100%
+    );
+  }
+</style>

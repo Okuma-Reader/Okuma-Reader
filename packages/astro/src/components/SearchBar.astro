@@ -1,0 +1,186 @@
+---
+import Icon from "./Icon.astro";
+---
+
+<form id="reader-search" hidden autocomplete="off">
+  <div>
+    <div>
+      <div>
+        <input
+          type="search"
+          data-search-input
+          placeholder="Find in book"
+          aria-label="Find in book"
+          spellcheck="false"
+        />
+        <div>
+          <button
+            class="icon-button"
+            type="button"
+            data-search-prev
+            aria-label="Previous match"
+          >
+            <Icon name="keyboard_arrow_up" />
+          </button>
+          <button
+            class="icon-button"
+            type="button"
+            data-search-next
+            aria-label="Next match"
+          >
+            <Icon name="keyboard_arrow_down" />
+          </button>
+        </div>
+        <span data-search-count aria-live="polite">0 of 0 matches</span>
+      </div>
+      <div>
+        <label>
+          <input type="checkbox" data-search-match-case />
+          Match Case
+        </label>
+        <label>
+          <input type="checkbox" data-search-match-diacritics />
+          Match Diacritics
+        </label>
+        <label>
+          <input type="checkbox" data-search-whole-words />
+          Whole Words
+        </label>
+      </div>
+    </div>
+    <button
+      class="icon-button"
+      type="button"
+      data-search-close
+      aria-label="Close search"
+    >
+      <Icon name="close" />
+    </button>
+  </div>
+</form>
+
+<style>
+  #reader-search {
+    position: absolute;
+    z-index: 15;
+    --padding: clamp(12px, 2vw, 28px);
+    bottom: var(--padding);
+    left: var(--padding);
+    right: var(--padding);
+
+    display: flex;
+    place-content: center;
+
+    &[hidden] {
+      display: none;
+    }
+
+    & > div {
+      padding: 0.75rem;
+      border: 3px solid var(--dark-color);
+      background: white;
+      color: var(--dark-color);
+      width: 100%;
+      box-shadow: 0 0 5em var(--dark-color);
+
+      max-width: 42rem;
+
+      display: flex;
+      justify-content: space-between;
+
+      & > div {
+        display: flex;
+        flex-direction: column;
+        gap: 0.55rem;
+
+        & > div {
+          display: flex;
+          align-items: center;
+          gap: 0.35rem 1rem;
+          flex-wrap: wrap;
+
+          /* First line with search input and occurrences buttons */
+          &:nth-child(1) {
+            & > [data-search-input] {
+              box-sizing: border-box;
+              min-width: 0;
+              height: 42px;
+              margin: 0;
+              padding: 0 0.7em;
+              border: 3px solid var(--dark-color);
+              background: white;
+              color: var(--dark-color);
+              font: inherit;
+              font-weight: 600;
+            }
+
+            & > div {
+              display: flex;
+
+              & > button ~ button {
+                border-left-width: 0;
+              }
+            }
+
+            & > [data-search-count] {
+              flex: 0 0 auto;
+              font-weight: 600;
+              white-space: nowrap;
+            }
+          }
+
+          /* Second line with search options */
+          &:nth-child(2) {
+            font-size: 0.9rem;
+            font-weight: 600;
+            gap: 1.6em;
+
+            & > label {
+              display: inline-flex;
+              align-items: center;
+              gap: 0.4em;
+              cursor: pointer;
+              user-select: none;
+
+              & > input {
+                margin: 0;
+                accent-color: var(--dark-color);
+                width: 1.2em;
+                height: 1.2em;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .icon-button {
+    box-sizing: border-box;
+    width: 42px;
+    height: 42px;
+    border: 3px solid var(--dark-color);
+    background: white;
+    color: var(--dark-color);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & :global(svg) {
+      width: 28px;
+      height: 28px;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+    }
+
+    &:hover:not(:disabled),
+    &:focus-visible:not(:disabled),
+    &[aria-expanded="true"]:not(:disabled) {
+      background: var(--dark-color);
+      color: white;
+    }
+  }
+</style>

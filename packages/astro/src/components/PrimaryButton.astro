@@ -1,0 +1,49 @@
+---
+interface Props {
+  href: string;
+  color: string;
+  disabled: boolean;
+  download?: string | boolean;
+}
+
+const { color, href, disabled, download } = Astro.props;
+const downloadAttr =
+  download === true ? "" : typeof download === "string" ? download : undefined;
+---
+
+<a
+  href={disabled ? undefined : href}
+  download={downloadAttr}
+  style={`--color: ${color}`}
+  aria-disabled={disabled}><slot /></a
+>
+
+<style>
+  a {
+    color: white;
+    background-color: var(--color);
+    border: 3px solid var(--color);
+    text-decoration: none;
+    font-size: 130%;
+    font-weight: 600;
+    padding: 0.5em 1em;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35em;
+
+    transition-duration: 75ms;
+    transition-property: color, background-color;
+
+    &:hover,
+    &:focus-within {
+      background-color: white;
+      color: var(--color);
+    }
+
+    &[aria-disabled="true"] {
+      color: white;
+      background-color: var(--color);
+      cursor: not-allowed;
+    }
+  }
+</style>

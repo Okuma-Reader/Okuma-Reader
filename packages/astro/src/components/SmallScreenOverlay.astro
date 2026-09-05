@@ -1,0 +1,96 @@
+---
+import Button from "./Button.astro";
+import Icon from "./Icon.astro";
+
+export interface SmallScreenOverlayProps {
+  bookId: string;
+  backHref: string;
+  darkColor: string;
+  downloadUrl?: string;
+  downloadFilename?: string;
+}
+
+const {
+  bookId,
+  backHref,
+  darkColor,
+  downloadUrl,
+  downloadFilename = `${bookId}.pdf`,
+} = Astro.props as SmallScreenOverlayProps;
+---
+
+<div
+  id="small-screen-overlay"
+  role="dialog"
+  aria-modal="true"
+  aria-labelledby="small-screen-title"
+>
+  <Icon name="devices" size="3rem" />
+  <h2 id="small-screen-title">Screen too small</h2>
+  <p>
+    This reader needs more space for a two-page spread. Open it on a larger
+    device, or download the PDF to read offline.
+  </p>
+  <div id="small-screen-actions">
+    {
+      downloadUrl ? (
+        <Button href={downloadUrl} download={downloadFilename} color={darkColor} primary>
+          <Icon name="download" />
+          Download PDF
+        </Button>
+      ) : null
+    }
+    <Button href={backHref} color={darkColor}>
+      <Icon name="arrow_back" />
+      Go back
+    </Button>
+  </div>
+</div>
+
+<style>
+  #small-screen-overlay {
+    display: none;
+    position: absolute;
+    inset: 0;
+    z-index: 20;
+    box-sizing: border-box;
+    padding: 2rem 1.5rem;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    text-align: center;
+    color: var(--dark-color);
+    background-color: rgb(255 251 249 / 0.96);
+    background-image: var(--okuma-paper2);
+    background-size: 25cm;
+    background-repeat: round;
+  }
+
+  #small-screen-overlay h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    font-weight: 700;
+  }
+
+  #small-screen-overlay p {
+    margin: 0;
+    max-width: 28ch;
+    font-size: 1.05rem;
+    line-height: 1.45;
+  }
+
+  #small-screen-actions {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    gap: 0.75rem;
+    margin-top: 0.5rem;
+  }
+
+  @media (max-width: 480px), (max-height: 520px) {
+    #small-screen-overlay {
+      display: flex;
+    }
+  }
+</style>
