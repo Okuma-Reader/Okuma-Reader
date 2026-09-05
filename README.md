@@ -9,7 +9,7 @@ MIT-licensed monorepo for a two-page PDF/image book reader.
 | [`@okuma-reader/core`](packages/core) | Reader controller + DOM contract |
 | [`@okuma-reader/source-pdf`](packages/source-pdf) | pdf.js `BookSource` |
 | [`@okuma-reader/source-images`](packages/source-images) | Image-set `BookSource` |
-| [`@okuma-reader/astro`](packages/astro) | Astro UI shell + `mountOkumaReader` |
+| [`@okuma-reader/astro`](packages/astro) | Astro UI shell + auto-mount |
 
 ## Apps
 
@@ -27,47 +27,78 @@ npm run dev
 - Images: http://localhost:4322/ (Le Petit Prince, 108 pages)
 - PDF: http://localhost:4322/pdf (NGE Genocide Vol.1, 328 pages)
 
+## Install
+
+`@okuma-reader/astro` keeps source packages as **optional peer dependencies**. Install only what you use:
+
+| Use case | Packages |
+|----------|----------|
+| PDF books | `@okuma-reader/astro` + `@okuma-reader/source-pdf` |
+| Image books | `@okuma-reader/astro` + `@okuma-reader/source-images` |
+| Both | all three |
+| Custom `BookSource` | `@okuma-reader/astro` only (omit the `source` prop) |
+
+```bash
+# PDF-only
+npm i @okuma-reader/astro @okuma-reader/source-pdf
+
+# Images-only
+npm i @okuma-reader/astro @okuma-reader/source-images
+```
+
 ## Usage (Astro)
 
 ```astro
 ---
-import OkumaReader from "@okuma-reader/astro/OkumaReader.astro";
+import { OkumaReader } from "@okuma-reader/astro";
 ---
 
 <OkumaReader
   bookId="my-book"
   title="My Book"
-  coverImageUrl="/cover.webp"
+  innerCoverImageUrl="/inner-cover.webp"
   darkColor="#3a2a1a"
   lightColor="#f3e7d3"
   backHref="/"
+  source={{ type: "pdf", url: "/book.pdf" }}
 />
+```
 
-<script>
-  import { mountOkumaReader } from "@okuma-reader/astro/client";
-  import { createPdfBookSource } from "@okuma-reader/source-pdf";
-  import pdfWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
+The component is also available as a direct subpath if you prefer:
 
-  const source = await createPdfBookSource({
-    url: "/book.pdf",
-    workerSrc: pdfWorker,
-  });
-  const root = document.getElementById("reader");
-  if (root) void mountOkumaReader(root, { source, bookId: "my-book" });
-</script>
+```ts
+import OkumaReader from "@okuma-reader/astro/OkumaReader.astro";
 ```
 
 Image books:
 
-```ts
-import { createImageBookSource } from "@okuma-reader/source-images";
+```astro
+<OkumaReader
+  bookId="my-book"
+  title="My Book"
+  innerCoverImageUrl="/inner-cover.webp"
+  darkColor="#3a2a1a"
+  lightColor="#f3e7d3"
+  backHref="/"
+  source={{
+    type: "images",
+    pages: [
+      { src: "/pages/1.webp" },
+      { src: "/pages/2.webp" },
+    ],
+  }}
+/>
+```
 
-const source = createImageBookSource({
-  pages: [
-    { src: "/pages/1.webp" },
-    { src: "/pages/2.webp" },
-  ],
-});
+For a custom `BookSource`, omit `source` and mount yourself:
+
+```html
+<script>
+  import { mountOkumaReader } from "@okuma-reader/astro/client";
+  // create your BookSource, then:
+  const root = document.getElementById("reader");
+  if (root) void mountOkumaReader(root, { source, bookId: "my-book" });
+</script>
 ```
 
 ## Architecture

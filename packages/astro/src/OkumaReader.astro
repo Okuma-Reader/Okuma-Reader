@@ -26,19 +26,20 @@ const {
   bookId,
   title,
   subtitle,
-  coverImageUrl,
+  innerCoverImageUrl,
   darkColor,
   lightColor,
   backHref,
   downloadUrl,
   downloadFilename,
   ownPage = true,
+  source,
 } = Astro.props as OkumaReaderProps;
 
 const cssVars = [
   `--light-color: ${lightColor}`,
   `--dark-color: ${darkColor}`,
-  `--cover-image: url(${JSON.stringify(coverImageUrl)})`,
+  `--inner-cover-image: url(${JSON.stringify(innerCoverImageUrl)})`,
   `--okuma-paper2: ${cssUrl(paper2)}`,
   `--okuma-paper-book: ${cssUrl(paperBook)}`,
   `--okuma-specular-single: ${cssUrl(specularSingle)}`,
@@ -47,12 +48,15 @@ const cssVars = [
   `--okuma-pastedown: ${cssUrl(pastedown)}`,
   `--okuma-book-fold: ${cssUrl(bookFold)}`,
 ].join("; ");
+
+const sourceJson = source ? JSON.stringify(source) : undefined;
 ---
 
 <div
   id="reader"
   class:list={[{ "okuma-own-page": ownPage }]}
   data-book-id={bookId}
+  data-okuma-source={sourceJson}
   style={cssVars}
 >
   <ReaderToolbar
@@ -74,6 +78,22 @@ const cssVars = [
     downloadFilename={downloadFilename}
   />
 </div>
+
+<script>
+  import { mountOkumaReaderFromConfig } from "./client";
+
+  const root = document.getElementById("reader");
+  const raw = root?.dataset.okumaSource;
+  if (root && raw) {
+    const source = JSON.parse(raw) as Parameters<
+      typeof mountOkumaReaderFromConfig
+    >[1]["source"];
+    void mountOkumaReaderFromConfig(root, {
+      source,
+      bookId: root.dataset.bookId,
+    });
+  }
+</script>
 
 <style is:global>
   @import "@okuma-reader/core/styles.css";

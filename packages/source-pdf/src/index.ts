@@ -6,7 +6,6 @@ import {
 } from "pdfjs-dist";
 import type {
   PDFDocumentProxy,
-  PDFPageProxy,
   PageViewport,
   RenderTask,
 } from "pdfjs-dist";
@@ -23,8 +22,15 @@ import { loadPdfChapters, pageForDest } from "./chapters";
 
 export type CreatePdfBookSourceOptions = {
   url: string;
-  /** pdf.js worker URL. Required in most bundlers. */
-  workerSrc: string;
+  /**
+   * pdf.js worker script URL.
+   *
+   * When omitted, resolves `pdfjs-dist/build/pdf.worker.min.mjs` via
+   * `new URL(..., import.meta.url)` (standard ESM; works with Webpack 5, Vite,
+   * Parcel, and similar). Pass an explicit URL if your toolchain does not
+   * rewrite that form.
+   */
+  workerSrc?: string;
 };
 
 type PdfLinkAnnot = {
@@ -86,7 +92,9 @@ function linkBoxes(annot: PdfLinkAnnot, viewport: PageViewport) {
 export async function createPdfBookSource(
   options: CreatePdfBookSourceOptions
 ): Promise<BookSource> {
-  GlobalWorkerOptions.workerSrc = options.workerSrc;
+  GlobalWorkerOptions.workerSrc =
+    options.workerSrc ??
+    new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url).href;
   const pdf: PDFDocumentProxy = await getDocument({ url: options.url }).promise;
   const renderTasks = new Map<object, RenderTask>();
   const textLayers = new Set<TextLayer>();

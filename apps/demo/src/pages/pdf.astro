@@ -1,5 +1,5 @@
 ---
-import OkumaReader from "@okuma-reader/astro/OkumaReader.astro";
+import { OkumaReader } from "@okuma-reader/astro";
 ---
 
 <html lang="en">
@@ -39,29 +39,16 @@ import OkumaReader from "@okuma-reader/astro/OkumaReader.astro";
       bookId="nge-genocide-vol1"
       title="NGE Genocide"
       subtitle="Vol. 1 — PDF demo"
-      coverImageUrl="/fixtures/nge-genocide-vol1/inner-cover.png"
+      innerCoverImageUrl="/fixtures/nge-genocide-vol1/inner-cover.png"
       darkColor="#694588"
       lightColor="#DDCDE9"
       backHref="/pdf"
       downloadUrl="/fixtures/nge-genocide-vol1/nge-genocide-vol1.pdf"
       downloadFilename="nge-genocide-vol1.pdf"
-    />
-    <script>
-      import { mountOkumaReader } from "@okuma-reader/astro/client";
-      import { createPdfBookSource } from "@okuma-reader/source-pdf";
-      import pdfWorker from "pdfjs-dist/build/pdf.worker.min.mjs?url";
-
-      const source = await createPdfBookSource({
+      source={{
+        type: "pdf",
         url: "/fixtures/nge-genocide-vol1.pdf",
-        workerSrc: pdfWorker,
-      });
-      const root = document.getElementById("reader");
-      if (root) {
-        void mountOkumaReader(root, {
-          source,
-          bookId: "nge-genocide-vol1",
-        });
-      }
-    </script>
+      }}
+    />
   </body>
 </html>

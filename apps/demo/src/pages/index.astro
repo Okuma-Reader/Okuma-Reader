@@ -1,5 +1,9 @@
 ---
-import OkumaReader from "@okuma-reader/astro/OkumaReader.astro";
+import { OkumaReader } from "@okuma-reader/astro";
+
+const pages = Array.from({ length: 108 }, (_, i) => ({
+  src: `/fixtures/petit-prince/${i + 1}.webp`,
+}));
 ---
 
 <html lang="en">
@@ -39,21 +43,11 @@ import OkumaReader from "@okuma-reader/astro/OkumaReader.astro";
       bookId="petit-prince"
       title="Le Petit Prince"
       subtitle="Image sequence demo"
-      coverImageUrl="/fixtures/petit-prince/inner-cover.png"
+      innerCoverImageUrl="/fixtures/petit-prince/inner-cover.png"
       darkColor="#3a2a1a"
       lightColor="#f3e7d3"
       backHref="/"
+      source={{ type: "images", pages }}
     />
-    <script>
-      import { mountOkumaReader } from "@okuma-reader/astro/client";
-      import { createImageBookSource } from "@okuma-reader/source-images";
-
-      const pages = Array.from({ length: 108 }, (_, i) => ({
-        src: `/fixtures/petit-prince/${i + 1}.webp`,
-      }));
-      const source = createImageBookSource({ pages });
-      const root = document.getElementById("reader");
-      if (root) void mountOkumaReader(root, { source, bookId: "petit-prince" });
-    </script>
   </body>
 </html>

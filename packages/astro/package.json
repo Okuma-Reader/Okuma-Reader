@@ -16,7 +16,17 @@
     "@okuma-reader/core": "0.0.1"
   },
   "peerDependencies": {
-    "astro": "^5.0.0 || ^6.0.0 || ^7.0.0"
+    "astro": "^5.0.0 || ^6.0.0 || ^7.0.0",
+    "@okuma-reader/source-pdf": "0.0.1",
+    "@okuma-reader/source-images": "0.0.1"
+  },
+  "peerDependenciesMeta": {
+    "@okuma-reader/source-pdf": { "optional": true },
+    "@okuma-reader/source-images": { "optional": true }
+  },
+  "devDependencies": {
+    "@okuma-reader/source-pdf": "0.0.1",
+    "@okuma-reader/source-images": "0.0.1"
   },
   "scripts": {
     "check": "tsc --noEmit -p tsconfig.json"

@@ -2,7 +2,7 @@
  * Host UIs should set these CSS variables on #reader (see @okuma-reader/astro).
  * Texture URLs are provided by the framework package via asset imports.
  *
- * --light-color, --dark-color, --cover-image
+ * --light-color, --dark-color, --inner-cover-image
  * --okuma-paper2, --okuma-paper-book, --okuma-specular-single,
  * --okuma-specular-double, --okuma-side-book, --okuma-pastedown,
  * --okuma-book-fold
