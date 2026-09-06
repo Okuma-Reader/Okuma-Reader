@@ -1,6 +1,6 @@
 {
   "name": "@okuma-reader/core",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Framework-agnostic book reader controller (DOM contract).",
   "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
   "bugs": {

@@ -1,6 +1,6 @@
 {
   "name": "@okuma-reader/source-images",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Image-sequence BookSource for okuma-reader.",
   "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
   "bugs": {
@@ -27,6 +27,6 @@
     "build": "npm run check"
   },
   "dependencies": {
-    "@okuma-reader/core": "0.0.2"
+    "@okuma-reader/core": "0.0.3"
   }
 }

@@ -1,6 +1,6 @@
 {
   "name": "@okuma-reader/shell",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Shared reader shell types, mount helpers, and chrome CSS for Astro/React UI packages.",
   "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
   "bugs": {
@@ -31,15 +31,15 @@
     "build": "npm run check"
   },
   "dependencies": {
-    "@okuma-reader/core": "0.0.2"
+    "@okuma-reader/core": "0.0.3"
   },
   "devDependencies": {
-    "@okuma-reader/source-images": "0.0.2",
-    "@okuma-reader/source-pdf": "0.0.2"
+    "@okuma-reader/source-images": "0.0.3",
+    "@okuma-reader/source-pdf": "0.0.3"
   },
   "peerDependencies": {
-    "@okuma-reader/source-images": "0.0.2",
-    "@okuma-reader/source-pdf": "0.0.2"
+    "@okuma-reader/source-images": "0.0.3",
+    "@okuma-reader/source-pdf": "0.0.3"
   },
   "peerDependenciesMeta": {
     "@okuma-reader/source-pdf": {

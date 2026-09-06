@@ -2,6 +2,17 @@
 
 All notable changes to this project will be documented in this file.
 
+## [0.0.3] - 2026-09-06
+
+### Bug Fixes
+
+- Keyboard shortcuts popup was sized and positionned incorrectly on Chromium
+- Trigger npm publish on tag push
+
+### Miscellaneous
+
+- Add pre-commit hook and release prep script to simplify the developper experience
+
 ## [0.0.2] - 2026-09-06
 
 ### Bug Fixes
@@ -10,6 +21,8 @@ All notable changes to this project will be documented in this file.
 
 ### Miscellaneous
 
+- Keep package-lock in sync
+- Add release CI with OIDC publish and git-cliff
 - Add original lossless format image textures
 - Add necessary meta and licences for publishing
 
@@ -38,4 +51,5 @@ All notable changes to this project will be documented in this file.
 - Oxfmt setup
 - Oxlint setup
 
+[0.0.3]: https://github.com/Okuma-Reader/Okuma-Reader/compare/v0.0.2...v0.0.3
 [0.0.2]: https://github.com/Okuma-Reader/Okuma-Reader/compare/v0.0.1...v0.0.2

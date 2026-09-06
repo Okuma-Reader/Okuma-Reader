@@ -1,6 +1,6 @@
 {
   "name": "@okuma-reader/astro",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "Astro UI wrapper for okuma-reader.",
   "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
   "bugs": {
@@ -29,16 +29,16 @@
     "build": "npm run check"
   },
   "dependencies": {
-    "@okuma-reader/core": "0.0.2",
-    "@okuma-reader/shell": "0.0.2"
+    "@okuma-reader/core": "0.0.3",
+    "@okuma-reader/shell": "0.0.3"
   },
   "devDependencies": {
-    "@okuma-reader/source-images": "0.0.2",
-    "@okuma-reader/source-pdf": "0.0.2"
+    "@okuma-reader/source-images": "0.0.3",
+    "@okuma-reader/source-pdf": "0.0.3"
   },
   "peerDependencies": {
-    "@okuma-reader/source-images": "0.0.2",
-    "@okuma-reader/source-pdf": "0.0.2",
+    "@okuma-reader/source-images": "0.0.3",
+    "@okuma-reader/source-pdf": "0.0.3",
     "astro": "^5.0.0 || ^6.0.0 || ^7.0.0"
   },
   "peerDependenciesMeta": {

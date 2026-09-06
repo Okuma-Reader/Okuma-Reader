@@ -1,6 +1,6 @@
 {
   "name": "@okuma-reader/react",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "React UI wrapper for okuma-reader.",
   "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
   "bugs": {
@@ -28,20 +28,20 @@
     "build": "npm run check"
   },
   "dependencies": {
-    "@okuma-reader/core": "0.0.2",
-    "@okuma-reader/shell": "0.0.2"
+    "@okuma-reader/core": "0.0.3",
+    "@okuma-reader/shell": "0.0.3"
   },
   "devDependencies": {
-    "@okuma-reader/source-images": "0.0.2",
-    "@okuma-reader/source-pdf": "0.0.2",
+    "@okuma-reader/source-images": "0.0.3",
+    "@okuma-reader/source-pdf": "0.0.3",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "peerDependencies": {
-    "@okuma-reader/source-images": "0.0.2",
-    "@okuma-reader/source-pdf": "0.0.2",
+    "@okuma-reader/source-images": "0.0.3",
+    "@okuma-reader/source-pdf": "0.0.3",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },

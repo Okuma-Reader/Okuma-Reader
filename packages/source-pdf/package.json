@@ -1,6 +1,6 @@
 {
   "name": "@okuma-reader/source-pdf",
-  "version": "0.0.2",
+  "version": "0.0.3",
   "description": "pdf.js BookSource for okuma-reader.",
   "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
   "bugs": {
@@ -27,7 +27,7 @@
     "build": "npm run check"
   },
   "dependencies": {
-    "@okuma-reader/core": "0.0.2",
+    "@okuma-reader/core": "0.0.3",
     "pdfjs-dist": "^6.3.289"
   }
 }
