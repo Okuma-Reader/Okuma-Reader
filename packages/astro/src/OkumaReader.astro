@@ -59,7 +59,6 @@ const sourceJson = source ? JSON.stringify(source) : undefined;
   style={cssVars}
 >
   <ReaderToolbar
-    bookId={bookId}
     title={title}
     subtitle={subtitle}
     backHref={backHref}
@@ -69,7 +68,6 @@ const sourceJson = source ? JSON.stringify(source) : undefined;
   <ReaderSpread />
   <ShortcutsDialog />
   <SmallScreenOverlay
-    bookId={bookId}
     backHref={backHref}
     accentColor={accentColor}
     download={download}

@@ -4,16 +4,13 @@ import Icon from "./Icon.astro";
 import type { OkumaDownloadConfig } from "../types";
 
 export interface SmallScreenOverlayProps {
-  bookId: string;
   backHref?: string;
   accentColor: string;
   download?: OkumaDownloadConfig;
 }
 
-const { bookId, backHref, accentColor, download } =
+const { backHref, accentColor, download } =
   Astro.props as SmallScreenOverlayProps;
-
-const downloadFilename = download?.filename ?? `${bookId}.pdf`;
 ---
 
 <div
@@ -33,7 +30,7 @@ const downloadFilename = download?.filename ?? `${bookId}.pdf`;
       download && (
         <Button
           href={download.href}
-          download={downloadFilename}
+          download={download.filename ?? true}
           color={accentColor}
           primary
         >

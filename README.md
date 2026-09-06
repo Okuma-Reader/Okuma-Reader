@@ -61,7 +61,7 @@ import { OkumaReader } from "@okuma-reader/astro";
   accentColor="#3a2a1a"
   scrubberTrackColor="#f3e7d3"
   backHref="/"
-  download={{ href: "/book.pdf", filename: "my-book.pdf" }}
+  download={{ href: "/book.pdf" }}
   source={{ type: "pdf", url: "/book.pdf" }}
 />
 ```

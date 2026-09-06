@@ -56,7 +56,7 @@ export type OkumaDownloadConfig = {
   href: string;
   /**
    * Suggested filename for the download.
-   * Defaults to `${bookId}.pdf`.
+   * When omitted, the browser uses the basename of {@link href}.
    */
   filename?: string;
 };

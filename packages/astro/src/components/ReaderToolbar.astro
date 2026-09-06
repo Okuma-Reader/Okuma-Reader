@@ -3,22 +3,14 @@ import Icon from "./Icon.astro";
 import type { OkumaDownloadConfig } from "../types";
 
 export interface ReaderToolbarProps {
-  bookId: string;
   title: string;
   subtitle?: string;
   backHref?: string;
   download?: OkumaDownloadConfig;
 }
 
-const {
-  bookId,
-  title,
-  subtitle,
-  backHref,
-  download,
-} = Astro.props as ReaderToolbarProps;
-
-const downloadFilename = download?.filename ?? `${bookId}.pdf`;
+const { title, subtitle, backHref, download } =
+  Astro.props as ReaderToolbarProps;
 ---
 
 <header>
@@ -111,7 +103,7 @@ const downloadFilename = download?.filename ?? `${bookId}.pdf`;
           href={download.href}
           class="icon-button"
           id="download-pdf"
-          download={downloadFilename}
+          download={download.filename ?? true}
           aria-label="Download PDF"
           title="Download PDF"
         >
