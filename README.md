@@ -157,8 +157,20 @@ if (root) void mountOkumaReader(root, { source, bookId: "my-book" });
 
 ## Publish
 
-1. Create the npm organization **`okuma-reader`** on npmjs.com
-2. Publish `@okuma-reader/core`, `source-pdf`, `source-images`, `shell`, `astro`, `react`
+Scoped packages default to private on npm — these packages set `"publishConfig": { "access": "public" }`.
+
+```bash
+npm login   # must be a member of the okuma-reader org
+npm run check
+npm publish -w @okuma-reader/core
+npm publish -w @okuma-reader/source-pdf
+npm publish -w @okuma-reader/source-images
+npm publish -w @okuma-reader/shell
+npm publish -w @okuma-reader/astro
+npm publish -w @okuma-reader/react
+```
+
+Publish order matters: `core` first, then sources + `shell`, then `astro` / `react`.
 
 ## License
 

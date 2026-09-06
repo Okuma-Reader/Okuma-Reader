@@ -3,6 +3,18 @@
   "version": "0.0.1",
   "description": "Astro UI wrapper for okuma-reader.",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Okuma-Reader/Okuma-Reader.git",
+    "directory": "packages/astro"
+  },
+  "bugs": {
+    "url": "https://github.com/Okuma-Reader/Okuma-Reader/issues"
+  },
+  "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
   "files": [
     "src"
   ],

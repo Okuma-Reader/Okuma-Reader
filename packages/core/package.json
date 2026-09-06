@@ -3,6 +3,18 @@
   "version": "0.0.1",
   "description": "Framework-agnostic book reader controller (DOM contract).",
   "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Okuma-Reader/Okuma-Reader.git",
+    "directory": "packages/core"
+  },
+  "bugs": {
+    "url": "https://github.com/Okuma-Reader/Okuma-Reader/issues"
+  },
+  "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
   "files": [
     "src"
   ],
