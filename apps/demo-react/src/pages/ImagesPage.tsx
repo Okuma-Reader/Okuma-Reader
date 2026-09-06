@@ -1,4 +1,5 @@
 import { OkumaReader } from "@okuma-reader/react";
+import { useDemoDocumentTitle } from "../useDemoDocumentTitle";
 
 const pages = Array.from({ length: 108 }, (_, i) => ({
   src: `/fixtures/petit-prince/${i + 1}.webp`,
@@ -37,6 +38,8 @@ const chapters = [
 ];
 
 export function ImagesPage() {
+  useDemoDocumentTitle("Le Petit Prince");
+
   return (
     <OkumaReader
       bookId="petit-prince"

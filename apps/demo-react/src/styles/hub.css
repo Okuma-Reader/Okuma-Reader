@@ -6,14 +6,26 @@ body {
   background: #f6f4f1;
 }
 
+/* Hub only — keep #root unstyled on reader routes so the book isn’t inset. */
+body:has(.hub) {
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  padding: 2rem;
+}
+
+body:has(.hub) #root {
+  display: contents;
+}
+
 .hub {
   width: min(36rem, 100%);
-  margin: 0 auto;
-  min-height: 100dvh;
-  display: grid;
-  align-content: center;
-  padding: 2rem;
-  box-sizing: border-box;
+}
+
+.framework-icon {
+  display: block;
+  margin: 0 0 2rem;
+  color: #1a1a1a;
 }
 
 .hub h1 {

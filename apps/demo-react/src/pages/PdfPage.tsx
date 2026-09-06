@@ -1,6 +1,9 @@
 import { OkumaReader } from "@okuma-reader/react";
+import { useDemoDocumentTitle } from "../useDemoDocumentTitle";
 
 export function PdfPage() {
+  useDemoDocumentTitle("NGE Genocide");
+
   return (
     <OkumaReader
       bookId="nge-genocide-vol1"
