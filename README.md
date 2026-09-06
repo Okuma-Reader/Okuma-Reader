@@ -24,7 +24,8 @@ npm install
 npm run dev
 ```
 
-- Images: http://localhost:4322/ (Le Petit Prince, 108 pages)
+- Home: http://localhost:4322/
+- Images: http://localhost:4322/images (Le Petit Prince, 108 pages)
 - PDF: http://localhost:4322/pdf (NGE Genocide Vol.1, 328 pages)
 
 ## Install

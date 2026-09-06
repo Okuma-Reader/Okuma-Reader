@@ -1,56 +1,24 @@
 ---
 import { OkumaReader } from "@okuma-reader/astro";
+import ReaderLayout from "../layouts/ReaderLayout.astro";
 ---
 
-<html lang="en">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>NGE Genocide Vol.1 (PDF) — okuma-reader demo</title>
-    <style>
-      body {
-        margin: 0;
-        font-family: system-ui, sans-serif;
-      }
-      .demo-nav {
-        position: fixed;
-        top: 0.5rem;
-        left: 50%;
-        transform: translateX(-50%);
-        z-index: 40;
-        display: flex;
-        gap: 0.5rem;
-        padding: 0.35rem 0.6rem;
-        background: white;
-        border: 2px solid #333;
-        font-size: 0.85rem;
-      }
-      .demo-nav a {
-        color: #333;
-      }
-    </style>
-  </head>
-  <body>
-    <nav class="demo-nav">
-      <a href="/">Images demo</a>
-      <strong>PDF</strong>
-    </nav>
-    <OkumaReader
-      bookId="nge-genocide-vol1"
-      title="NGE Genocide"
-      subtitle="Vol. 1 — PDF demo"
-      innerCoverImageUrl="/fixtures/nge-genocide-vol1/inner-cover.png"
-      accentColor="#694588"
-      scrubberTrackColor="#DDCDE9"
-      backHref="/pdf"
-      download={{
-        href: "/fixtures/nge-genocide-vol1/nge-genocide-vol1.pdf",
-        filename: "nge-genocide-vol1.pdf",
-      }}
-      source={{
-        type: "pdf",
-        url: "/fixtures/nge-genocide-vol1.pdf",
-      }}
-    />
-  </body>
-</html>
+<ReaderLayout title="NGE Genocide Vol.1 (PDF) — okuma-reader demo">
+  <OkumaReader
+    bookId="nge-genocide-vol1"
+    title="NGE Genocide"
+    subtitle="Vol. 1 — PDF demo"
+    innerCoverImageUrl="/fixtures/nge-genocide-vol1/inner-cover.png"
+    accentColor="#694588"
+    scrubberTrackColor="#DDCDE9"
+    backHref="/"
+    download={{
+      href: "/fixtures/nge-genocide-vol1.pdf",
+      filename: "nge-genocide-vol1.pdf",
+    }}
+    source={{
+      type: "pdf",
+      url: "/fixtures/nge-genocide-vol1.pdf",
+    }}
+  />
+</ReaderLayout>
