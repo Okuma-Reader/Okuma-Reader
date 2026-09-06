@@ -425,7 +425,7 @@ export async function initBookReader(
   }
 
   function refreshSearchHighlights() {
-    for (const entry of [...paintedSearch]) {
+    for (const entry of paintedSearch.slice()) {
       paintSearchLayer(entry.layer, entry.page);
     }
   }

@@ -214,7 +214,7 @@ function firstTextNode(span: HTMLElement): Text | null {
 }
 
 export function clearTextLayerHighlights(container: HTMLElement) {
-  for (const mark of [...container.querySelectorAll("mark")]) {
+  for (const mark of container.querySelectorAll("mark")) {
     mark.replaceWith(...mark.childNodes);
   }
   container.normalize();

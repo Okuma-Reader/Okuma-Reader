@@ -10,7 +10,12 @@
   "scripts": {
     "build": "npm run build -w @okuma-reader/core -w @okuma-reader/source-pdf -w @okuma-reader/source-images -w @okuma-reader/astro",
     "dev": "npm run dev -w @okuma-reader/demo",
-    "check": "npm run check --workspaces --if-present"
+    "check": "npm run check --workspaces --if-present",
+    "lint": "oxlint .",
+    "lint:fix": "oxlint --fix ."
+  },
+  "devDependencies": {
+    "oxlint": "^1.81.0"
   },
   "engines": {
     "node": ">=20"
