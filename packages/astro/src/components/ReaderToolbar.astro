@@ -48,6 +48,23 @@ const progressKey = okumaProgressStorageKey(bookId);
         inputmode="numeric"
         autocomplete="off"
       />
+      <script is:inline>
+        (() => {
+          const input = document.currentScript?.previousElementSibling;
+          if (!(input instanceof HTMLInputElement)) return;
+          const key = input.dataset.okumaProgressKey;
+          if (!key) return;
+          try {
+            const raw = localStorage.getItem(key);
+            if (raw === null) return;
+            const page = Number(raw);
+            if (!Number.isFinite(page) || page < 1) return;
+            input.value = String(Math.round(page));
+          } catch {
+            /* private mode / quota */
+          }
+        })();
+      </script>
       <span data-page-count>/</span>
     </label>
     <div id="zoom-controls">
@@ -133,20 +150,3 @@ const progressKey = okumaProgressStorageKey(bookId);
   </div>
 </header>
 
-<script is:inline>
-  (() => {
-    const input = document.currentScript?.previousElementSibling;
-    if (!(input instanceof HTMLInputElement)) return;
-    const key = input.dataset.okumaProgressKey;
-    if (!key) return;
-    try {
-      const raw = localStorage.getItem(key);
-      if (raw === null) return;
-      const page = Number(raw);
-      if (!Number.isFinite(page) || page < 1) return;
-      input.value = String(Math.round(page));
-    } catch {
-      /* private mode / quota */
-    }
-  })();
-</script>
