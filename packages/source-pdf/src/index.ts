@@ -82,18 +82,22 @@ export async function createPdfBookSource(
   const pdf: PDFDocumentProxy = await getDocument({ url: options.url }).promise;
   const renderTasks = new Map<object, RenderTask>();
   const textLayers = new Set<TextLayer>();
+  let destroyed = false;
 
   const source: BookSource = {
     pageCount: pdf.numPages,
 
     async getPageSize(page: number): Promise<PageSize> {
+      if (destroyed) throw new Error("PDF source destroyed");
       const pdfPage = await pdf.getPage(page);
       const viewport = pdfPage.getViewport({ scale: 1 });
       return { width: viewport.width, height: viewport.height };
     },
 
     async renderPage(page: number, target: RenderTarget) {
+      if (destroyed) throw new Error("PDF source destroyed");
       const pdfPage = await pdf.getPage(page);
+      if (destroyed) throw new Error("PDF source destroyed");
       const base = pdfPage.getViewport({ scale: 1 });
       const cssScale = target.cssWidth / base.width;
       const canvasViewport = pdfPage.getViewport({
@@ -120,6 +124,7 @@ export async function createPdfBookSource(
     },
 
     async getText(page: number) {
+      if (destroyed) throw new Error("PDF source destroyed");
       const pdfPage = await pdf.getPage(page);
       const content = await pdfPage.getTextContent({
         includeMarkedContent: true,
@@ -145,6 +150,7 @@ export async function createPdfBookSource(
       page: number,
       target: { cssWidth: number; cssHeight: number },
     ): Promise<PageLink[]> {
+      if (destroyed) throw new Error("PDF source destroyed");
       const pdfPage = await pdf.getPage(page);
       const base = pdfPage.getViewport({ scale: 1 });
       const cssScale = target.cssWidth / base.width;
@@ -178,11 +184,14 @@ export async function createPdfBookSource(
     },
 
     async getChapters(): Promise<Chapter[]> {
+      if (destroyed) return [];
       return loadPdfChapters(pdf);
     },
 
     async mountTextLayer(options): Promise<TextLayerHandle | null> {
+      if (destroyed) return null;
       const pdfPage = await pdf.getPage(options.page);
+      if (destroyed) return null;
       const base = pdfPage.getViewport({ scale: 1 });
       const cssScale = options.cssWidth / base.width;
       const viewport = pdfPage.getViewport({ scale: cssScale });
@@ -212,14 +221,24 @@ export async function createPdfBookSource(
     },
 
     destroy() {
-      for (const task of renderTasks.values()) {
+      if (destroyed) return;
+      destroyed = true;
+
+      // Cancel active page renders first. pdf.js rejects cleanup/destroy while a
+      // page is still marked as rendering (common under React Strict Mode remounts).
+      const pending = [...renderTasks.values()].map((task) => {
         try {
           task.cancel();
         } catch {
           /* ignore */
         }
-      }
+        return task.promise.then(
+          () => undefined,
+          () => undefined,
+        );
+      });
       renderTasks.clear();
+
       for (const layer of textLayers) {
         try {
           layer.cancel();
@@ -228,7 +247,10 @@ export async function createPdfBookSource(
         }
       }
       textLayers.clear();
-      void pdf.cleanup();
+
+      void Promise.allSettled(pending)
+        .then(() => pdf.loadingTask.destroy())
+        .catch(() => undefined);
     },
   };
 

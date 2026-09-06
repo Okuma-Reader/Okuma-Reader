@@ -934,23 +934,29 @@ export async function initBookReader(
     }
 
     const pending = (async (): Promise<HTMLCanvasElement | null> => {
-      const epochAtStart = layoutEpoch;
-      const rendered = await source.renderPage(pageNumber, {
-        cssWidth,
-        cssHeight,
-        dpr,
-      });
-      if (destroyed || (token !== undefined && token !== renderToken)) return null;
-      if (epochAtStart !== layoutEpoch) return null;
+      try {
+        if (destroyed) return null;
+        const epochAtStart = layoutEpoch;
+        const rendered = await source.renderPage(pageNumber, {
+          cssWidth,
+          cssHeight,
+          dpr,
+        });
+        if (destroyed || (token !== undefined && token !== renderToken)) return null;
+        if (epochAtStart !== layoutEpoch) return null;
 
-      const offscreen = rasterToCanvas(rendered);
-      if (!offscreen) return null;
+        const offscreen = rasterToCanvas(rendered);
+        if (!offscreen) return null;
 
-      if (destroyed || (token !== undefined && token !== renderToken)) return null;
-      if (epochAtStart !== layoutEpoch) return null;
+        if (destroyed || (token !== undefined && token !== renderToken)) return null;
+        if (epochAtStart !== layoutEpoch) return null;
 
-      rememberRaster(key, offscreen);
-      return offscreen;
+        rememberRaster(key, offscreen);
+        return offscreen;
+      } catch {
+        // Render cancelled / source destroyed (e.g. React Strict Mode remount).
+        return null;
+      }
     })();
 
     inflightRasters.set(key, pending);
