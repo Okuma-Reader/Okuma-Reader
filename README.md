@@ -28,6 +28,8 @@ npm run dev        # Astro demo → http://localhost:4322/
 npm run dev:react  # React demo → http://localhost:4323/
 ```
 
+`npm install` also installs a **pre-commit** hook (`simple-git-hooks`) that runs `npm install`, `fmt`, `lint`, and `check`. Skip once with `SKIP_SIMPLE_GIT_HOOKS=1 git commit …`.
+
 **Astro demo** (`npm run dev`)
 
 - Home: http://localhost:4322/
@@ -173,13 +175,18 @@ npm run changelog:write
 
 ### Cut a release
 
-1. On `main`, bump every `packages/*/package.json` `version` and matching internal `@okuma-reader/*` dependency versions.
-2. Fold unreleased commits into that version and refresh the changelog:
-   `npx git-cliff --tag vX.Y.Z -o CHANGELOG.md`
-3. Commit the version bump + `CHANGELOG.md` (e.g. `chore(release): vX.Y.Z` — skipped by cliff on the next release).
-4. Push and wait for CI to pass.
-5. Tag and push: `git tag vX.Y.Z && git push origin vX.Y.Z`
-6. [Release](.github/workflows/release.yml) creates the GitHub Release with git-cliff notes; [Publish](.github/workflows/publish.yml) publishes to npm on the same tag push (OIDC) in order: `core` → sources → `shell` → `astro` / `react`. Both are triggered by the tag push — not by the GitHub Release event (Actions started with `GITHUB_TOKEN` do not cascade).
+```bash
+npm run release:prep -- patch    # or: minor | major | 0.0.3
+```
+
+That lockstep-bumps every `packages/*/package.json` (and internal `@okuma-reader/*` deps) and rewrites `CHANGELOG.md` for the new tag.
+
+Then:
+
+1. Commit the bump + changelog: `git commit -m "chore(release): vX.Y.Z"`
+2. Push and wait for CI to pass.
+3. Tag and push: `git tag vX.Y.Z && git push origin vX.Y.Z`
+4. [Release](.github/workflows/release.yml) creates the GitHub Release with git-cliff notes; [Publish](.github/workflows/publish.yml) publishes to npm on the same tag push (OIDC) in order: `core` → sources → `shell` → `astro` / `react`. Both are triggered by the tag push — not by the GitHub Release event (Actions started with `GITHUB_TOKEN` do not cascade).
 
 Edit the GitHub Release body afterward if you want extra migration notes beyond the commit list.
 

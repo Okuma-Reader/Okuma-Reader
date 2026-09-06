@@ -11,18 +11,26 @@
     "build": "npm run build -w @okuma-reader/core -w @okuma-reader/source-pdf -w @okuma-reader/source-images -w @okuma-reader/shell -w @okuma-reader/astro -w @okuma-reader/react",
     "dev": "npm run dev -w @okuma-reader/demo-astro",
     "dev:react": "npm run dev -w @okuma-reader/demo-react",
-    "check": "npm run check --workspaces --if-present",
+    "check": "npm run check --workspaces --if-present && tsc --noEmit -p scripts",
     "lint": "oxlint .",
     "lint:fix": "oxlint --fix .",
     "fmt": "oxfmt",
     "fmt:check": "oxfmt --check",
     "changelog": "git-cliff --unreleased --strip all",
-    "changelog:write": "git-cliff -o CHANGELOG.md"
+    "changelog:write": "git-cliff -o CHANGELOG.md",
+    "release:prep": "node scripts/release-prep.mjs",
+    "prepare": "simple-git-hooks"
   },
   "devDependencies": {
+    "@types/node": "^24.3.0",
     "git-cliff": "^2.13.1",
     "oxfmt": "^0.66.0",
-    "oxlint": "^1.81.0"
+    "oxlint": "^1.81.0",
+    "simple-git-hooks": "^2.14.0",
+    "typescript": "^5.9.2"
+  },
+  "simple-git-hooks": {
+    "pre-commit": "sh scripts/pre-commit.sh"
   },
   "engines": {
     "node": ">=20"
@@ -30,6 +38,7 @@
   "allowScripts": {
     "esbuild@0.27.7": true,
     "esbuild@0.25.12": true,
-    "sharp@0.34.5": true
+    "sharp@0.34.5": true,
+    "simple-git-hooks@2.14.0": true
   }
 }
