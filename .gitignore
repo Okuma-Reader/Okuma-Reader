@@ -6,6 +6,6 @@ dist/
 .env
 .env.*
 !.env.example
-apps/demo/dist/
-apps/demo/.astro/
-apps/demo/public/fixtures/
+apps/demo-astro/dist/
+apps/demo-astro/.astro/
+apps/demo-astro/public/fixtures/

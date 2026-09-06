@@ -1,7 +1,7 @@
 {
-  "name": "@okuma-reader/astro",
+  "name": "@okuma-reader/react",
   "version": "0.0.1",
-  "description": "Astro UI wrapper for okuma-reader.",
+  "description": "React UI wrapper for okuma-reader.",
   "license": "MIT",
   "files": [
     "src"
@@ -9,8 +9,7 @@
   "type": "module",
   "exports": {
     ".": "./src/index.ts",
-    "./OkumaReader.astro": "./src/OkumaReader.astro",
-    "./client": "./src/client.ts"
+    "./mount": "./src/mount.ts"
   },
   "scripts": {
     "check": "tsc --noEmit -p tsconfig.json",
@@ -21,12 +20,17 @@
   },
   "devDependencies": {
     "@okuma-reader/source-images": "0.0.1",
-    "@okuma-reader/source-pdf": "0.0.1"
+    "@okuma-reader/source-pdf": "0.0.1",
+    "@types/react": "^19.0.0",
+    "@types/react-dom": "^19.0.0",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0"
   },
   "peerDependencies": {
     "@okuma-reader/source-images": "0.0.1",
     "@okuma-reader/source-pdf": "0.0.1",
-    "astro": "^5.0.0 || ^6.0.0 || ^7.0.0"
+    "react": "^18.0.0 || ^19.0.0",
+    "react-dom": "^18.0.0 || ^19.0.0"
   },
   "peerDependenciesMeta": {
     "@okuma-reader/source-pdf": {

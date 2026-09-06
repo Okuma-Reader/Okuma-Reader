@@ -1,0 +1,112 @@
+import type { OkumaDownloadConfig } from "../types";
+import { Icon } from "./Icon";
+
+type ReaderToolbarProps = {
+  title: string;
+  subtitle?: string;
+  backHref?: string;
+  download?: OkumaDownloadConfig;
+};
+
+export function ReaderToolbar({ title, subtitle, backHref, download }: ReaderToolbarProps) {
+  return (
+    <header>
+      <div>
+        {backHref ? (
+          <a className="icon-button" href={backHref} aria-label="Go back" title="Go back">
+            <Icon name="arrow_back" />
+          </a>
+        ) : null}
+        <div>
+          <h1>{title}</h1>
+          {subtitle ? <p>{subtitle}</p> : null}
+        </div>
+      </div>
+
+      <div>
+        <label id="page-jump">
+          <input type="text" data-page-input defaultValue="1" size={3} inputMode="numeric" />
+          <span data-page-count>/</span>
+        </label>
+        <div id="zoom-controls">
+          <button
+            type="button"
+            className="icon-button"
+            aria-label="Zoom out"
+            title="Zoom out"
+            data-zoom-out
+          >
+            <Icon name="zoom_out" />
+          </button>
+          <button
+            type="button"
+            aria-label="Reset zoom"
+            title="Reset zoom"
+            className="icon-button"
+            data-zoom-reset
+          >
+            <span data-zoom-label>100%</span>
+          </button>
+          <button
+            type="button"
+            aria-label="Zoom in"
+            title="Zoom in"
+            data-zoom-in
+            className="icon-button"
+          >
+            <Icon name="zoom_in" />
+          </button>
+        </div>
+      </div>
+
+      <div>
+        <button
+          type="button"
+          className="icon-button"
+          id="shortcuts-open"
+          aria-label="Keyboard shortcuts"
+          title="Keyboard shortcuts"
+          aria-controls="shortcuts-dialog"
+          aria-expanded={false}
+        >
+          <Icon name="keyboard-command-key" />
+        </button>
+
+        <button
+          type="button"
+          className="icon-button"
+          id="search-open"
+          aria-label="Find in book"
+          title="Find in book"
+          aria-controls="reader-search"
+          aria-expanded={false}
+        >
+          <Icon name="search" />
+        </button>
+
+        {download ? (
+          <a
+            href={download.href}
+            className="icon-button"
+            id="download-pdf"
+            download={download.filename ?? true}
+            aria-label="Download PDF"
+            title="Download PDF"
+          >
+            <Icon name="download" />
+          </a>
+        ) : null}
+
+        <button
+          type="button"
+          className="icon-button"
+          id="fullscreen-enter"
+          aria-label="Enter fullscreen"
+          title="Enter fullscreen"
+        >
+          <Icon name="fullscreen" />
+        </button>
+      </div>
+    </header>
+  );
+}

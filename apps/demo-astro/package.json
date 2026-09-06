@@ -1,5 +1,5 @@
 {
-  "name": "@okuma-reader/demo",
+  "name": "@okuma-reader/demo-astro",
   "version": "0.0.1",
   "private": true,
   "type": "module",

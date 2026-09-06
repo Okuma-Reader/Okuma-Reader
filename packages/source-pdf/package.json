@@ -11,7 +11,8 @@
     ".": "./src/index.ts"
   },
   "scripts": {
-    "check": "tsc --noEmit -p tsconfig.json"
+    "check": "tsc --noEmit -p tsconfig.json",
+    "build": "npm run check"
   },
   "dependencies": {
     "@okuma-reader/core": "0.0.1",

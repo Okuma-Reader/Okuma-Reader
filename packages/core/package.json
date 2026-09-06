@@ -14,6 +14,7 @@
     "./assets/*": "./src/assets/*"
   },
   "scripts": {
-    "check": "tsc --noEmit -p tsconfig.json"
+    "check": "tsc --noEmit -p tsconfig.json",
+    "build": "npm run check"
   }
 }

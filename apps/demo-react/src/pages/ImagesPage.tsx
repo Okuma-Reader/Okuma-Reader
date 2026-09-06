@@ -1,0 +1,52 @@
+import { OkumaReader } from "@okuma-reader/react";
+
+const pages = Array.from({ length: 108 }, (_, i) => ({
+  src: `/fixtures/petit-prince/${i + 1}.webp`,
+}));
+
+/** From the table of contents on pages 2–3. */
+const chapters = [
+  { title: "Premier chapitre", page: 5 },
+  { title: "Chapitre II", page: 8 },
+  { title: "Chapitre III", page: 13 },
+  { title: "Chapitre IV", page: 17 },
+  { title: "Chapitre V", page: 21 },
+  { title: "Chapitre VI", page: 26 },
+  { title: "Chapitre VII", page: 28 },
+  { title: "Chapitre VIII", page: 32 },
+  { title: "Chapitre IX", page: 37 },
+  { title: "Chapitre X", page: 41 },
+  { title: "Chapitre XI", page: 47 },
+  { title: "Chapitre XII", page: 50 },
+  { title: "Chapitre XIII", page: 52 },
+  { title: "Chapitre XIV", page: 57 },
+  { title: "Chapitre XV", page: 61 },
+  { title: "Chapitre XVI", page: 66 },
+  { title: "Chapitre XVII", page: 67 },
+  { title: "Chapitre XVIII", page: 71 },
+  { title: "Chapitre XIX", page: 73 },
+  { title: "Chapitre XX", page: 75 },
+  { title: "Chapitre XXI", page: 77 },
+  { title: "Chapitre XXII", page: 84 },
+  { title: "Chapitre XXIII", page: 86 },
+  { title: "Chapitre XXIV", page: 87 },
+  { title: "Chapitre XXV", page: 90 },
+  { title: "Chapitre XXVI", page: 95 },
+  { title: "Chapitre XXVII", page: 104 },
+  { title: "À propos de cette édition électronique", page: 107 },
+];
+
+export function ImagesPage() {
+  return (
+    <OkumaReader
+      bookId="petit-prince"
+      title="Le Petit Prince"
+      subtitle="Image sequence demo"
+      innerCoverImageUrl="/fixtures/petit-prince/inner-cover.png"
+      accentColor="#3a2a1a"
+      scrubberTrackColor="#f3e7d3"
+      backHref="/"
+      source={{ type: "images", pages, chapters }}
+    />
+  );
+}
