@@ -23,8 +23,7 @@ export type OkumaShellCssVarInputs = {
 /** CSS custom properties for the `#reader` root (object form for React `style`). */
 export function buildOkumaShellCssVars(input: OkumaShellCssVarInputs): Record<string, string> {
   return {
-    "--scrubber-track-color":
-      input.scrubberTrackColor ?? OKUMA_READER_DEFAULTS.scrubberTrackColor,
+    "--scrubber-track-color": input.scrubberTrackColor ?? OKUMA_READER_DEFAULTS.scrubberTrackColor,
     "--accent-color": input.accentColor ?? OKUMA_READER_DEFAULTS.accentColor,
     "--inner-cover-image": `url(${JSON.stringify(input.innerCoverImageUrl)})`,
     "--okuma-paper2": cssUrl(paper2),

@@ -8,6 +8,7 @@ import {
   type SearchMatch,
   type SearchOptions,
 } from "./pdf-search";
+import { readOkumaProgress, writeOkumaProgress } from "./progress";
 import type { BookReaderHandle, InitBookReaderOptions, PageLink, TextLayerHandle } from "./types";
 
 type SpreadPages = {
@@ -62,29 +63,6 @@ const ZOOM_SETTLE_MS = 140;
 /** Keep current ± this many spreads rasterized for instant page turns. */
 const PREFETCH_SPREAD_RADIUS = 1;
 const RASTER_CACHE_LIMIT = 12;
-
-function progressStorageKey(bookId: string): string {
-  return `okuma-reader:progress:${bookId}`;
-}
-
-function readSavedPage(bookId: string): number | null {
-  try {
-    const raw = localStorage.getItem(progressStorageKey(bookId));
-    if (raw === null) return null;
-    const page = Number(raw);
-    return Number.isFinite(page) ? page : null;
-  } catch {
-    return null;
-  }
-}
-
-function writeSavedPage(bookId: string, page: number) {
-  try {
-    localStorage.setItem(progressStorageKey(bookId), String(page));
-  } catch {
-    // Private mode / quota — resume is best-effort.
-  }
-}
 
 function rasterToCanvas(raster: HTMLCanvasElement | ImageBitmap): HTMLCanvasElement | null {
   if (raster instanceof HTMLCanvasElement) return raster;
@@ -164,7 +142,7 @@ export async function initBookReader(
   const searchWholeWords = mustQuery(root, "[data-search-whole-words]") as HTMLInputElement;
 
   const pageCount = source.pageCount;
-  const savedPage = readSavedPage(bookId);
+  const savedPage = readOkumaProgress(bookId);
   let spread = savedPage === null ? 0 : spreadForPage(clamp(Math.round(savedPage), 1, pageCount));
   let zoom = 1;
   /** Zoom level of the canvases currently on screen. */
@@ -846,7 +824,7 @@ export async function initBookReader(
     const currentPage = displayedPage();
     pageInput.value = String(currentPage);
     pageScrubber.setPage(currentPage);
-    writeSavedPage(bookId, currentPage);
+    writeOkumaProgress(bookId, currentPage);
   }
 
   function syncZoomUi() {

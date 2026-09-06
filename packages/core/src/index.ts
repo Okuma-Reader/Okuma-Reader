@@ -1,6 +1,7 @@
 export { initBookReader } from "./book-reader";
 export { initChapterScrubber } from "./chapter-scrubber";
 export type { ChapterScrubber } from "./chapter-scrubber";
+export { okumaProgressStorageKey, readOkumaProgress, writeOkumaProgress } from "./progress";
 export {
   clearTextLayerHighlights,
   findMatchesInPage,

@@ -1,14 +1,18 @@
+import { readOkumaProgress } from "@okuma-reader/core";
 import type { OkumaDownloadConfig } from "../types";
 import { Icon } from "./Icon";
 
 type ReaderToolbarProps = {
+  bookId: string;
   title: string;
   subtitle?: string;
   backHref?: string;
   download?: OkumaDownloadConfig;
 };
 
-export function ReaderToolbar({ title, subtitle, backHref, download }: ReaderToolbarProps) {
+export function ReaderToolbar({ bookId, title, subtitle, backHref, download }: ReaderToolbarProps) {
+  const initialPage = Math.max(1, Math.round(readOkumaProgress(bookId) ?? 1));
+
   return (
     <header>
       <div>
@@ -25,7 +29,14 @@ export function ReaderToolbar({ title, subtitle, backHref, download }: ReaderToo
 
       <div>
         <label id="page-jump">
-          <input type="text" data-page-input defaultValue="1" size={3} inputMode="numeric" />
+          <input
+            type="text"
+            data-page-input
+            defaultValue={String(initialPage)}
+            size={3}
+            inputMode="numeric"
+            autoComplete="off"
+          />
           <span data-page-count>/</span>
         </label>
         <div id="zoom-controls">

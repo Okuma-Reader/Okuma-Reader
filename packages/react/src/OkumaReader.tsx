@@ -80,7 +80,13 @@ export function OkumaReader({
       data-book-id={bookId}
       style={style}
     >
-      <ReaderToolbar title={title} subtitle={subtitle} backHref={backHref} download={download} />
+      <ReaderToolbar
+        bookId={bookId}
+        title={title}
+        subtitle={subtitle}
+        backHref={backHref}
+        download={download}
+      />
       <ChapterScrubber />
       <ReaderSpread />
       <ShortcutsDialog />

@@ -1,22 +1,30 @@
 ---
 import Icon from "./Icon.astro";
+import { okumaProgressStorageKey } from "@okuma-reader/core";
 import type { OkumaDownloadConfig } from "../types";
 
 interface Props {
+  bookId: string;
   title: string;
   subtitle?: string;
   backHref?: string;
   download?: OkumaDownloadConfig;
 }
 
-const { title, subtitle, backHref, download } = Astro.props;
+const { bookId, title, subtitle, backHref, download } = Astro.props;
+const progressKey = okumaProgressStorageKey(bookId);
 ---
 
 <header>
   <div>
     {
       backHref ? (
-        <a class="icon-button" href={backHref} aria-label="Go back" title="Go back">
+        <a
+          class="icon-button"
+          href={backHref}
+          aria-label="Go back"
+          title="Go back"
+        >
           <Icon name="arrow_back" />
         </a>
       ) : null
@@ -34,9 +42,11 @@ const { title, subtitle, backHref, download } = Astro.props;
       <input
         type="text"
         data-page-input
+        data-okuma-progress-key={progressKey}
         value="1"
         size="3"
         inputmode="numeric"
+        autocomplete="off"
       />
       <span data-page-count>/</span>
     </label>
@@ -122,3 +132,21 @@ const { title, subtitle, backHref, download } = Astro.props;
     </button>
   </div>
 </header>
+
+<script is:inline>
+  (() => {
+    const input = document.currentScript?.previousElementSibling;
+    if (!(input instanceof HTMLInputElement)) return;
+    const key = input.dataset.okumaProgressKey;
+    if (!key) return;
+    try {
+      const raw = localStorage.getItem(key);
+      if (raw === null) return;
+      const page = Number(raw);
+      if (!Number.isFinite(page) || page < 1) return;
+      input.value = String(Math.round(page));
+    } catch {
+      /* private mode / quota */
+    }
+  })();
+</script>
