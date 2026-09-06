@@ -1,9 +1,10 @@
 ---
 import { OkumaReader } from "@okuma-reader/astro";
 import ReaderLayout from "../layouts/ReaderLayout.astro";
+import { publicUrl } from "../publicUrl";
 
 const pages = Array.from({ length: 108 }, (_, i) => ({
-  src: `/fixtures/petit-prince/${i + 1}.webp`,
+  src: publicUrl(`petit-prince/${i + 1}.webp`),
 }));
 
 /** From the table of contents on pages 2–3. */
@@ -37,6 +38,8 @@ const chapters = [
   { title: "Chapitre XXVII", page: 104 },
   { title: "À propos de cette édition électronique", page: 107 },
 ];
+
+const hubHref = publicUrl("");
 ---
 
 <ReaderLayout title="Le Petit Prince — Okuma-Reader Astro demo">
@@ -44,10 +47,10 @@ const chapters = [
     bookId="petit-prince"
     title="Le Petit Prince"
     subtitle="Antoine de Saint-Exupéry"
-    innerCoverImageUrl="/fixtures/petit-prince/inner-cover.png"
+    innerCoverImageUrl={publicUrl("petit-prince/inner-cover.png")}
     accentColor="#3a2a1a"
     scrubberTrackColor="#f3e7d3"
-    backHref="/"
+    backHref={hubHref}
     source={{ type: "images", pages, chapters }}
   />
 </ReaderLayout>

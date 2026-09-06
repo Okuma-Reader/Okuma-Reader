@@ -8,4 +8,4 @@ dist/
 !.env.example
 apps/demo-astro/dist/
 apps/demo-astro/.astro/
-apps/demo-astro/public/fixtures/
+site/

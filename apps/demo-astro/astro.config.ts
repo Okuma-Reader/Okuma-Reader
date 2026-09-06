@@ -1,6 +1,9 @@
 import { defineConfig } from "astro/config";
 
+const base = process.env.OKUMA_DEMO_BASE ?? "/";
+
 export default defineConfig({
+  base,
   vite: {
     // Workspace packages ship TypeScript source with extensionless relative
     // imports. Force Vite to transform them in SSR instead of handing off to

@@ -1,8 +1,9 @@
 import { OkumaReader } from "@okuma-reader/react";
 import { useDemoDocumentTitle } from "../useDemoDocumentTitle";
+import { publicUrl } from "../publicUrl";
 
 const pages = Array.from({ length: 108 }, (_, i) => ({
-  src: `/fixtures/petit-prince/${i + 1}.webp`,
+  src: publicUrl(`petit-prince/${i + 1}.webp`),
 }));
 
 /** From the table of contents on pages 2–3. */
@@ -45,10 +46,10 @@ export function ImagesPage() {
       bookId="petit-prince"
       title="Le Petit Prince"
       subtitle="Antoine de Saint-Exupéry"
-      innerCoverImageUrl="/fixtures/petit-prince/inner-cover.png"
+      innerCoverImageUrl={publicUrl("petit-prince/inner-cover.png")}
       accentColor="#3a2a1a"
       scrubberTrackColor="#f3e7d3"
-      backHref="/"
+      backHref={publicUrl("")}
       source={{ type: "images", pages, chapters }}
     />
   );

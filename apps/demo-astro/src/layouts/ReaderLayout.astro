@@ -1,19 +1,22 @@
 ---
 import "../styles/reader-host.css";
+import { publicUrl } from "../publicUrl";
 
 interface Props {
   title: string;
 }
 
 const { title } = Astro.props;
+const favicon = publicUrl("favicon.webp");
+const paper = publicUrl("bg.webp");
 ---
 
-<html lang="en">
+<html lang="en" style={`--okuma-host-paper: url(${paper})`}>
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
-    <link rel="icon" href="/favicon.webp" type="image/webp" />
+    <link rel="icon" href={favicon} type="image/webp" />
     <style>
       body {
         margin: 0;

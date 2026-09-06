@@ -20,3 +20,8 @@ jobs:
       - run: npm ci
       - run: npm run lint
       - run: npm run check
+
+      - name: Build demos (Pages base paths)
+        run: |
+          OKUMA_DEMO_BASE=/Okuma-Reader/astro/ npm run build -w @okuma-reader/demo-astro
+          OKUMA_DEMO_BASE=/Okuma-Reader/react/ npm run build -w @okuma-reader/demo-react

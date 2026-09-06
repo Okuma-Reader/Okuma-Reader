@@ -1,6 +1,10 @@
 ---
 import { OkumaReader } from "@okuma-reader/astro";
 import ReaderLayout from "../layouts/ReaderLayout.astro";
+import { publicUrl } from "../publicUrl";
+
+const pdfUrl = publicUrl("nge-genocide-vol1/nge-genocide-vol1.pdf");
+const hubHref = publicUrl("");
 ---
 
 <ReaderLayout title="NGE Genocide — Okuma-Reader Astro demo">
@@ -8,16 +12,16 @@ import ReaderLayout from "../layouts/ReaderLayout.astro";
     bookId="nge-genocide-vol1"
     title="Neon Genesis Evangelion: Genocide"
     subtitle="Volume 1"
-    innerCoverImageUrl="/fixtures/nge-genocide-vol1/inner-cover.png"
+    innerCoverImageUrl={publicUrl("nge-genocide-vol1/inner-cover.png")}
     accentColor="#694588"
     scrubberTrackColor="#DDCDE9"
-    backHref="/"
+    backHref={hubHref}
     download={{
-      href: "/fixtures/nge-genocide-vol1.pdf",
+      href: pdfUrl,
     }}
     source={{
       type: "pdf",
-      url: "/fixtures/nge-genocide-vol1.pdf",
+      url: pdfUrl,
     }}
   />
 </ReaderLayout>

@@ -20,6 +20,14 @@ MIT-licensed monorepo for a two-page PDF/image book reader.
 | [`@okuma-reader/demo-astro`](apps/demo-astro) | Astro demo — smoke-test both sources |
 | [`@okuma-reader/demo-react`](apps/demo-react) | React demo — same fixtures via Vite  |
 
+Live demos (GitHub Pages):
+
+- Hub: https://okuma-reader.github.io/Okuma-Reader/
+- Astro: https://okuma-reader.github.io/Okuma-Reader/astro/
+- React: https://okuma-reader.github.io/Okuma-Reader/react/
+
+Demo book assets live under [`apps/demo-assets/`](apps/demo-assets/) (tracked in git). Both demos symlink their entire `public/` directory to that folder.
+
 ## Develop
 
 ```bash
@@ -41,6 +49,8 @@ npm run dev:react  # React demo → http://localhost:4323/
 - Home: http://localhost:4323/
 - Images: http://localhost:4323/images
 - PDF: http://localhost:4323/pdf
+
+Production builds for Pages use `OKUMA_DEMO_BASE` (set in CI). Locally it defaults to `/`.
 
 ## Install
 

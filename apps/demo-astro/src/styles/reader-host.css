@@ -1,7 +1,9 @@
-/* Demo host chrome — page backdrop is owned by the app, not the shell. */
+/* Demo host chrome — page backdrop is owned by the app, not the shell.
+   --okuma-host-paper is set on <html> (includes demo base path on GitHub Pages). */
 
 #reader.okuma-own-page {
-  background-image: url("/paper2.webp"), radial-gradient(circle at top, white, rgb(0 0 0 / 0.2));
+  background-image:
+    var(--okuma-host-paper), radial-gradient(circle at top, white, rgb(0 0 0 / 0.2));
   background-blend-mode: multiply;
   background-size:
     25cm,
@@ -10,7 +12,8 @@
 }
 
 #spread-area:fullscreen {
-  background-image: url("/paper2.webp"), radial-gradient(circle at top, white, rgb(0 0 0 / 0.2));
+  background-image:
+    var(--okuma-host-paper), radial-gradient(circle at top, white, rgb(0 0 0 / 0.2));
   background-blend-mode: multiply;
   background-size:
     25cm,
@@ -20,7 +23,7 @@
 
 #small-screen-overlay {
   background-color: rgb(255 251 249 / 0.96);
-  background-image: url("/paper2.webp");
+  background-image: var(--okuma-host-paper);
   background-size: 25cm;
   background-repeat: round;
 }

@@ -1,5 +1,8 @@
 ---
+import { publicUrl } from "../publicUrl";
 
+const base = import.meta.env.BASE_URL;
+const favicon = publicUrl("favicon.webp");
 ---
 
 <html lang="en">
@@ -7,7 +10,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Okuma-Reader Astro demo</title>
-    <link rel="icon" href="/favicon.webp" type="image/webp" />
+    <link rel="icon" href={favicon} type="image/webp" />
   </head>
   <body>
     <main>
@@ -28,13 +31,13 @@
       <p class="lede">Pick a demo source to open in the reader.</p>
       <ul>
         <li>
-          <a href="/images">
+          <a href={`${base}images`}>
             <strong>Images</strong>
             <span>Le Petit Prince — 108 images</span>
           </a>
         </li>
         <li>
-          <a href="/pdf">
+          <a href={`${base}pdf`}>
             <strong>PDF</strong>
             <span>Neon Genesis Evangelion: Genocide, Volume 1 — 328 pages PDF</span>
           </a>
