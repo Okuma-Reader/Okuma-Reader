@@ -1,20 +1,17 @@
 {
   "name": "@okuma-reader/source-images",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Image-sequence BookSource for okuma-reader.",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
+  "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
+  "bugs": {
+    "url": "https://github.com/Okuma-Reader/Okuma-Reader/issues"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Okuma-Reader/Okuma-Reader.git",
     "directory": "packages/source-images"
   },
-  "bugs": {
-    "url": "https://github.com/Okuma-Reader/Okuma-Reader/issues"
-  },
-  "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
   "files": [
     "src"
   ],
@@ -22,11 +19,14 @@
   "exports": {
     ".": "./src/index.ts"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "check": "tsc --noEmit -p tsconfig.json",
     "build": "npm run check"
   },
   "dependencies": {
-    "@okuma-reader/core": "0.0.1"
+    "@okuma-reader/core": "0.0.2"
   }
 }

@@ -1,20 +1,17 @@
 {
   "name": "@okuma-reader/core",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Framework-agnostic book reader controller (DOM contract).",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
+  "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
+  "bugs": {
+    "url": "https://github.com/Okuma-Reader/Okuma-Reader/issues"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Okuma-Reader/Okuma-Reader.git",
     "directory": "packages/core"
   },
-  "bugs": {
-    "url": "https://github.com/Okuma-Reader/Okuma-Reader/issues"
-  },
-  "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
   "files": [
     "src"
   ],
@@ -24,6 +21,9 @@
     "./icons": "./src/icons/index.ts",
     "./styles.css": "./src/styles/reader.css",
     "./assets/*": "./src/assets/*"
+  },
+  "publishConfig": {
+    "access": "public"
   },
   "scripts": {
     "check": "tsc --noEmit -p tsconfig.json",

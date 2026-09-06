@@ -1,20 +1,17 @@
 {
   "name": "@okuma-reader/shell",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Shared reader shell types, mount helpers, and chrome CSS for Astro/React UI packages.",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
+  "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
+  "bugs": {
+    "url": "https://github.com/Okuma-Reader/Okuma-Reader/issues"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Okuma-Reader/Okuma-Reader.git",
     "directory": "packages/shell"
   },
-  "bugs": {
-    "url": "https://github.com/Okuma-Reader/Okuma-Reader/issues"
-  },
-  "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
   "files": [
     "src"
   ],
@@ -26,20 +23,23 @@
     "./css-vars": "./src/css-vars.ts",
     "./styles.css": "./src/styles/shell.css"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "check": "tsc --noEmit -p tsconfig.json",
     "build": "npm run check"
   },
   "dependencies": {
-    "@okuma-reader/core": "0.0.1"
+    "@okuma-reader/core": "0.0.2"
   },
   "devDependencies": {
-    "@okuma-reader/source-images": "0.0.1",
-    "@okuma-reader/source-pdf": "0.0.1"
+    "@okuma-reader/source-images": "0.0.2",
+    "@okuma-reader/source-pdf": "0.0.2"
   },
   "peerDependencies": {
-    "@okuma-reader/source-images": "0.0.1",
-    "@okuma-reader/source-pdf": "0.0.1"
+    "@okuma-reader/source-images": "0.0.2",
+    "@okuma-reader/source-pdf": "0.0.2"
   },
   "peerDependenciesMeta": {
     "@okuma-reader/source-pdf": {

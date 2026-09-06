@@ -15,9 +15,12 @@
     "lint": "oxlint .",
     "lint:fix": "oxlint --fix .",
     "fmt": "oxfmt",
-    "fmt:check": "oxfmt --check"
+    "fmt:check": "oxfmt --check",
+    "changelog": "git-cliff --unreleased --strip all",
+    "changelog:write": "git-cliff -o CHANGELOG.md"
   },
   "devDependencies": {
+    "git-cliff": "^2.13.1",
     "oxfmt": "^0.66.0",
     "oxlint": "^1.81.0"
   },

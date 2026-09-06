@@ -1,0 +1,67 @@
+# Publishes all @okuma-reader/* packages when a GitHub Release is published.
+# Auth: npm trusted publishing (OIDC) — no NPM_TOKEN.
+#
+# One-time setup (each package on npmjs.com → Settings → Trusted Publisher):
+#   Provider: GitHub Actions
+#   Organization: Okuma-Reader
+#   Repository: Okuma-Reader
+#   Workflow filename: publish.yml
+#   Allowed action: npm publish
+#
+# Release flow:
+#   1. Bump all package versions in lockstep (and internal deps) on main
+#   2. Tag vX.Y.Z and push — release.yml creates the GitHub Release (git-cliff notes)
+#   3. This workflow runs check, then publishes in dependency order
+
+name: Publish
+
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+  id-token: write
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          # Trusted publishing needs a recent npm (bundled with Node 24+)
+          node-version: "24"
+          registry-url: https://registry.npmjs.org
+          cache: npm
+
+      - run: npm ci
+      - run: npm run check
+
+      - name: Verify release tag matches package versions
+        run: |
+          tag="${{ github.event.release.tag_name }}"
+          version="${tag#v}"
+          if [[ "$tag" != v* ]]; then
+            echo "Release tag must look like v0.1.0 (got: $tag)"
+            exit 1
+          fi
+          for pkg in packages/*/package.json; do
+            name=$(node -p "require('./$pkg').name")
+            pkg_version=$(node -p "require('./$pkg').version")
+            if [[ "$pkg_version" != "$version" ]]; then
+              echo "$name is $pkg_version but release tag is $tag (expected $version)"
+              exit 1
+            fi
+            echo "ok $name@$pkg_version"
+          done
+
+      - name: Publish packages
+        run: |
+          npm publish -w @okuma-reader/core
+          npm publish -w @okuma-reader/source-pdf
+          npm publish -w @okuma-reader/source-images
+          npm publish -w @okuma-reader/shell
+          npm publish -w @okuma-reader/astro
+          npm publish -w @okuma-reader/react

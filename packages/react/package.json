@@ -1,20 +1,17 @@
 {
   "name": "@okuma-reader/react",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "React UI wrapper for okuma-reader.",
-  "license": "MIT",
-  "publishConfig": {
-    "access": "public"
+  "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
+  "bugs": {
+    "url": "https://github.com/Okuma-Reader/Okuma-Reader/issues"
   },
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Okuma-Reader/Okuma-Reader.git",
     "directory": "packages/react"
   },
-  "bugs": {
-    "url": "https://github.com/Okuma-Reader/Okuma-Reader/issues"
-  },
-  "homepage": "https://github.com/Okuma-Reader/Okuma-Reader#readme",
   "files": [
     "src"
   ],
@@ -23,25 +20,28 @@
     ".": "./src/index.ts",
     "./mount": "./src/mount.ts"
   },
+  "publishConfig": {
+    "access": "public"
+  },
   "scripts": {
     "check": "tsc --noEmit -p tsconfig.json",
     "build": "npm run check"
   },
   "dependencies": {
-    "@okuma-reader/core": "0.0.1",
-    "@okuma-reader/shell": "0.0.1"
+    "@okuma-reader/core": "0.0.2",
+    "@okuma-reader/shell": "0.0.2"
   },
   "devDependencies": {
-    "@okuma-reader/source-images": "0.0.1",
-    "@okuma-reader/source-pdf": "0.0.1",
+    "@okuma-reader/source-images": "0.0.2",
+    "@okuma-reader/source-pdf": "0.0.2",
     "@types/react": "^19.0.0",
     "@types/react-dom": "^19.0.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0"
   },
   "peerDependencies": {
-    "@okuma-reader/source-images": "0.0.1",
-    "@okuma-reader/source-pdf": "0.0.1",
+    "@okuma-reader/source-images": "0.0.2",
+    "@okuma-reader/source-pdf": "0.0.2",
     "react": "^18.0.0 || ^19.0.0",
     "react-dom": "^18.0.0 || ^19.0.0"
   },

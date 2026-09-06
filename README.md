@@ -155,22 +155,47 @@ if (root) void mountOkumaReader(root, { source, bookId: "my-book" });
 
 `@okuma-reader/shell` holds the shared UI contract: prop/source types, `mountOkumaReader` helpers, and chrome CSS. The Astro and React packages are framework-specific markup + lifecycle adapters over that shell.
 
-## Publish
+## Releases
 
-Scoped packages default to private on npm — these packages set `"publishConfig": { "access": "public" }`.
+Packages use **lockstep versions** (all six share the same `X.Y.Z`). Release notes are generated from [Conventional Commits](https://www.conventionalcommits.org/) (`feat:`, `fix:`, `chore:`, …) with [git-cliff](https://git-cliff.org/) — see [CHANGELOG.md](CHANGELOG.md) and [GitHub Releases](https://github.com/Okuma-Reader/Okuma-Reader/releases).
+
+Preview notes for commits since the last tag:
 
 ```bash
-npm login   # must be a member of the okuma-reader org
-npm run check
-npm publish -w @okuma-reader/core
-npm publish -w @okuma-reader/source-pdf
-npm publish -w @okuma-reader/source-images
-npm publish -w @okuma-reader/shell
-npm publish -w @okuma-reader/astro
-npm publish -w @okuma-reader/react
+npm run changelog
 ```
 
-Publish order matters: `core` first, then sources + `shell`, then `astro` / `react`.
+Regenerate the full file:
+
+```bash
+npm run changelog:write
+```
+
+### Cut a release
+
+1. On `main`, bump every `packages/*/package.json` `version` and matching internal `@okuma-reader/*` dependency versions.
+2. Fold unreleased commits into that version and refresh the changelog:
+   `npx git-cliff --tag vX.Y.Z -o CHANGELOG.md`
+3. Commit the version bump + `CHANGELOG.md` (e.g. `chore(release): vX.Y.Z` — skipped by cliff on the next release).
+4. Push and wait for CI to pass.
+5. Tag and push: `git tag vX.Y.Z && git push origin vX.Y.Z`
+6. [Release](.github/workflows/release.yml) creates the GitHub Release with git-cliff notes; [Publish](.github/workflows/publish.yml) then publishes to npm (OIDC) in order: `core` → sources → `shell` → `astro` / `react`.
+
+Edit the GitHub Release body afterward if you want extra migration notes beyond the commit list.
+
+### One-time npm trusted publisher setup
+
+For each package on [npmjs.com](https://www.npmjs.com/) → package **Settings → Trusted Publisher**:
+
+| Field             | Value          |
+| ----------------- | -------------- |
+| Provider          | GitHub Actions |
+| Organization      | `Okuma-Reader` |
+| Repository        | `Okuma-Reader` |
+| Workflow filename | `publish.yml`  |
+| Allowed action    | `npm publish`  |
+
+No `NPM_TOKEN` secret is required for CI. Local emergency publishes still need `npm login` + 2FA OTP.
 
 ## License
 
