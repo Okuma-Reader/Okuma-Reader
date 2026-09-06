@@ -65,15 +65,9 @@ export type TextLayerHandle = {
 export interface BookSource {
   readonly pageCount: number;
   getPageSize(page: number): Promise<PageSize>;
-  renderPage(
-    page: number,
-    target: RenderTarget
-  ): Promise<HTMLCanvasElement | ImageBitmap>;
+  renderPage(page: number, target: RenderTarget): Promise<HTMLCanvasElement | ImageBitmap>;
   getText?(page: number): Promise<PageTextIndex | null>;
-  getLinks?(
-    page: number,
-    target: { cssWidth: number; cssHeight: number }
-  ): Promise<PageLink[]>;
+  getLinks?(page: number, target: { cssWidth: number; cssHeight: number }): Promise<PageLink[]>;
   getChapters?(): Promise<Chapter[]>;
   mountTextLayer?(options: {
     container: HTMLElement;

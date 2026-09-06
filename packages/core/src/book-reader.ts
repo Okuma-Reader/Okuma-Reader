@@ -8,12 +8,7 @@ import {
   type SearchMatch,
   type SearchOptions,
 } from "./pdf-search";
-import type {
-  BookReaderHandle,
-  InitBookReaderOptions,
-  PageLink,
-  TextLayerHandle,
-} from "./types";
+import type { BookReaderHandle, InitBookReaderOptions, PageLink, TextLayerHandle } from "./types";
 
 type SpreadPages = {
   left: number | null;
@@ -91,9 +86,7 @@ function writeSavedPage(bookId: string, page: number) {
   }
 }
 
-function rasterToCanvas(
-  raster: HTMLCanvasElement | ImageBitmap
-): HTMLCanvasElement | null {
+function rasterToCanvas(raster: HTMLCanvasElement | ImageBitmap): HTMLCanvasElement | null {
   if (raster instanceof HTMLCanvasElement) return raster;
   const canvas = document.createElement("canvas");
   canvas.width = raster.width;
@@ -110,7 +103,7 @@ function rasterToCanvas(
 
 export async function initBookReader(
   root: HTMLElement,
-  options: InitBookReaderOptions
+  options: InitBookReaderOptions,
 ): Promise<BookReaderHandle> {
   const source = options.source;
   const bookId = options.bookId ?? root.dataset.bookId ?? "";
@@ -140,67 +133,31 @@ export async function initBookReader(
   const zoomOutBtn = mustQuery(root, "[data-zoom-out]");
   const zoomResetBtn = mustQuery(root, "[data-zoom-reset]");
   const zoomLabel = mustQuery(root, "[data-zoom-label]");
-  const turnPrevBtn = mustQuery(
-    root,
-    "[data-turn='prev']"
-  ) as HTMLButtonElement;
-  const turnNextBtn = mustQuery(
-    root,
-    "[data-turn='next']"
-  ) as HTMLButtonElement;
-  const fullscreenEnterBtn = mustQuery(
-    root,
-    "#fullscreen-enter"
-  ) as HTMLButtonElement;
-  const fullscreenExitBtn = mustQuery(
-    root,
-    "#fullscreen-exit"
-  ) as HTMLButtonElement;
-  const shortcutsOpenBtn = mustQuery(
-    root,
-    "#shortcuts-open"
-  ) as HTMLButtonElement;
-  const shortcutsDialog = mustQuery(
-    root,
-    "#shortcuts-dialog"
-  ) as HTMLDialogElement;
+  const turnPrevBtn = mustQuery(root, "[data-turn='prev']") as HTMLButtonElement;
+  const turnNextBtn = mustQuery(root, "[data-turn='next']") as HTMLButtonElement;
+  const fullscreenEnterBtn = mustQuery(root, "#fullscreen-enter") as HTMLButtonElement;
+  const fullscreenExitBtn = mustQuery(root, "#fullscreen-exit") as HTMLButtonElement;
+  const shortcutsOpenBtn = mustQuery(root, "#shortcuts-open") as HTMLButtonElement;
+  const shortcutsDialog = mustQuery(root, "#shortcuts-dialog") as HTMLDialogElement;
   const shortcutsCloseBtn = mustQuery(root, "[data-shortcuts-close]");
   const spreadArea = mustQuery(root, "#spread-area");
   const searchOpenBtn = mustQuery(root, "#search-open") as HTMLButtonElement;
   const searchForm = mustQuery(root, "#reader-search") as HTMLFormElement;
-  const searchInput = mustQuery(
-    root,
-    "[data-search-input]"
-  ) as HTMLInputElement;
-  const searchPrevBtn = mustQuery(
-    root,
-    "[data-search-prev]"
-  ) as HTMLButtonElement;
-  const searchNextBtn = mustQuery(
-    root,
-    "[data-search-next]"
-  ) as HTMLButtonElement;
+  const searchInput = mustQuery(root, "[data-search-input]") as HTMLInputElement;
+  const searchPrevBtn = mustQuery(root, "[data-search-prev]") as HTMLButtonElement;
+  const searchNextBtn = mustQuery(root, "[data-search-next]") as HTMLButtonElement;
   const searchCount = mustQuery(root, "[data-search-count]");
   const searchCloseBtn = mustQuery(root, "[data-search-close]");
-  const searchMatchCase = mustQuery(
-    root,
-    "[data-search-match-case]"
-  ) as HTMLInputElement;
+  const searchMatchCase = mustQuery(root, "[data-search-match-case]") as HTMLInputElement;
   const searchMatchDiacritics = mustQuery(
     root,
-    "[data-search-match-diacritics]"
+    "[data-search-match-diacritics]",
   ) as HTMLInputElement;
-  const searchWholeWords = mustQuery(
-    root,
-    "[data-search-whole-words]"
-  ) as HTMLInputElement;
+  const searchWholeWords = mustQuery(root, "[data-search-whole-words]") as HTMLInputElement;
 
   const pageCount = source.pageCount;
   const savedPage = readSavedPage(bookId);
-  let spread =
-    savedPage === null
-      ? 0
-      : spreadForPage(clamp(Math.round(savedPage), 1, pageCount));
+  let spread = savedPage === null ? 0 : spreadForPage(clamp(Math.round(savedPage), 1, pageCount));
   let zoom = 1;
   /** Zoom level of the canvases currently on screen. */
   let renderedZoom = 1;
@@ -221,10 +178,7 @@ export async function initBookReader(
   pageInput.max = String(pageCount);
   pageCountLabel.textContent = `/ ${pageCount}`;
   const chapters = (await source.getChapters?.()) ?? [];
-  bookEl.style.setProperty(
-    "--spine-thickness",
-    String(pageCount * EDGE_WIDTH_PER_PAGE * 2)
-  );
+  bookEl.style.setProperty("--spine-thickness", String(pageCount * EDGE_WIDTH_PER_PAGE * 2));
   syncZoomUi();
 
   turnPrevBtn.addEventListener("click", () => goSpread(-1), { signal });
@@ -261,11 +215,7 @@ export async function initBookReader(
     else await enterFullscreen();
   }
 
-  fullscreenEnterBtn.addEventListener(
-    "click",
-    () => void enterFullscreen(),
-    { signal }
-  );
+  fullscreenEnterBtn.addEventListener("click", () => void enterFullscreen(), { signal });
   fullscreenExitBtn.addEventListener("click", () => void exitFullscreen(), {
     signal,
   });
@@ -277,7 +227,7 @@ export async function initBookReader(
       // Layout often isn't final yet on fullscreenchange — wait for paint.
       scheduleFit();
     },
-    { signal }
+    { signal },
   );
   syncFullscreenUi();
 
@@ -305,14 +255,14 @@ export async function initBookReader(
     (event) => {
       if (event.target === shortcutsDialog) closeShortcuts();
     },
-    { signal }
+    { signal },
   );
   shortcutsDialog.addEventListener(
     "close",
     () => {
       shortcutsOpenBtn.setAttribute("aria-expanded", "false");
     },
-    { signal }
+    { signal },
   );
 
   const pageTextCache = new Map<number, PageTextIndex>();
@@ -360,18 +310,14 @@ export async function initBookReader(
     paintedSearch.push({ page: pageNumber, layer });
     layer.replaceChildren();
     if (searchForm.hidden || searchMatches.length === 0) {
-      const textRoot = layer.parentElement?.querySelector(
-        ":scope > .textLayer"
-      );
+      const textRoot = layer.parentElement?.querySelector(":scope > .textLayer");
       if (textRoot instanceof HTMLElement) clearTextLayerHighlights(textRoot);
       layer.hidden = true;
       return;
     }
     const pageIndex = pageTextCache.get(pageNumber);
     if (!pageIndex) {
-      const textRoot = layer.parentElement?.querySelector(
-        ":scope > .textLayer"
-      );
+      const textRoot = layer.parentElement?.querySelector(":scope > .textLayer");
       if (textRoot instanceof HTMLElement) clearTextLayerHighlights(textRoot);
       layer.hidden = true;
       return;
@@ -387,7 +333,7 @@ export async function initBookReader(
                 current: i === searchActive,
               },
             ]
-          : []
+          : [],
       );
       if (pageMatches.length === 0) {
         clearTextLayerHighlights(textRoot);
@@ -440,7 +386,7 @@ export async function initBookReader(
           (async () => {
             const index = await source.getText!(page);
             if (index) pageTextCache.set(page, index);
-          })()
+          })(),
         );
       }
       await Promise.all(pending);
@@ -492,9 +438,7 @@ export async function initBookReader(
 
   async function goToSearchMatch(index: number) {
     if (destroyed || searchMatches.length === 0) return;
-    searchActive =
-      ((index % searchMatches.length) + searchMatches.length) %
-      searchMatches.length;
+    searchActive = ((index % searchMatches.length) + searchMatches.length) % searchMatches.length;
     syncSearchCount();
     const match = searchMatches[searchActive]!;
     await goToPage(match.page);
@@ -535,7 +479,7 @@ export async function initBookReader(
       event.preventDefault();
       void goToSearchMatch(searchActive + 1);
     },
-    { signal }
+    { signal },
   );
   searchInput.addEventListener("input", () => scheduleSearch(), { signal });
   searchInput.addEventListener(
@@ -545,29 +489,25 @@ export async function initBookReader(
       event.preventDefault();
       void goToSearchMatch(searchActive + (event.shiftKey ? -1 : 1));
     },
-    { signal }
+    { signal },
   );
   searchPrevBtn.addEventListener(
     "click",
     () => {
       void goToSearchMatch(searchActive - 1);
     },
-    { signal }
+    { signal },
   );
   searchNextBtn.addEventListener(
     "click",
     () => {
       void goToSearchMatch(searchActive + 1);
     },
-    { signal }
+    { signal },
   );
   searchCloseBtn.addEventListener("click", () => closeSearch(), { signal });
   searchOpenBtn.addEventListener("click", () => toggleSearch(), { signal });
-  for (const box of [
-    searchMatchCase,
-    searchMatchDiacritics,
-    searchWholeWords,
-  ]) {
+  for (const box of [searchMatchCase, searchMatchDiacritics, searchWholeWords]) {
     box.addEventListener("change", () => void runSearch(), { signal });
   }
   syncSearchCount();
@@ -608,15 +548,9 @@ export async function initBookReader(
     if (zoom <= 1.001) {
       event.preventDefault();
       if (wheelFlipLocked) return;
-      const delta =
-        Math.abs(event.deltaY) >= Math.abs(event.deltaX)
-          ? event.deltaY
-          : event.deltaX;
+      const delta = Math.abs(event.deltaY) >= Math.abs(event.deltaX) ? event.deltaY : event.deltaX;
       if (delta === 0) return;
-      if (
-        Math.sign(delta) !== Math.sign(wheelPageDelta) &&
-        wheelPageDelta !== 0
-      ) {
+      if (Math.sign(delta) !== Math.sign(wheelPageDelta) && wheelPageDelta !== 0) {
         wheelPageDelta = 0;
       }
       wheelPageDelta += delta;
@@ -651,11 +585,7 @@ export async function initBookReader(
     "keydown",
     (event) => {
       if (destroyed) return;
-      if (
-        (event.ctrlKey || event.metaKey) &&
-        event.key.toLowerCase() === "f" &&
-        !event.altKey
-      ) {
+      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "f" && !event.altKey) {
         event.preventDefault();
         openSearch();
         return;
@@ -666,12 +596,7 @@ export async function initBookReader(
         return;
       }
       if (isEditableTarget(event.target)) return;
-      if (
-        event.key === "?" &&
-        !event.ctrlKey &&
-        !event.metaKey &&
-        !event.altKey
-      ) {
+      if (event.key === "?" && !event.ctrlKey && !event.metaKey && !event.altKey) {
         event.preventDefault();
         toggleShortcuts();
         return;
@@ -695,17 +620,12 @@ export async function initBookReader(
         goSpread(1);
         return;
       }
-      if (
-        event.key.toLowerCase() === "f" &&
-        !event.ctrlKey &&
-        !event.metaKey &&
-        !event.altKey
-      ) {
+      if (event.key.toLowerCase() === "f" && !event.ctrlKey && !event.metaKey && !event.altKey) {
         event.preventDefault();
         void toggleFullscreen();
       }
     },
-    { signal }
+    { signal },
   );
 
   const pageScrubber = initChapterScrubber(pageScrubberEl, {
@@ -720,21 +640,21 @@ export async function initBookReader(
     () => {
       setZoom(zoom + ZOOM_STEP);
     },
-    { signal }
+    { signal },
   );
   zoomOutBtn.addEventListener(
     "click",
     () => {
       setZoom(zoom - ZOOM_STEP);
     },
-    { signal }
+    { signal },
   );
   zoomResetBtn.addEventListener(
     "click",
     () => {
       setZoom(1);
     },
-    { signal }
+    { signal },
   );
 
   spreadEl.addEventListener("wheel", onReaderWheel, { passive: false, signal });
@@ -754,8 +674,7 @@ export async function initBookReader(
   }
 
   function onPinchMove(event: TouchEvent) {
-    if (destroyed || event.touches.length !== 2 || pinchStartDistance < 1)
-      return;
+    if (destroyed || event.touches.length !== 2 || pinchStartDistance < 1) return;
     event.preventDefault();
     const distance = touchDistance(event.touches[0]!, event.touches[1]!);
     setZoom(pinchStartZoom * (distance / pinchStartDistance), true);
@@ -801,15 +720,11 @@ export async function initBookReader(
         pageInput.blur();
         return;
       }
-      if (
-        event.key.length === 1 ||
-        event.key === "Backspace" ||
-        event.key === "Delete"
-      ) {
+      if (event.key.length === 1 || event.key === "Backspace" || event.key === "Delete") {
         editingPageInput = true;
       }
     },
-    { signal }
+    { signal },
   );
 
   pageInput.addEventListener(
@@ -827,7 +742,7 @@ export async function initBookReader(
       else if (requested < current) goSpread(-1);
       else syncPager();
     },
-    { signal }
+    { signal },
   );
 
   pageInput.addEventListener(
@@ -836,7 +751,7 @@ export async function initBookReader(
       editingPageInput = false;
       void goToPage(Number(pageInput.value));
     },
-    { signal }
+    { signal },
   );
 
   pageInput.addEventListener(
@@ -844,7 +759,7 @@ export async function initBookReader(
     () => {
       editingPageInput = false;
     },
-    { signal }
+    { signal },
   );
 
   await showSpread();
@@ -890,11 +805,10 @@ export async function initBookReader(
   }
 
   function goToChapter(direction: -1 | 1) {
-    const starts = [
-      ...new Set(chapters.map((chapter) => spreadForPage(chapter.page))),
-    ].sort((a, b) => a - b);
-    const stops =
-      starts.length === 0 || starts[0] === 0 ? starts : [0, ...starts];
+    const starts = [...new Set(chapters.map((chapter) => spreadForPage(chapter.page)))].sort(
+      (a, b) => a - b,
+    );
+    const stops = starts.length === 0 || starts[0] === 0 ? starts : [0, ...starts];
     const target =
       direction > 0
         ? stops.find((start) => start > spread)
@@ -942,11 +856,7 @@ export async function initBookReader(
     if (fromWheel) {
       zoom = clamp(Math.round(next * 100) / 100, ZOOM_MIN, ZOOM_MAX);
     } else {
-      zoom = clamp(
-        Math.round(next / ZOOM_STEP) * ZOOM_STEP,
-        ZOOM_MIN,
-        ZOOM_MAX
-      );
+      zoom = clamp(Math.round(next / ZOOM_STEP) * ZOOM_STEP, ZOOM_MIN, ZOOM_MAX);
     }
     syncZoomUi();
     // Instant CSS scale while the source catches up at settle time.
@@ -971,12 +881,7 @@ export async function initBookReader(
     container.hidden = true;
   }
 
-  function rasterKey(
-    pageNumber: number,
-    cssWidth: number,
-    cssHeight: number,
-    dpr: number
-  ): string {
+  function rasterKey(pageNumber: number, cssWidth: number, cssHeight: number, dpr: number): string {
     return `${pageNumber}:${cssWidth}x${cssHeight}@${dpr}`;
   }
 
@@ -999,12 +904,7 @@ export async function initBookReader(
   function syncRasterLayout(cssWidth: number, cssHeight: number): number {
     const dpr = window.devicePixelRatio || 1;
     const prev = lastRasterLayout;
-    if (
-      !prev ||
-      prev.w !== cssWidth ||
-      prev.h !== cssHeight ||
-      prev.dpr !== dpr
-    ) {
+    if (!prev || prev.w !== cssWidth || prev.h !== cssHeight || prev.dpr !== dpr) {
       invalidateRasterCache();
       lastRasterLayout = { w: cssWidth, h: cssHeight, dpr };
     }
@@ -1015,7 +915,7 @@ export async function initBookReader(
     pageNumber: number,
     cssWidth: number,
     cssHeight: number,
-    token?: number
+    token?: number,
   ): Promise<HTMLCanvasElement | null> {
     if (destroyed) return null;
     const dpr = window.devicePixelRatio || 1;
@@ -1029,8 +929,7 @@ export async function initBookReader(
     const existing = inflightRasters.get(key);
     if (existing) {
       const shared = await existing;
-      if (destroyed || (token !== undefined && token !== renderToken))
-        return null;
+      if (destroyed || (token !== undefined && token !== renderToken)) return null;
       return shared;
     }
 
@@ -1041,15 +940,13 @@ export async function initBookReader(
         cssHeight,
         dpr,
       });
-      if (destroyed || (token !== undefined && token !== renderToken))
-        return null;
+      if (destroyed || (token !== undefined && token !== renderToken)) return null;
       if (epochAtStart !== layoutEpoch) return null;
 
       const offscreen = rasterToCanvas(rendered);
       if (!offscreen) return null;
 
-      if (destroyed || (token !== undefined && token !== renderToken))
-        return null;
+      if (destroyed || (token !== undefined && token !== renderToken)) return null;
       if (epochAtStart !== layoutEpoch) return null;
 
       rememberRaster(key, offscreen);
@@ -1067,11 +964,7 @@ export async function initBookReader(
   function pagesAroundSpread(center: number): number[] {
     const pages = new Set<number>();
     const max = maxSpread(pageCount);
-    for (
-      let s = center - PREFETCH_SPREAD_RADIUS;
-      s <= center + PREFETCH_SPREAD_RADIUS;
-      s++
-    ) {
+    for (let s = center - PREFETCH_SPREAD_RADIUS; s <= center + PREFETCH_SPREAD_RADIUS; s++) {
       if (s < 0 || s > max) continue;
       const { left, right } = pagesForSpread(s, pageCount);
       if (left !== null) pages.add(left);
@@ -1080,12 +973,7 @@ export async function initBookReader(
     return [...pages];
   }
 
-  function prefetchAdjacent(
-    center: number,
-    cssWidth: number,
-    cssHeight: number,
-    epoch: number
-  ) {
+  function prefetchAdjacent(center: number, cssWidth: number, cssHeight: number, epoch: number) {
     const pages = pagesAroundSpread(center).filter((pageNumber) => {
       const { left, right } = pagesForSpread(center, pageCount);
       return pageNumber !== left && pageNumber !== right;
@@ -1119,8 +1007,7 @@ export async function initBookReader(
     const pastedownFor = (page: number | null): "front" | "back" | null => {
       if (page === null) return null;
       if (page === 2) return "front";
-      if (backPastedownPage !== null && page === backPastedownPage)
-        return "back";
+      if (backPastedownPage !== null && page === backPastedownPage) return "back";
       return null;
     };
     const leftPastedown = pastedownFor(left);
@@ -1157,12 +1044,8 @@ export async function initBookReader(
     const overhangX = closed ? 0 : COVER_OVERHANG_RATIO_X;
     const overhangTop = closed ? 0 : COVER_OVERHANG_RATIO_TOP;
     const overhangBottom = closed ? 0 : COVER_OVERHANG_RATIO_BOTTOM;
-    const leftStackScale = closed
-      ? 1
-      : 1 + leftEdgePages * STACK_SCALE_PER_PAGE;
-    const rightStackScale = closed
-      ? 1
-      : 1 + rightEdgePages * STACK_SCALE_PER_PAGE;
+    const leftStackScale = closed ? 1 : 1 + leftEdgePages * STACK_SCALE_PER_PAGE;
+    const rightStackScale = closed ? 1 : 1 + rightEdgePages * STACK_SCALE_PER_PAGE;
     // Mid-book: scaleX → 1 so stacks don't overlap when z-index flips.
     const progressBend = Math.abs(2 * bookProgress - 1);
     const leftScaleX = 1 + (leftStackScale - 1) * progressBend;
@@ -1179,55 +1062,33 @@ export async function initBookReader(
     const aspect = sampleSize.height / sampleSize.width;
     const stageStyle = getComputedStyle(mustQuery(root, "#spread-stage"));
     const padX =
-      Number.parseFloat(stageStyle.paddingLeft) +
-      Number.parseFloat(stageStyle.paddingRight);
+      Number.parseFloat(stageStyle.paddingLeft) + Number.parseFloat(stageStyle.paddingRight);
     const padY =
-      Number.parseFloat(stageStyle.paddingTop) +
-      Number.parseFloat(stageStyle.paddingBottom);
+      Number.parseFloat(stageStyle.paddingTop) + Number.parseFloat(stageStyle.paddingBottom);
     const availW = spreadEl.clientWidth - padX;
     const availH = spreadEl.clientHeight - padY;
     if (availW < 1 || availH < 1) return;
 
     // Always fit as an open spread (2 faces + peak edge + overhang + peak
     // stack height) so opening/closing doesn't change the base face size.
-    const widthFromViewport =
-      availW / (2 + peakEdgeRatio + 2 * COVER_OVERHANG_RATIO_X);
+    const widthFromViewport = availW / (2 + peakEdgeRatio + 2 * COVER_OVERHANG_RATIO_X);
     const heightFromViewport =
-      availH /
-      (aspect * peakStackScale +
-        COVER_OVERHANG_RATIO_TOP +
-        COVER_OVERHANG_RATIO_BOTTOM);
-    const cssWidth = Math.floor(
-      Math.min(widthFromViewport, heightFromViewport) * zoom
-    );
+      availH / (aspect * peakStackScale + COVER_OVERHANG_RATIO_TOP + COVER_OVERHANG_RATIO_BOTTOM);
+    const cssWidth = Math.floor(Math.min(widthFromViewport, heightFromViewport) * zoom);
     const cssHeight = Math.floor(cssWidth * aspect);
     if (cssWidth < 1 || cssHeight < 1) return;
     const epoch = syncRasterLayout(cssWidth, cssHeight);
 
     // Closed cover board = open hardcover half (base face + outer overhang).
-    const coverFaceW = Math.max(
-      1,
-      Math.floor(cssWidth * (1 + COVER_OVERHANG_RATIO_X))
-    );
+    const coverFaceW = Math.max(1, Math.floor(cssWidth * (1 + COVER_OVERHANG_RATIO_X)));
     const coverFaceH = Math.max(
       1,
-      Math.floor(
-        cssHeight +
-          cssWidth * (COVER_OVERHANG_RATIO_TOP + COVER_OVERHANG_RATIO_BOTTOM)
-      )
+      Math.floor(cssHeight + cssWidth * (COVER_OVERHANG_RATIO_TOP + COVER_OVERHANG_RATIO_BOTTOM)),
     );
-    const leftFaceW = closed
-      ? coverFaceW
-      : Math.max(1, Math.floor(cssWidth * leftScaleX));
-    const leftFaceH = closed
-      ? coverFaceH
-      : Math.max(1, Math.floor(cssHeight * leftStackScale));
-    const rightFaceW = closed
-      ? coverFaceW
-      : Math.max(1, Math.floor(cssWidth * rightScaleX));
-    const rightFaceH = closed
-      ? coverFaceH
-      : Math.max(1, Math.floor(cssHeight * rightStackScale));
+    const leftFaceW = closed ? coverFaceW : Math.max(1, Math.floor(cssWidth * leftScaleX));
+    const leftFaceH = closed ? coverFaceH : Math.max(1, Math.floor(cssHeight * leftStackScale));
+    const rightFaceW = closed ? coverFaceW : Math.max(1, Math.floor(cssWidth * rightScaleX));
+    const rightFaceH = closed ? coverFaceH : Math.max(1, Math.floor(cssHeight * rightStackScale));
 
     const overhangXPx = `${cssWidth * overhangX}px`;
     const overhangTopPx = `${cssWidth * overhangTop}px`;
@@ -1242,14 +1103,8 @@ export async function initBookReader(
     rightBtn.style.setProperty("--edge-ratio", String(rightRatio));
     // 0–1 shade for page-stack shadows (1 ≈ thick side stack).
     const stackShadeFull = 0.06;
-    leftStack.style.setProperty(
-      "--stack-shade",
-      String(Math.min(1, leftRatio / stackShadeFull))
-    );
-    rightStack.style.setProperty(
-      "--stack-shade",
-      String(Math.min(1, rightRatio / stackShadeFull))
-    );
+    leftStack.style.setProperty("--stack-shade", String(Math.min(1, leftRatio / stackShadeFull)));
+    rightStack.style.setProperty("--stack-shade", String(Math.min(1, rightRatio / stackShadeFull)));
     leftStack.style.setProperty("--stack-scale", String(leftStackScale));
     rightStack.style.setProperty("--stack-scale", String(rightStackScale));
     leftStack.style.setProperty("--scale-x", String(leftScaleX));
@@ -1308,16 +1163,7 @@ export async function initBookReader(
 
     await Promise.all([
       left !== null
-        ? renderPage(
-            left,
-            leftCanvas,
-            leftText,
-            leftLinks,
-            leftSearch,
-            leftFaceW,
-            leftFaceH,
-            token
-          )
+        ? renderPage(left, leftCanvas, leftText, leftLinks, leftSearch, leftFaceW, leftFaceH, token)
         : clearPage(leftCanvas, leftText, leftLinks, leftSearch),
       right !== null
         ? renderPage(
@@ -1328,7 +1174,7 @@ export async function initBookReader(
             rightSearch,
             rightFaceW,
             rightFaceH,
-            token
+            token,
           )
         : clearPage(rightCanvas, rightText, rightLinks, rightSearch),
     ]);
@@ -1426,7 +1272,7 @@ export async function initBookReader(
     searchContainer: HTMLElement,
     cssWidth: number,
     cssHeight: number,
-    token: number
+    token: number,
   ) {
     cancelTextLayer(textContainer);
     clearLinkLayer(linkContainer);
@@ -1499,7 +1345,7 @@ export async function initBookReader(
     canvas: HTMLCanvasElement,
     textContainer: HTMLElement,
     linkContainer: HTMLElement,
-    searchContainer: HTMLElement
+    searchContainer: HTMLElement,
   ) {
     clearTextLayer(textContainer);
     clearLinkLayer(linkContainer);

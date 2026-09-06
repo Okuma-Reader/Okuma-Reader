@@ -1,20 +1,23 @@
 {
   "name": "okuma-reader",
   "private": true,
-  "type": "module",
   "license": "MIT",
   "workspaces": [
     "packages/*",
     "apps/*"
   ],
+  "type": "module",
   "scripts": {
     "build": "npm run build -w @okuma-reader/core -w @okuma-reader/source-pdf -w @okuma-reader/source-images -w @okuma-reader/astro",
     "dev": "npm run dev -w @okuma-reader/demo",
     "check": "npm run check --workspaces --if-present",
     "lint": "oxlint .",
-    "lint:fix": "oxlint --fix ."
+    "lint:fix": "oxlint --fix .",
+    "fmt": "oxfmt",
+    "fmt:check": "oxfmt --check"
   },
   "devDependencies": {
+    "oxfmt": "^0.66.0",
     "oxlint": "^1.81.0"
   },
   "engines": {

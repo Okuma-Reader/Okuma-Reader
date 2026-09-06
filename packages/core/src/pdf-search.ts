@@ -63,10 +63,7 @@ function isTextItem(item: unknown): item is PdfTextItem {
   );
 }
 
-export function indexPageText(
-  page: number,
-  content: PdfTextContent
-): PageTextIndex {
+export function indexPageText(page: number, content: PdfTextContent): PageTextIndex {
   const styles = content.styles ?? {};
   const runs: TextRun[] = [];
   let text = "";
@@ -116,13 +113,10 @@ function isHyphenChar(ch: string | undefined): boolean {
   return ch === "-" || ch === "\u2010" || ch === "\u00AD";
 }
 
-function foldSearchText(
-  text: string,
-  options: SearchOptions
-): { text: string; map: number[] } {
+function foldSearchText(text: string, options: SearchOptions): { text: string; map: number[] } {
   let out = "";
   const map: number[] = [];
-  for (let i = 0; i < text.length; ) {
+  for (let i = 0; i < text.length;) {
     const ch = text[i]!;
 
     // "some-\nthing" → "something" (same as pdf.js word-break hyphens).
@@ -187,9 +181,7 @@ function textRunSpans(container: HTMLElement): HTMLElement[] {
   const visit = (node: Node) => {
     if (node instanceof HTMLElement && node.tagName === "SPAN") {
       const hasText = [...node.childNodes].some(
-        (child) =>
-          child.nodeType === Node.TEXT_NODE &&
-          (child.nodeValue?.length ?? 0) > 0
+        (child) => child.nodeType === Node.TEXT_NODE && (child.nodeValue?.length ?? 0) > 0,
       );
       if (hasText && !node.classList.contains("markedContent")) {
         spans.push(node);
@@ -203,10 +195,7 @@ function textRunSpans(container: HTMLElement): HTMLElement[] {
 
 function firstTextNode(span: HTMLElement): Text | null {
   for (const child of span.childNodes) {
-    if (
-      child.nodeType === Node.TEXT_NODE &&
-      (child.nodeValue?.length ?? 0) > 0
-    ) {
+    if (child.nodeType === Node.TEXT_NODE && (child.nodeValue?.length ?? 0) > 0) {
       return child as Text;
     }
   }
@@ -239,14 +228,13 @@ function wrapTextSlice(node: Text, from: number, to: number, current: boolean) {
 export function highlightMatchesInTextLayer(
   textContainer: HTMLElement,
   page: PageTextIndex,
-  matches: { start: number; end: number; current: boolean }[]
+  matches: { start: number; end: number; current: boolean }[],
 ): boolean {
   clearTextLayerHighlights(textContainer);
   const spans = textRunSpans(textContainer);
   if (spans.length !== page.runs.length) return false;
 
-  const slicesByRun: { from: number; to: number; current: boolean }[][] =
-    page.runs.map(() => []);
+  const slicesByRun: { from: number; to: number; current: boolean }[][] = page.runs.map(() => []);
   for (const match of matches) {
     for (let i = 0; i < page.runs.length; i++) {
       const run = page.runs[i]!;
@@ -292,7 +280,7 @@ function isWholeWord(text: string, start: number, end: number): boolean {
 export function findMatchesInPage(
   page: PageTextIndex,
   query: string,
-  options: SearchOptions
+  options: SearchOptions,
 ): SearchMatch[] {
   const foldedQuery = foldSearchText(query, options).text;
   if (!foldedQuery) return [];
@@ -312,11 +300,7 @@ export function findMatchesInPage(
   return matches;
 }
 
-export function rectsForMatch(
-  page: PageTextIndex,
-  start: number,
-  end: number
-): CssRect[] {
+export function rectsForMatch(page: PageTextIndex, start: number, end: number): CssRect[] {
   const raw = page.rawDims;
   if (!raw) return [];
   const pageWidth = raw.pageWidth;

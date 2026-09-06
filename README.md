@@ -4,17 +4,17 @@ MIT-licensed monorepo for a two-page PDF/image book reader.
 
 ## Packages
 
-| Package | Description |
-|---------|-------------|
-| [`@okuma-reader/core`](packages/core) | Reader controller + DOM contract |
-| [`@okuma-reader/source-pdf`](packages/source-pdf) | pdf.js `BookSource` |
-| [`@okuma-reader/source-images`](packages/source-images) | Image-set `BookSource` |
-| [`@okuma-reader/astro`](packages/astro) | Astro UI shell + auto-mount |
+| Package                                                 | Description                      |
+| ------------------------------------------------------- | -------------------------------- |
+| [`@okuma-reader/core`](packages/core)                   | Reader controller + DOM contract |
+| [`@okuma-reader/source-pdf`](packages/source-pdf)       | pdf.js `BookSource`              |
+| [`@okuma-reader/source-images`](packages/source-images) | Image-set `BookSource`           |
+| [`@okuma-reader/astro`](packages/astro)                 | Astro UI shell + auto-mount      |
 
 ## Apps
 
-| App | Description |
-|-----|-------------|
+| App                               | Description             |
+| --------------------------------- | ----------------------- |
 | [`@okuma-reader/demo`](apps/demo) | Smoke-test both sources |
 
 ## Develop
@@ -31,12 +31,12 @@ npm run dev
 
 `@okuma-reader/astro` keeps source packages as **optional peer dependencies**. Install only what you use:
 
-| Use case | Packages |
-|----------|----------|
-| PDF books | `@okuma-reader/astro` + `@okuma-reader/source-pdf` |
-| Image books | `@okuma-reader/astro` + `@okuma-reader/source-images` |
-| Both | all three |
-| Custom `BookSource` | `@okuma-reader/astro` only (omit the `source` prop) |
+| Use case            | Packages                                              |
+| ------------------- | ----------------------------------------------------- |
+| PDF books           | `@okuma-reader/astro` + `@okuma-reader/source-pdf`    |
+| Image books         | `@okuma-reader/astro` + `@okuma-reader/source-images` |
+| Both                | all three                                             |
+| Custom `BookSource` | `@okuma-reader/astro` only (omit the `source` prop)   |
 
 ```bash
 # PDF-only
@@ -110,7 +110,7 @@ For a custom `BookSource`, omit `source` and mount yourself:
 
 ## Publish
 
-1. Create the npm organization **`okuma-reader`** on npmjs.com  
+1. Create the npm organization **`okuma-reader`** on npmjs.com
 2. Publish `@okuma-reader/core`, `source-pdf`, `source-images`, `astro`
 
 ## License

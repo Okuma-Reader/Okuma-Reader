@@ -2,33 +2,37 @@
   "name": "@okuma-reader/astro",
   "version": "0.0.1",
   "description": "Astro UI wrapper for okuma-reader.",
-  "type": "module",
   "license": "MIT",
+  "files": [
+    "src"
+  ],
+  "type": "module",
   "exports": {
     ".": "./src/index.ts",
     "./OkumaReader.astro": "./src/OkumaReader.astro",
     "./client": "./src/client.ts"
   },
-  "files": [
-    "src"
-  ],
+  "scripts": {
+    "check": "tsc --noEmit -p tsconfig.json"
+  },
   "dependencies": {
     "@okuma-reader/core": "0.0.1"
   },
+  "devDependencies": {
+    "@okuma-reader/source-images": "0.0.1",
+    "@okuma-reader/source-pdf": "0.0.1"
+  },
   "peerDependencies": {
-    "astro": "^5.0.0 || ^6.0.0 || ^7.0.0",
+    "@okuma-reader/source-images": "0.0.1",
     "@okuma-reader/source-pdf": "0.0.1",
-    "@okuma-reader/source-images": "0.0.1"
+    "astro": "^5.0.0 || ^6.0.0 || ^7.0.0"
   },
   "peerDependenciesMeta": {
-    "@okuma-reader/source-pdf": { "optional": true },
-    "@okuma-reader/source-images": { "optional": true }
-  },
-  "devDependencies": {
-    "@okuma-reader/source-pdf": "0.0.1",
-    "@okuma-reader/source-images": "0.0.1"
-  },
-  "scripts": {
-    "check": "tsc --noEmit -p tsconfig.json"
+    "@okuma-reader/source-pdf": {
+      "optional": true
+    },
+    "@okuma-reader/source-images": {
+      "optional": true
+    }
   }
 }

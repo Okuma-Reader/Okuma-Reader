@@ -1,8 +1,4 @@
-import {
-  initBookReader,
-  type BookReaderHandle,
-  type BookSource,
-} from "@okuma-reader/core";
+import { initBookReader, type BookReaderHandle, type BookSource } from "@okuma-reader/core";
 import type { OkumaSourceConfig } from "./types";
 
 export type MountOkumaReaderOptions = {
@@ -20,7 +16,7 @@ export type MountOkumaReaderFromConfigOptions = {
  */
 export async function mountOkumaReader(
   root: HTMLElement,
-  options: MountOkumaReaderOptions
+  options: MountOkumaReaderOptions,
 ): Promise<BookReaderHandle> {
   return initBookReader(root, {
     source: options.source,
@@ -33,7 +29,7 @@ export async function mountOkumaReader(
  */
 export async function mountOkumaReaderFromConfig(
   root: HTMLElement,
-  options: MountOkumaReaderFromConfigOptions
+  options: MountOkumaReaderFromConfigOptions,
 ): Promise<BookReaderHandle> {
   const source = await createBookSourceFromConfig(options.source);
   return mountOkumaReader(root, {
@@ -42,16 +38,14 @@ export async function mountOkumaReaderFromConfig(
   });
 }
 
-async function createBookSourceFromConfig(
-  config: OkumaSourceConfig
-): Promise<BookSource> {
+async function createBookSourceFromConfig(config: OkumaSourceConfig): Promise<BookSource> {
   if (config.type === "pdf") {
     let createPdfBookSource: typeof import("@okuma-reader/source-pdf").createPdfBookSource;
     try {
       ({ createPdfBookSource } = await import("@okuma-reader/source-pdf"));
     } catch {
       throw new Error(
-        '@okuma-reader/source-pdf is required for source={{ type: "pdf" }}. Install it with: npm i @okuma-reader/source-pdf'
+        '@okuma-reader/source-pdf is required for source={{ type: "pdf" }}. Install it with: npm i @okuma-reader/source-pdf',
       );
     }
     return createPdfBookSource({
@@ -65,7 +59,7 @@ async function createBookSourceFromConfig(
     ({ createImageBookSource } = await import("@okuma-reader/source-images"));
   } catch {
     throw new Error(
-      '@okuma-reader/source-images is required for source={{ type: "images" }}. Install it with: npm i @okuma-reader/source-images'
+      '@okuma-reader/source-images is required for source={{ type: "images" }}. Install it with: npm i @okuma-reader/source-images',
     );
   }
   return createImageBookSource({

@@ -27,7 +27,7 @@ function spreadForPage(page: number): number {
 
 function pagesForSpread(
   spread: number,
-  pageCount: number
+  pageCount: number,
 ): { left: number | null; right: number | null } {
   const left = 2 * spread;
   const right = 2 * spread + 1;
@@ -50,10 +50,7 @@ function spreadPageLabel(spread: number, pageCount: number): string {
   return "";
 }
 
-function chapterStartingOnSpread(
-  chapters: Chapter[],
-  spread: number
-): Chapter | undefined {
+function chapterStartingOnSpread(chapters: Chapter[], spread: number): Chapter | undefined {
   let match: Chapter | undefined;
   for (const chapter of chapters) {
     if (spreadForPage(chapter.page) === spread) match = chapter;
@@ -61,15 +58,11 @@ function chapterStartingOnSpread(
   return match;
 }
 
-function buildSegments(
-  track: HTMLElement,
-  lastSpread: number,
-  chapters: Chapter[]
-): Segment[] {
+function buildSegments(track: HTMLElement, lastSpread: number, chapters: Chapter[]): Segment[] {
   track.replaceChildren();
-  const chapterSpreads = [
-    ...new Set(chapters.map((c) => spreadForPage(c.page))),
-  ].sort((a, b) => a - b);
+  const chapterSpreads = [...new Set(chapters.map((c) => spreadForPage(c.page)))].sort(
+    (a, b) => a - b,
+  );
   const starts =
     chapterSpreads.length === 0
       ? [0]
@@ -106,7 +99,7 @@ export function initChapterScrubber(
     chapters: Chapter[];
     getPage: () => number;
     onSeek: (page: number) => void;
-  }
+  },
 ): ChapterScrubber {
   const { pageCount, chapters, getPage, onSeek } = opts;
   const sliderEl = root.querySelector("[data-scrubber-slider]");
@@ -131,9 +124,7 @@ export function initChapterScrubber(
 
   const lastSpread = maxSpread(pageCount);
   const segments = buildSegments(track, lastSpread, chapters);
-  const chapterSpreads = [
-    ...new Set(chapters.map((c) => spreadForPage(c.page))),
-  ];
+  const chapterSpreads = [...new Set(chapters.map((c) => spreadForPage(c.page)))];
   let dragging = false;
   let hoverSpread: number | null = null;
 
@@ -143,10 +134,7 @@ export function initChapterScrubber(
   function segmentPlayed(segment: Segment, spread: number): number {
     const span = segment.end - segment.start + 1;
     if (spread < segment.start) return 0;
-    if (
-      spread > segment.end ||
-      (spread === segment.end && segment.end === lastSpread)
-    ) {
+    if (spread > segment.end || (spread === segment.end && segment.end === lastSpread)) {
       return 1;
     }
     return (spread - segment.start) / span;
@@ -166,11 +154,7 @@ export function initChapterScrubber(
     if (lastSpread <= 0) return 1;
     const sliderRect = slider.getBoundingClientRect();
     if (sliderRect.width <= 0) return spread / lastSpread;
-    return clamp(
-      (xForSpread(spread) - sliderRect.left) / sliderRect.width,
-      0,
-      1
-    );
+    return clamp((xForSpread(spread) - sliderRect.left) / sliderRect.width, 0, 1);
   }
 
   function spreadFromClientX(clientX: number, snap: boolean): number {
@@ -213,10 +197,7 @@ export function initChapterScrubber(
   }
 
   function paint(spread: number, preview = false) {
-    slider.style.setProperty(
-      "--scrubber-progress",
-      String(progressForSpread(spread))
-    );
+    slider.style.setProperty("--scrubber-progress", String(progressForSpread(spread)));
     slider.setAttribute("aria-valuenow", String(spread));
     const title = titleAtSpread(spread);
     const pages = spreadPageLabel(spread, pageCount);
@@ -224,23 +205,18 @@ export function initChapterScrubber(
     slider.setAttribute("aria-valuetext", label);
 
     for (const segment of segments) {
-      segment.el.style.setProperty(
-        "--played",
-        String(segmentPlayed(segment, spread))
-      );
-      const activeSpread =
-        preview && hoverSpread !== null ? hoverSpread : spread;
+      segment.el.style.setProperty("--played", String(segmentPlayed(segment, spread)));
+      const activeSpread = preview && hoverSpread !== null ? hoverSpread : spread;
       segment.el.classList.toggle(
         "is-active",
-        activeSpread >= segment.start && activeSpread <= segment.end
+        activeSpread >= segment.start && activeSpread <= segment.end,
       );
     }
   }
 
   function titleAtSpread(spread: number): string {
     const segment =
-      segments.find((item) => spread >= item.start && spread <= item.end) ??
-      segments[0];
+      segments.find((item) => spread >= item.start && spread <= item.end) ?? segments[0];
     return segment?.title ?? "";
   }
 
@@ -256,9 +232,7 @@ export function initChapterScrubber(
     const minCenter = pad + half;
     const maxCenter = window.innerWidth - pad - half;
     const center =
-      minCenter >= maxCenter
-        ? window.innerWidth / 2
-        : clamp(clientX, minCenter, maxCenter);
+      minCenter >= maxCenter ? window.innerWidth / 2 : clamp(clientX, minCenter, maxCenter);
     tooltip.style.setProperty("--tooltip-x", `${center - sliderRect.left}px`);
   }
 

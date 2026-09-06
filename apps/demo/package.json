@@ -1,8 +1,8 @@
 {
   "name": "@okuma-reader/demo",
+  "version": "0.0.1",
   "private": true,
   "type": "module",
-  "version": "0.0.1",
   "scripts": {
     "dev": "astro dev --port 4322",
     "build": "astro build",

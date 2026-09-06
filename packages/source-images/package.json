@@ -2,18 +2,18 @@
   "name": "@okuma-reader/source-images",
   "version": "0.0.1",
   "description": "Image-sequence BookSource for okuma-reader.",
-  "type": "module",
   "license": "MIT",
-  "exports": {
-    ".": "./src/index.ts"
-  },
   "files": [
     "src"
   ],
-  "dependencies": {
-    "@okuma-reader/core": "0.0.1"
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
   },
   "scripts": {
     "check": "tsc --noEmit -p tsconfig.json"
+  },
+  "dependencies": {
+    "@okuma-reader/core": "0.0.1"
   }
 }

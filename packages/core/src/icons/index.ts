@@ -40,7 +40,7 @@ function resolveName(name: string): OkumaIconName {
 /** Inline SVG markup for toolbar / chrome icons (Material Symbols). */
 export function okumaIconSvg(
   name: string,
-  options: { size?: string | number; className?: string } = {}
+  options: { size?: string | number; className?: string } = {},
 ): string {
   const key = resolveName(name);
   const icon = (icons as Record<string, IconDef>)[key]!;

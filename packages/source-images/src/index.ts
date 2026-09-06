@@ -1,9 +1,4 @@
-import type {
-  BookSource,
-  Chapter,
-  PageSize,
-  RenderTarget,
-} from "@okuma-reader/core";
+import type { BookSource, Chapter, PageSize, RenderTarget } from "@okuma-reader/core";
 
 export type ImagePage = {
   /** Absolute or site-root URL to the page image. */
@@ -27,9 +22,7 @@ function loadImage(src: string): Promise<HTMLImageElement> {
   });
 }
 
-export function createImageBookSource(
-  options: CreateImageBookSourceOptions
-): BookSource {
+export function createImageBookSource(options: CreateImageBookSourceOptions): BookSource {
   const pages = options.pages;
   if (pages.length === 0) throw new Error("Image book source needs pages");
   const sizeCache = new Map<number, PageSize>();

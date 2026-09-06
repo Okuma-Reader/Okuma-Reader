@@ -1,7 +1,6 @@
 import type { PDFDocumentProxy } from "pdfjs-dist";
 import type { Chapter } from "@okuma-reader/core";
 
-
 type OutlineNode = {
   title: string;
   dest: string | unknown[] | null;
@@ -19,11 +18,10 @@ function flattenOutline(nodes: OutlineNode[]): OutlineNode[] {
 
 export async function pageForDest(
   pdf: PDFDocumentProxy,
-  dest: string | unknown[] | null
+  dest: string | unknown[] | null,
 ): Promise<number | null> {
   if (dest === null) return null;
-  const explicit =
-    typeof dest === "string" ? await pdf.getDestination(dest) : dest;
+  const explicit = typeof dest === "string" ? await pdf.getDestination(dest) : dest;
   if (!Array.isArray(explicit) || explicit.length === 0) return null;
   const destRef = explicit[0];
   if (destRef && typeof destRef === "object") {
@@ -43,9 +41,7 @@ export async function pageForDest(
 }
 
 /** Flatten the PDF outline and resolve each bookmark to a 1-based page. */
-export async function loadPdfChapters(
-  pdf: PDFDocumentProxy
-): Promise<Chapter[]> {
+export async function loadPdfChapters(pdf: PDFDocumentProxy): Promise<Chapter[]> {
   const outline = (await pdf.getOutline()) as OutlineNode[] | null;
   if (!outline || outline.length === 0) return [];
 

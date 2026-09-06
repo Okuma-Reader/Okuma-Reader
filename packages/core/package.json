@@ -2,17 +2,17 @@
   "name": "@okuma-reader/core",
   "version": "0.0.1",
   "description": "Framework-agnostic book reader controller (DOM contract).",
-  "type": "module",
   "license": "MIT",
+  "files": [
+    "src"
+  ],
+  "type": "module",
   "exports": {
     ".": "./src/index.ts",
     "./icons": "./src/icons/index.ts",
     "./styles.css": "./src/styles/reader.css",
     "./assets/*": "./src/assets/*"
   },
-  "files": [
-    "src"
-  ],
   "scripts": {
     "check": "tsc --noEmit -p tsconfig.json"
   }

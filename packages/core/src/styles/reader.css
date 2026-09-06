@@ -41,8 +41,7 @@
   font-size: calc(var(--text-scale-factor) * var(--font-height));
   --scale-x: 1;
   --rotate: 0deg;
-  transform: rotate(var(--rotate)) scaleX(var(--scale-x))
-    scale(var(--min-font-size-inv));
+  transform: rotate(var(--rotate)) scaleX(var(--scale-x)) scale(var(--min-font-size-inv));
 }
 
 .textLayer .markedContent {

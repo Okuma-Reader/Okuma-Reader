@@ -1,14 +1,5 @@
-import {
-  AnnotationType,
-  getDocument,
-  GlobalWorkerOptions,
-  TextLayer,
-} from "pdfjs-dist";
-import type {
-  PDFDocumentProxy,
-  PageViewport,
-  RenderTask,
-} from "pdfjs-dist";
+import { AnnotationType, getDocument, GlobalWorkerOptions, TextLayer } from "pdfjs-dist";
+import type { PDFDocumentProxy, PageViewport, RenderTask } from "pdfjs-dist";
 import {
   indexPageText,
   type BookSource,
@@ -44,13 +35,7 @@ type PdfLinkAnnot = {
   quadPoints?: ArrayLike<number>;
 };
 
-function viewportBox(
-  viewport: PageViewport,
-  x1: number,
-  y1: number,
-  x2: number,
-  y2: number
-) {
+function viewportBox(viewport: PageViewport, x1: number, y1: number, x2: number, y2: number) {
   const a = viewport.convertToViewportPoint(x1, y1);
   const b = viewport.convertToViewportPoint(x2, y2);
   const left = Math.min(a[0], b[0]);
@@ -90,11 +75,10 @@ function linkBoxes(annot: PdfLinkAnnot, viewport: PageViewport) {
 }
 
 export async function createPdfBookSource(
-  options: CreatePdfBookSourceOptions
+  options: CreatePdfBookSourceOptions,
 ): Promise<BookSource> {
   GlobalWorkerOptions.workerSrc =
-    options.workerSrc ??
-    new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url).href;
+    options.workerSrc ?? new URL("pdfjs-dist/build/pdf.worker.min.mjs", import.meta.url).href;
   const pdf: PDFDocumentProxy = await getDocument({ url: options.url }).promise;
   const renderTasks = new Map<object, RenderTask>();
   const textLayers = new Set<TextLayer>();
@@ -159,7 +143,7 @@ export async function createPdfBookSource(
 
     async getLinks(
       page: number,
-      target: { cssWidth: number; cssHeight: number }
+      target: { cssWidth: number; cssHeight: number },
     ): Promise<PageLink[]> {
       const pdfPage = await pdf.getPage(page);
       const base = pdfPage.getViewport({ scale: 1 });
@@ -172,8 +156,7 @@ export async function createPdfBookSource(
       for (const annot of annotations) {
         if (annot.annotationType !== AnnotationType.LINK) continue;
         if (!annot.url && annot.dest == null && !annot.action) continue;
-        const label =
-          typeof annot.overlaidText === "string" ? annot.overlaidText : "";
+        const label = typeof annot.overlaidText === "string" ? annot.overlaidText : "";
         let destPage: number | undefined;
         if (annot.dest != null && annot.dest !== "") {
           const resolved = await pageForDest(pdf, annot.dest);
@@ -205,10 +188,7 @@ export async function createPdfBookSource(
       const viewport = pdfPage.getViewport({ scale: cssScale });
       options.container.hidden = false;
       options.container.replaceChildren();
-      options.container.style.setProperty(
-        "--total-scale-factor",
-        String(cssScale)
-      );
+      options.container.style.setProperty("--total-scale-factor", String(cssScale));
       const layer = new TextLayer({
         textContentSource: pdfPage.streamTextContent({
           includeMarkedContent: true,
