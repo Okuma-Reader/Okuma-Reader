@@ -141,9 +141,9 @@ import SearchBar from "./SearchBar.astro";
     box-sizing: border-box;
     width: 50px;
     height: 50px;
-    border: 3px solid var(--dark-color);
+    border: 3px solid var(--accent-color);
     background: white;
-    color: var(--dark-color);
+    color: var(--accent-color);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -161,7 +161,7 @@ import SearchBar from "./SearchBar.astro";
     &:hover:not(:disabled),
     &:focus-visible:not(:disabled),
     &[aria-expanded="true"]:not(:disabled) {
-      background: var(--dark-color);
+      background: var(--accent-color);
       color: white;
     }
   }
@@ -192,7 +192,7 @@ import SearchBar from "./SearchBar.astro";
         var(--cover-overhang-bottom, 0px)
     );
     transform: translateY(-50%);
-    background-color: var(--dark-color);
+    background-color: var(--accent-color);
     background-image: var(--inner-cover-image);
     background-size: 100% 100%;
     font-size: var(--shadow-em);

@@ -57,12 +57,15 @@ import { OkumaReader } from "@okuma-reader/astro";
   bookId="my-book"
   title="My Book"
   innerCoverImageUrl="/inner-cover.webp"
-  darkColor="#3a2a1a"
-  lightColor="#f3e7d3"
+  accentColor="#3a2a1a"
+  scrubberTrackColor="#f3e7d3"
   backHref="/"
+  download={{ href: "/book.pdf", filename: "my-book.pdf" }}
   source={{ type: "pdf", url: "/book.pdf" }}
 />
 ```
+
+`accentColor` defaults to `"black"`; `scrubberTrackColor` defaults to `"#d4d4d4"`. Both are optional.
 
 The component is also available as a direct subpath if you prefer:
 
@@ -77,8 +80,8 @@ Image books:
   bookId="my-book"
   title="My Book"
   innerCoverImageUrl="/inner-cover.webp"
-  darkColor="#3a2a1a"
-  lightColor="#f3e7d3"
+  accentColor="#3a2a1a"
+  scrubberTrackColor="#f3e7d3"
   backHref="/"
   source={{
     type: "images",

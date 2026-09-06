@@ -1,13 +1,13 @@
 ---
 import Icon from "./Icon.astro";
+import type { OkumaDownloadConfig } from "../types";
 
 export interface ReaderToolbarProps {
   bookId: string;
   title: string;
   subtitle?: string;
-  backHref: string;
-  downloadUrl?: string;
-  downloadFilename?: string;
+  backHref?: string;
+  download?: OkumaDownloadConfig;
 }
 
 const {
@@ -15,16 +15,21 @@ const {
   title,
   subtitle,
   backHref,
-  downloadUrl,
-  downloadFilename = `${bookId}.pdf`,
+  download,
 } = Astro.props as ReaderToolbarProps;
+
+const downloadFilename = download?.filename ?? `${bookId}.pdf`;
 ---
 
 <header>
   <div>
-    <a class="icon-button" href={backHref} aria-label="Go back" title="Go back">
-      <Icon name="arrow_back" />
-    </a>
+    {
+      backHref ? (
+        <a class="icon-button" href={backHref} aria-label="Go back" title="Go back">
+          <Icon name="arrow_back" />
+        </a>
+      ) : null
+    }
     <div>
       <h1>
         {title}
@@ -101,9 +106,9 @@ const {
     </button>
 
     {
-      downloadUrl ? (
+      download ? (
         <a
-          href={downloadUrl}
+          href={download.href}
           class="icon-button"
           id="download-pdf"
           download={downloadFilename}
@@ -148,7 +153,7 @@ const {
 
       /* Go back and book title */
       &:nth-child(1) {
-        color: var(--dark-color);
+        color: var(--accent-color);
 
         & > a > :global(svg) {
           width: 30px;
@@ -180,9 +185,9 @@ const {
           box-sizing: border-box;
           height: 50px;
           padding: 0 0.8em;
-          border: 3px solid var(--dark-color);
+          border: 3px solid var(--accent-color);
           background: white;
-          color: var(--dark-color);
+          color: var(--accent-color);
           font-weight: 600;
           display: flex;
           align-items: center;
@@ -210,7 +215,7 @@ const {
           align-items: stretch;
           height: 50px;
           background: white;
-          color: var(--dark-color);
+          color: var(--accent-color);
 
           & > button {
             & ~ button {
@@ -233,9 +238,9 @@ const {
     box-sizing: border-box;
     width: 50px;
     height: 50px;
-    border: 3px solid var(--dark-color);
+    border: 3px solid var(--accent-color);
     background: white;
-    color: var(--dark-color);
+    color: var(--accent-color);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -253,7 +258,7 @@ const {
     &:hover:not(:disabled),
     &:focus-visible:not(:disabled),
     &[aria-expanded="true"]:not(:disabled) {
-      background: var(--dark-color);
+      background: var(--accent-color);
       color: white;
     }
   }

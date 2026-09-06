@@ -27,18 +27,17 @@ const {
   title,
   subtitle,
   innerCoverImageUrl,
-  darkColor,
-  lightColor,
+  accentColor = "black",
+  scrubberTrackColor = "#d4d4d4",
   backHref,
-  downloadUrl,
-  downloadFilename,
+  download,
   ownPage = true,
   source,
 } = Astro.props as OkumaReaderProps;
 
 const cssVars = [
-  `--light-color: ${lightColor}`,
-  `--dark-color: ${darkColor}`,
+  `--scrubber-track-color: ${scrubberTrackColor}`,
+  `--accent-color: ${accentColor}`,
   `--inner-cover-image: url(${JSON.stringify(innerCoverImageUrl)})`,
   `--okuma-paper2: ${cssUrl(paper2)}`,
   `--okuma-paper-book: ${cssUrl(paperBook)}`,
@@ -64,8 +63,7 @@ const sourceJson = source ? JSON.stringify(source) : undefined;
     title={title}
     subtitle={subtitle}
     backHref={backHref}
-    downloadUrl={downloadUrl}
-    downloadFilename={downloadFilename}
+    download={download}
   />
   <ChapterScrubber />
   <ReaderSpread />
@@ -73,9 +71,8 @@ const sourceJson = source ? JSON.stringify(source) : undefined;
   <SmallScreenOverlay
     bookId={bookId}
     backHref={backHref}
-    darkColor={darkColor}
-    downloadUrl={downloadUrl}
-    downloadFilename={downloadFilename}
+    accentColor={accentColor}
+    download={download}
   />
 </div>
 

@@ -49,6 +49,19 @@ export type OkumaImagesSourceConfig = {
 export type OkumaSourceConfig = OkumaPdfSourceConfig | OkumaImagesSourceConfig;
 
 /**
+ * Optional download control for the toolbar and small-screen overlay.
+ */
+export type OkumaDownloadConfig = {
+  /** URL of the file to download. */
+  href: string;
+  /**
+   * Suggested filename for the download.
+   * Defaults to `${bookId}.pdf`.
+   */
+  filename?: string;
+};
+
+/**
  * Props for the `OkumaReader.astro` component.
  *
  * When {@link source} is set, the component mounts the reader on the client automatically.
@@ -69,19 +82,23 @@ export interface OkumaReaderProps {
    * Extends slightly past the pages (overhang); not shown while the book is closed.
    */
   innerCoverImageUrl: string;
-  /** Primary chrome color (borders, icons, accents). CSS color string. */
-  darkColor: string;
-  /** Soft background / highlight tint paired with {@link darkColor}. CSS color string. */
-  lightColor: string;
-  /** “Back” control target (toolbar and small-screen overlay). */
-  backHref: string;
-  /** When set, shows a download control pointing at this URL. */
-  downloadUrl?: string;
   /**
-   * Suggested filename for the download control.
-   * Defaults to `${bookId}.pdf` when {@link downloadUrl} is set.
+   * Primary chrome color for borders, icons, text, buttons, and shadows.
+   * CSS color string. Defaults to `"black"`.
    */
-  downloadFilename?: string;
+  accentColor?: string;
+  /**
+   * Fill color of the chapter scrubber track.
+   * CSS color string. Defaults to `"#d4d4d4"`.
+   */
+  scrubberTrackColor?: string;
+  /**
+   * “Back” control target (toolbar and small-screen overlay).
+   * When omitted, the back button is not shown.
+   */
+  backHref?: string;
+  /** When set, shows a download control in the toolbar and small-screen overlay. */
+  download?: OkumaDownloadConfig;
   /**
    * When `true` (default), the reader owns the page: full viewport height and
    * `html`/`body` overflow locked. Set `false` to embed the reader in a layout.

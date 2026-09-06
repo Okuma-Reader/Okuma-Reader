@@ -202,11 +202,11 @@ const key = (url: string) => `--key: url(${JSON.stringify(url)})`;
     border: none;
     background: transparent;
     max-width: calc(100vw - 2rem);
-    box-shadow: 0 0 5em var(--dark-color);
+    box-shadow: 0 0 5em var(--accent-color);
   }
 
   #shortcuts-dialog::backdrop {
-    background: color-mix(in srgb, var(--dark-color) 50%, transparent);
+    background: color-mix(in srgb, var(--accent-color) 50%, transparent);
     backdrop-filter: blur(2px);
   }
 
@@ -216,7 +216,7 @@ const key = (url: string) => `--key: url(${JSON.stringify(url)})`;
     box-sizing: border-box;
     width: min(42rem, 100%);
     padding: 1em;
-    border: 3px solid var(--dark-color);
+    border: 3px solid var(--accent-color);
     background: white;
     color: var(--shortcuts-ink);
   }
@@ -233,7 +233,7 @@ const key = (url: string) => `--key: url(${JSON.stringify(url)})`;
     flex: 1;
     font-size: 1.25rem;
     font-weight: 700;
-    color: var(--dark-color);
+    color: var(--accent-color);
   }
 
   .shortcuts-group {
@@ -248,7 +248,7 @@ const key = (url: string) => `--key: url(${JSON.stringify(url)})`;
     letter-spacing: 0.04em;
     text-transform: uppercase;
     opacity: 0.8;
-    color: var(--dark-color);
+    color: var(--accent-color);
   }
 
   .shortcuts-table {
@@ -308,9 +308,9 @@ const key = (url: string) => `--key: url(${JSON.stringify(url)})`;
     box-sizing: border-box;
     width: 42px;
     height: 42px;
-    border: 3px solid var(--dark-color);
+    border: 3px solid var(--accent-color);
     background: white;
-    color: var(--dark-color);
+    color: var(--accent-color);
     cursor: pointer;
     display: flex;
     align-items: center;
@@ -328,7 +328,7 @@ const key = (url: string) => `--key: url(${JSON.stringify(url)})`;
     &:hover:not(:disabled),
     &:focus-visible:not(:disabled),
     &[aria-expanded="true"]:not(:disabled) {
-      background: var(--dark-color);
+      background: var(--accent-color);
       color: white;
     }
   }

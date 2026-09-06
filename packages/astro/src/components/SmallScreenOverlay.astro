@@ -1,22 +1,19 @@
 ---
 import Button from "./Button.astro";
 import Icon from "./Icon.astro";
+import type { OkumaDownloadConfig } from "../types";
 
 export interface SmallScreenOverlayProps {
   bookId: string;
-  backHref: string;
-  darkColor: string;
-  downloadUrl?: string;
-  downloadFilename?: string;
+  backHref?: string;
+  accentColor: string;
+  download?: OkumaDownloadConfig;
 }
 
-const {
-  bookId,
-  backHref,
-  darkColor,
-  downloadUrl,
-  downloadFilename = `${bookId}.pdf`,
-} = Astro.props as SmallScreenOverlayProps;
+const { bookId, backHref, accentColor, download } =
+  Astro.props as SmallScreenOverlayProps;
+
+const downloadFilename = download?.filename ?? `${bookId}.pdf`;
 ---
 
 <div
@@ -33,17 +30,26 @@ const {
   </p>
   <div id="small-screen-actions">
     {
-      downloadUrl ? (
-        <Button href={downloadUrl} download={downloadFilename} color={darkColor} primary>
+      download && (
+        <Button
+          href={download.href}
+          download={downloadFilename}
+          color={accentColor}
+          primary
+        >
           <Icon name="download" />
           Download PDF
         </Button>
-      ) : null
+      )
     }
-    <Button href={backHref} color={darkColor}>
-      <Icon name="arrow_back" />
-      Go back
-    </Button>
+    {
+      backHref && (
+        <Button href={backHref} color={accentColor}>
+          <Icon name="arrow_back" />
+          Go back
+        </Button>
+      )
+    }
   </div>
 </div>
 
@@ -60,7 +66,7 @@ const {
     justify-content: center;
     gap: 1rem;
     text-align: center;
-    color: var(--dark-color);
+    color: var(--accent-color);
     background-color: rgb(255 251 249 / 0.96);
     background-image: var(--okuma-paper2);
     background-size: 25cm;

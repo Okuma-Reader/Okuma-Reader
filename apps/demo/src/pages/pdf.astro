@@ -40,11 +40,13 @@ import { OkumaReader } from "@okuma-reader/astro";
       title="NGE Genocide"
       subtitle="Vol. 1 — PDF demo"
       innerCoverImageUrl="/fixtures/nge-genocide-vol1/inner-cover.png"
-      darkColor="#694588"
-      lightColor="#DDCDE9"
+      accentColor="#694588"
+      scrubberTrackColor="#DDCDE9"
       backHref="/pdf"
-      downloadUrl="/fixtures/nge-genocide-vol1/nge-genocide-vol1.pdf"
-      downloadFilename="nge-genocide-vol1.pdf"
+      download={{
+        href: "/fixtures/nge-genocide-vol1/nge-genocide-vol1.pdf",
+        filename: "nge-genocide-vol1.pdf",
+      }}
       source={{
         type: "pdf",
         url: "/fixtures/nge-genocide-vol1.pdf",

@@ -12,4 +12,5 @@ export type {
   OkumaSourceConfig,
   OkumaPdfSourceConfig,
   OkumaImagesSourceConfig,
+  OkumaDownloadConfig,
 } from "./types";
