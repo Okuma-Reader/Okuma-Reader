@@ -1,4 +1,4 @@
-# Publishes all @okuma-reader/* packages when a GitHub Release is published.
+# Publishes all @okuma-reader/* packages when a v* tag is pushed (or via workflow_dispatch).
 # Auth: npm trusted publishing (OIDC) — no NPM_TOKEN.
 #
 # One-time setup (each package on npmjs.com → Settings → Trusted Publisher):
@@ -10,14 +10,17 @@
 #
 # Release flow:
 #   1. Bump all package versions in lockstep (and internal deps) on main
-#   2. Tag vX.Y.Z and push — release.yml creates the GitHub Release (git-cliff notes)
-#   3. This workflow runs check, then publishes in dependency order
+#   2. Tag vX.Y.Z and push — this workflow publishes; release.yml creates the GitHub Release
+#
+# Triggered by tag push (not `release: published`): releases created with GITHUB_TOKEN
+# do not start other workflows, so OIDC publish would never run that way.
 
 name: Publish
 
 on:
-  release:
-    types: [published]
+  push:
+    tags: ["v*"]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -41,17 +44,21 @@ jobs:
 
       - name: Verify release tag matches package versions
         run: |
-          tag="${{ github.event.release.tag_name }}"
+          tag="${{ github.ref_name }}"
+          if [[ "${{ github.event_name }}" == "workflow_dispatch" ]]; then
+            tag="v$(node -p "require('./packages/core/package.json').version")"
+            echo "workflow_dispatch: using package version tag $tag"
+          fi
           version="${tag#v}"
           if [[ "$tag" != v* ]]; then
-            echo "Release tag must look like v0.1.0 (got: $tag)"
+            echo "Tag must look like v0.1.0 (got: $tag)"
             exit 1
           fi
           for pkg in packages/*/package.json; do
             name=$(node -p "require('./$pkg').name")
             pkg_version=$(node -p "require('./$pkg').version")
             if [[ "$pkg_version" != "$version" ]]; then
-              echo "$name is $pkg_version but release tag is $tag (expected $version)"
+              echo "$name is $pkg_version but tag is $tag (expected $version)"
               exit 1
             fi
             echo "ok $name@$pkg_version"

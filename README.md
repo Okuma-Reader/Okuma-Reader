@@ -179,7 +179,7 @@ npm run changelog:write
 3. Commit the version bump + `CHANGELOG.md` (e.g. `chore(release): vX.Y.Z` — skipped by cliff on the next release).
 4. Push and wait for CI to pass.
 5. Tag and push: `git tag vX.Y.Z && git push origin vX.Y.Z`
-6. [Release](.github/workflows/release.yml) creates the GitHub Release with git-cliff notes; [Publish](.github/workflows/publish.yml) then publishes to npm (OIDC) in order: `core` → sources → `shell` → `astro` / `react`.
+6. [Release](.github/workflows/release.yml) creates the GitHub Release with git-cliff notes; [Publish](.github/workflows/publish.yml) publishes to npm on the same tag push (OIDC) in order: `core` → sources → `shell` → `astro` / `react`. Both are triggered by the tag push — not by the GitHub Release event (Actions started with `GITHUB_TOKEN` do not cascade).
 
 Edit the GitHub Release body afterward if you want extra migration notes beyond the commit list.
 
