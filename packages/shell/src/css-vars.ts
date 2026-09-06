@@ -1,4 +1,3 @@
-import paper2 from "@okuma-reader/core/assets/paper2.webp";
 import paperBook from "@okuma-reader/core/assets/paper-book-v2.webp";
 import specularSingle from "@okuma-reader/core/assets/specularSinglePage.webp";
 import specularDouble from "@okuma-reader/core/assets/specularDoublePage.webp";
@@ -26,7 +25,6 @@ export function buildOkumaShellCssVars(input: OkumaShellCssVarInputs): Record<st
     "--scrubber-track-color": input.scrubberTrackColor ?? OKUMA_READER_DEFAULTS.scrubberTrackColor,
     "--accent-color": input.accentColor ?? OKUMA_READER_DEFAULTS.accentColor,
     "--inner-cover-image": `url(${JSON.stringify(input.innerCoverImageUrl)})`,
-    "--okuma-paper2": cssUrl(paper2),
     "--okuma-paper-book": cssUrl(paperBook),
     "--okuma-specular-single": cssUrl(specularSingle),
     "--okuma-specular-double": cssUrl(specularDouble),

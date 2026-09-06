@@ -5,6 +5,7 @@ import { HubPage } from "./pages/HubPage";
 import { ImagesPage } from "./pages/ImagesPage";
 import { PdfPage } from "./pages/PdfPage";
 import "./styles/hub.css";
+import "./styles/reader-host.css";
 
 createRoot(document.getElementById("root")!).render(
   <StrictMode>
