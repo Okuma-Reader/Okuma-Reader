@@ -47,17 +47,26 @@ export function OkumaReader({
     if (!root || !sourceKey) return;
 
     const parsed = JSON.parse(sourceKey) as NonNullable<OkumaReaderProps["source"]>;
-    let cancelled = false;
-    void mountOkumaReaderFromConfig(root, { source: parsed, bookId }).then((handle) => {
-      if (cancelled) {
-        handle.destroy();
-        return;
-      }
-      handleRef.current = handle;
-    });
+    const abort = new AbortController();
+    void mountOkumaReaderFromConfig(root, {
+      source: parsed,
+      bookId,
+      signal: abort.signal,
+    })
+      .then((handle) => {
+        if (abort.signal.aborted) {
+          handle.destroy();
+          return;
+        }
+        handleRef.current = handle;
+      })
+      .catch((error: unknown) => {
+        if (error instanceof DOMException && error.name === "AbortError") return;
+        console.error(error);
+      });
 
     return () => {
-      cancelled = true;
+      abort.abort();
       handleRef.current?.destroy();
       handleRef.current = null;
     };

@@ -109,6 +109,14 @@ export async function initBookReader(
   const bookId = options.bookId ?? root.dataset.bookId ?? "";
   if (!bookId) throw new Error("Missing bookId");
 
+  const throwIfAborted = () => {
+    if (options.signal?.aborted) {
+      source.destroy?.();
+      throw new DOMException("Book reader mount aborted", "AbortError");
+    }
+  };
+  throwIfAborted();
+
   const spreadEl = mustQuery(root, "#spread");
   const zoomShell = mustQuery(root, "#book-zoom-shell");
   const bookEl = mustQuery(root, "#book");
@@ -168,6 +176,7 @@ export async function initBookReader(
   let lastRasterLayout: { w: number; h: number; dpr: number } | null = null;
   let zoomTimer: ReturnType<typeof setTimeout> | undefined;
   let destroyed = false;
+  let resizeObserver: ResizeObserver | undefined;
   const abort = new AbortController();
   const { signal } = abort;
   const textLayers = new Map<HTMLElement, TextLayerHandle>();
@@ -178,6 +187,9 @@ export async function initBookReader(
   pageInput.max = String(pageCount);
   pageCountLabel.textContent = `/ ${pageCount}`;
   const chapters = (await source.getChapters?.()) ?? [];
+  // Slow PDF outline loads widen the React Strict Mode remount window — bail
+  // before attaching scrubber/listeners so a cancelled mount can't clobber a live one.
+  throwIfAborted();
   bookEl.style.setProperty("--spine-thickness", String(pageCount * EDGE_WIDTH_PER_PAGE * 2));
   syncZoomUi();
 
@@ -634,6 +646,11 @@ export async function initBookReader(
     getPage: () => displayedPage(),
     onSeek: (page) => goToPage(page),
   });
+  options.signal?.addEventListener("abort", () => destroy(), { once: true });
+  if (options.signal?.aborted) {
+    destroy();
+    throw new DOMException("Book reader mount aborted", "AbortError");
+  }
 
   zoomInBtn.addEventListener(
     "click",
@@ -763,9 +780,13 @@ export async function initBookReader(
   );
 
   await showSpread();
+  if (options.signal?.aborted) {
+    destroy();
+    throw new DOMException("Book reader mount aborted", "AbortError");
+  }
   // Observe after the first paint so the initial RO callback can't cancel it
   // with a zero-size layout measurement.
-  const resizeObserver = new ResizeObserver(scheduleFit);
+  resizeObserver = new ResizeObserver(scheduleFit);
   resizeObserver.observe(spreadEl);
 
   function displayedPage(): number {
@@ -1379,7 +1400,8 @@ export async function initBookReader(
     window.cancelAnimationFrame(fitFrame);
     fitFrame = 0;
     abort.abort();
-    resizeObserver.disconnect();
+    pageScrubber.destroy();
+    resizeObserver?.disconnect();
     for (const handle of textLayers.values()) handle.cancel();
     textLayers.clear();
     rasterCache.clear();

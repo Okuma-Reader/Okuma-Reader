@@ -82,6 +82,11 @@ export type InitBookReaderOptions = {
   source: BookSource;
   /** Overrides data-book-id when set. */
   bookId?: string;
+  /**
+   * When aborted, initialization bails without taking over the shell DOM, and a
+   * live reader tears down. Used by React Strict Mode remounts.
+   */
+  signal?: AbortSignal;
 };
 
 export type BookReaderHandle = {

@@ -4,11 +4,13 @@ import type { OkumaSourceConfig } from "./types";
 export type MountOkumaReaderOptions = {
   source: BookSource;
   bookId?: string;
+  signal?: AbortSignal;
 };
 
 export type MountOkumaReaderFromConfigOptions = {
   source: OkumaSourceConfig;
   bookId?: string;
+  signal?: AbortSignal;
 };
 
 /**
@@ -21,6 +23,7 @@ export async function mountOkumaReader(
   return initBookReader(root, {
     source: options.source,
     bookId: options.bookId,
+    signal: options.signal,
   });
 }
 
@@ -32,10 +35,24 @@ export async function mountOkumaReaderFromConfig(
   options: MountOkumaReaderFromConfigOptions,
 ): Promise<BookReaderHandle> {
   const source = await createBookSourceFromConfig(options.source);
-  return mountOkumaReader(root, {
-    source,
-    bookId: options.bookId,
-  });
+  if (options.signal?.aborted) {
+    source.destroy?.();
+    throw new DOMException("Book reader mount aborted", "AbortError");
+  }
+  try {
+    return await mountOkumaReader(root, {
+      source,
+      bookId: options.bookId,
+      signal: options.signal,
+    });
+  } catch (error) {
+    // initBookReader destroys the source when it aborts after attaching; only
+    // tear down here if mount failed before that (or for non-abort errors).
+    if (!(error instanceof DOMException && error.name === "AbortError")) {
+      source.destroy?.();
+    }
+    throw error;
+  }
 }
 
 async function createBookSourceFromConfig(config: OkumaSourceConfig): Promise<BookSource> {

@@ -2,6 +2,7 @@ import type { Chapter } from "./types";
 
 export type ChapterScrubber = {
   setPage: (page: number) => void;
+  destroy: () => void;
 };
 
 type Segment = {
@@ -127,6 +128,8 @@ export function initChapterScrubber(
   const chapterSpreads = [...new Set(chapters.map((c) => spreadForPage(c.page)))];
   let dragging = false;
   let hoverSpread: number | null = null;
+  const abort = new AbortController();
+  const { signal } = abort;
 
   slider.setAttribute("aria-valuemin", "0");
   slider.setAttribute("aria-valuemax", String(lastSpread));
@@ -251,59 +254,84 @@ export function initChapterScrubber(
     onSeek(pageForSpread(spread, pageCount));
   }
 
-  slider.addEventListener("pointerdown", (event) => {
-    if (event.button !== 0) return;
-    event.preventDefault();
-    dragging = true;
-    slider.classList.add("is-dragging");
-    slider.setPointerCapture(event.pointerId);
-    seekFromPointer(event, true);
-  });
-
-  slider.addEventListener("pointermove", (event) => {
-    if (dragging) {
+  slider.addEventListener(
+    "pointerdown",
+    (event) => {
+      if (event.button !== 0) return;
+      event.preventDefault();
+      dragging = true;
+      slider.classList.add("is-dragging");
+      slider.setPointerCapture(event.pointerId);
       seekFromPointer(event, true);
-      return;
-    }
-    const spread = spreadFromClientX(event.clientX, false);
-    hoverSpread = spread;
-    paint(spreadForPage(getPage()), true);
-    showTooltip(event.clientX, spread);
-  });
+    },
+    { signal },
+  );
 
-  slider.addEventListener("pointerup", (event) => {
-    if (!dragging) return;
-    dragging = false;
-    slider.classList.remove("is-dragging");
-    if (slider.hasPointerCapture(event.pointerId)) {
-      slider.releasePointerCapture(event.pointerId);
-    }
-    const spread = spreadFromClientX(event.clientX, true);
-    onSeek(pageForSpread(spread, pageCount));
-    paint(spread);
-    if (!slider.matches(":hover")) hideTooltip();
-  });
+  slider.addEventListener(
+    "pointermove",
+    (event) => {
+      if (dragging) {
+        seekFromPointer(event, true);
+        return;
+      }
+      const spread = spreadFromClientX(event.clientX, false);
+      hoverSpread = spread;
+      paint(spreadForPage(getPage()), true);
+      showTooltip(event.clientX, spread);
+    },
+    { signal },
+  );
 
-  slider.addEventListener("pointercancel", () => {
-    dragging = false;
-    slider.classList.remove("is-dragging");
-    hideTooltip();
-    paint(spreadForPage(getPage()));
-  });
+  slider.addEventListener(
+    "pointerup",
+    (event) => {
+      if (!dragging) return;
+      dragging = false;
+      slider.classList.remove("is-dragging");
+      if (slider.hasPointerCapture(event.pointerId)) {
+        slider.releasePointerCapture(event.pointerId);
+      }
+      const spread = spreadFromClientX(event.clientX, true);
+      onSeek(pageForSpread(spread, pageCount));
+      paint(spread);
+      if (!slider.matches(":hover")) hideTooltip();
+    },
+    { signal },
+  );
 
-  slider.addEventListener("pointerleave", () => {
-    if (!dragging) hideTooltip();
-  });
+  slider.addEventListener(
+    "pointercancel",
+    () => {
+      dragging = false;
+      slider.classList.remove("is-dragging");
+      hideTooltip();
+      paint(spreadForPage(getPage()));
+    },
+    { signal },
+  );
+
+  slider.addEventListener(
+    "pointerleave",
+    () => {
+      if (!dragging) hideTooltip();
+    },
+    { signal },
+  );
 
   paint(spreadForPage(getPage()));
-  new ResizeObserver(() => {
+  const resizeObserver = new ResizeObserver(() => {
     if (!dragging) paint(spreadForPage(getPage()));
-  }).observe(slider);
+  });
+  resizeObserver.observe(slider);
 
   return {
     setPage(page: number) {
       if (dragging) return;
       paint(spreadForPage(page));
+    },
+    destroy() {
+      abort.abort();
+      resizeObserver.disconnect();
     },
   };
 }
