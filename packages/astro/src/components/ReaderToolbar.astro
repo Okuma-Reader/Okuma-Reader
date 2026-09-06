@@ -2,15 +2,14 @@
 import Icon from "./Icon.astro";
 import type { OkumaDownloadConfig } from "../types";
 
-export interface ReaderToolbarProps {
+interface Props {
   title: string;
   subtitle?: string;
   backHref?: string;
   download?: OkumaDownloadConfig;
 }
 
-const { title, subtitle, backHref, download } =
-  Astro.props as ReaderToolbarProps;
+const { title, subtitle, backHref, download } = Astro.props;
 ---
 
 <header>

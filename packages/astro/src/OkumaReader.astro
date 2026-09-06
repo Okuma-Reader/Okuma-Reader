@@ -15,6 +15,8 @@ import type { OkumaReaderProps } from "./types";
 
 export type { OkumaReaderProps };
 
+type Props = OkumaReaderProps;
+
 type Asset = string | { src: string };
 
 function cssUrl(asset: Asset): string {
@@ -33,7 +35,7 @@ const {
   download,
   ownPage = true,
   source,
-} = Astro.props as OkumaReaderProps;
+} = Astro.props;
 
 const cssVars = [
   `--scrubber-track-color: ${scrubberTrackColor}`,

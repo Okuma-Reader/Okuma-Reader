@@ -3,14 +3,13 @@ import Button from "./Button.astro";
 import Icon from "./Icon.astro";
 import type { OkumaDownloadConfig } from "../types";
 
-export interface SmallScreenOverlayProps {
+interface Props {
   backHref?: string;
   accentColor: string;
   download?: OkumaDownloadConfig;
 }
 
-const { backHref, accentColor, download } =
-  Astro.props as SmallScreenOverlayProps;
+const { backHref, accentColor, download } = Astro.props;
 ---
 
 <div
