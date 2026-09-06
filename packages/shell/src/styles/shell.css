@@ -136,6 +136,11 @@ body:has(#reader.okuma-own-page) {
   align-items: center;
   justify-content: center;
 
+  /* Author `display` overrides the UA [hidden] rule (esp. Firefox). */
+  &[hidden] {
+    display: none;
+  }
+
   & svg {
     width: 28px;
     height: 28px;
@@ -956,6 +961,10 @@ body:has(#reader.okuma-own-page) {
   width: 100%;
   border-collapse: collapse;
   font-size: 1rem;
+
+  & tr[hidden] {
+    display: none;
+  }
 }
 
 .shortcuts-table th,

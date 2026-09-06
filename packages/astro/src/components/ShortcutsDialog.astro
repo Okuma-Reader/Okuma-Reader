@@ -12,6 +12,12 @@ import mouseScrollUp from "@okuma-reader/core/assets/keyboard/mouse_scroll_up_ou
 import mouseScrollDown from "@okuma-reader/core/assets/keyboard/mouse_scroll_down_outline.svg?url";
 import mouseScrollVertical from "@okuma-reader/core/assets/keyboard/mouse_scroll_vertical_outline.svg?url";
 
+interface Props {
+  /** When false, hide Find shortcut (e.g. image books). */
+  showSearch?: boolean;
+}
+
+const { showSearch = true } = Astro.props;
 const key = (url: string) => `--key: url(${JSON.stringify(url)})`;
 ---
 
@@ -161,7 +167,7 @@ const key = (url: string) => `--key: url(${JSON.stringify(url)})`;
             </th>
             <td>Zoom</td>
           </tr>
-          <tr>
+          <tr data-okuma-search hidden={!showSearch}>
             <th scope="row" aria-label="Control plus F">
               <span class="shortcut-keys" aria-hidden="true">
                 <span

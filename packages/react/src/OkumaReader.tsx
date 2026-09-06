@@ -41,6 +41,7 @@ export function OkumaReader({
   );
 
   const sourceKey = source ? JSON.stringify(source) : "";
+  const showSearch = source?.type !== "images";
 
   useEffect(() => {
     const root = rootRef.current;
@@ -86,10 +87,11 @@ export function OkumaReader({
         subtitle={subtitle}
         backHref={backHref}
         download={download}
+        showSearch={showSearch}
       />
       <ChapterScrubber />
       <ReaderSpread />
-      <ShortcutsDialog />
+      <ShortcutsDialog showSearch={showSearch} />
       <SmallScreenOverlay backHref={backHref} accentColor={accentColor} download={download} />
     </div>
   );

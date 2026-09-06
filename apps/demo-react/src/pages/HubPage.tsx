@@ -37,7 +37,7 @@ export function HubPage() {
         <li>
           <Link to="/pdf">
             <strong>PDF</strong>
-            <span>NGE Genocide Vol. 1 — 328 pages PDF</span>
+            <span>Neon Genesis Evangelion: Genocide, Volume 1 — 328 pages PDF</span>
           </Link>
         </li>
       </ul>

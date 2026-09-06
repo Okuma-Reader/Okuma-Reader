@@ -44,7 +44,7 @@ export function ImagesPage() {
     <OkumaReader
       bookId="petit-prince"
       title="Le Petit Prince"
-      subtitle="Image sequence demo"
+      subtitle="Antoine de Saint-Exupéry"
       innerCoverImageUrl="/fixtures/petit-prince/inner-cover.png"
       accentColor="#3a2a1a"
       scrubberTrackColor="#f3e7d3"

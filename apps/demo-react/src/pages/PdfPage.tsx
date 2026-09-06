@@ -7,8 +7,8 @@ export function PdfPage() {
   return (
     <OkumaReader
       bookId="nge-genocide-vol1"
-      title="NGE Genocide"
-      subtitle="Vol. 1 — PDF demo"
+      title="Neon Genesis Evangelion: Genocide"
+      subtitle="Volume 1"
       innerCoverImageUrl="/fixtures/nge-genocide-vol1/inner-cover.png"
       accentColor="#694588"
       scrubberTrackColor="#DDCDE9"

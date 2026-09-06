@@ -13,7 +13,12 @@ import { Icon } from "./Icon";
 
 const key = (url: string) => ({ ["--key" as string]: `url(${JSON.stringify(url)})` });
 
-export function ShortcutsDialog() {
+type ShortcutsDialogProps = {
+  /** When false, hide Find shortcut (e.g. image books). */
+  showSearch?: boolean;
+};
+
+export function ShortcutsDialog({ showSearch = true }: ShortcutsDialogProps) {
   return (
     <dialog id="shortcuts-dialog" aria-labelledby="shortcuts-title">
       <div className="shortcuts-panel">
@@ -114,7 +119,7 @@ export function ShortcutsDialog() {
                 </th>
                 <td>Zoom</td>
               </tr>
-              <tr>
+              <tr data-okuma-search hidden={!showSearch}>
                 <th scope="row" aria-label="Control plus F">
                   <span className="shortcut-keys" aria-hidden="true">
                     <span className="shortcut-key" style={key(keyCtrl)} />

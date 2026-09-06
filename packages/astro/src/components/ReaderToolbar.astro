@@ -9,9 +9,11 @@ interface Props {
   subtitle?: string;
   backHref?: string;
   download?: OkumaDownloadConfig;
+  /** When false, hide Find (e.g. image books with no text layer). */
+  showSearch?: boolean;
 }
 
-const { bookId, title, subtitle, backHref, download } = Astro.props;
+const { bookId, title, subtitle, backHref, download, showSearch = true } = Astro.props;
 const progressKey = okumaProgressStorageKey(bookId);
 ---
 
@@ -119,6 +121,8 @@ const progressKey = okumaProgressStorageKey(bookId);
       title="Find in book"
       aria-controls="reader-search"
       aria-expanded="false"
+      data-okuma-search
+      hidden={!showSearch}
     >
       <Icon name="search" />
     </button>

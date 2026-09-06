@@ -9,10 +9,10 @@
     "preview": "astro preview"
   },
   "dependencies": {
-    "@okuma-reader/astro": "0.0.1",
-    "@okuma-reader/core": "0.0.1",
-    "@okuma-reader/source-images": "0.0.1",
-    "@okuma-reader/source-pdf": "0.0.1",
+    "@okuma-reader/astro": "*",
+    "@okuma-reader/core": "*",
+    "@okuma-reader/source-images": "*",
+    "@okuma-reader/source-pdf": "*",
     "astro": "^5.0.0",
     "pdfjs-dist": "^6.3.289"
   }

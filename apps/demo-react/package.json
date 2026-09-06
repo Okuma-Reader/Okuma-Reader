@@ -10,10 +10,10 @@
     "check": "tsc --noEmit -p tsconfig.json"
   },
   "dependencies": {
-    "@okuma-reader/core": "0.0.1",
-    "@okuma-reader/react": "0.0.1",
-    "@okuma-reader/source-images": "0.0.1",
-    "@okuma-reader/source-pdf": "0.0.1",
+    "@okuma-reader/core": "*",
+    "@okuma-reader/react": "*",
+    "@okuma-reader/source-images": "*",
+    "@okuma-reader/source-pdf": "*",
     "pdfjs-dist": "^6.3.289",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",

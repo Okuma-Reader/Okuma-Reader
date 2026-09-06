@@ -8,9 +8,18 @@ type ReaderToolbarProps = {
   subtitle?: string;
   backHref?: string;
   download?: OkumaDownloadConfig;
+  /** When false, hide Find (e.g. image books with no text layer). */
+  showSearch?: boolean;
 };
 
-export function ReaderToolbar({ bookId, title, subtitle, backHref, download }: ReaderToolbarProps) {
+export function ReaderToolbar({
+  bookId,
+  title,
+  subtitle,
+  backHref,
+  download,
+  showSearch = true,
+}: ReaderToolbarProps) {
   const initialPage = Math.max(1, Math.round(readOkumaProgress(bookId) ?? 1));
 
   return (
@@ -91,6 +100,8 @@ export function ReaderToolbar({ bookId, title, subtitle, backHref, download }: R
           title="Find in book"
           aria-controls="reader-search"
           aria-expanded={false}
+          data-okuma-search
+          hidden={!showSearch}
         >
           <Icon name="search" />
         </button>

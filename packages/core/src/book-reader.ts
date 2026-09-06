@@ -140,6 +140,15 @@ export async function initBookReader(
     "[data-search-match-diacritics]",
   ) as HTMLInputElement;
   const searchWholeWords = mustQuery(root, "[data-search-whole-words]") as HTMLInputElement;
+  /** Image (and other text-less) sources omit getText — hide Find UI + Ctrl/Cmd+F. */
+  const canSearch = typeof source.getText === "function";
+  if (!canSearch) {
+    searchOpenBtn.hidden = true;
+    searchForm.hidden = true;
+    for (const el of root.querySelectorAll("[data-okuma-search]")) {
+      if (el instanceof HTMLElement) el.hidden = true;
+    }
+  }
 
   const pageCount = source.pageCount;
   const savedPage = readOkumaProgress(bookId);
@@ -436,6 +445,7 @@ export async function initBookReader(
   }
 
   function openSearch() {
+    if (!canSearch) return;
     closeShortcuts();
     searchForm.hidden = false;
     searchOpenBtn.setAttribute("aria-expanded", "true");
@@ -575,7 +585,12 @@ export async function initBookReader(
     "keydown",
     (event) => {
       if (destroyed) return;
-      if ((event.ctrlKey || event.metaKey) && event.key.toLowerCase() === "f" && !event.altKey) {
+      if (
+        canSearch &&
+        (event.ctrlKey || event.metaKey) &&
+        event.key.toLowerCase() === "f" &&
+        !event.altKey
+      ) {
         event.preventDefault();
         openSearch();
         return;
