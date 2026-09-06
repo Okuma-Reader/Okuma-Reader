@@ -17,7 +17,8 @@
     "build": "npm run check"
   },
   "dependencies": {
-    "@okuma-reader/core": "0.0.1"
+    "@okuma-reader/core": "0.0.1",
+    "@okuma-reader/shell": "0.0.1"
   },
   "devDependencies": {
     "@okuma-reader/source-images": "0.0.1",

@@ -1,7 +1,4 @@
 ---
-import PrimaryButton from "./PrimaryButton.astro";
-import SecondaryButton from "./SecondaryButton.astro";
-
 interface Props {
   href: string;
   color: string;
@@ -10,17 +7,22 @@ interface Props {
   download?: string | boolean;
 }
 
-const props = Astro.props;
+const {
+  href,
+  color,
+  primary = false,
+  disabled = false,
+  download,
+} = Astro.props;
+
+const downloadAttr =
+  download === true ? "" : typeof download === "string" ? download : undefined;
 ---
 
-{
-  props.primary ? (
-    <PrimaryButton {...props} disabled={props.disabled ?? false}>
-      <slot />
-    </PrimaryButton>
-  ) : (
-    <SecondaryButton {...props} disabled={props.disabled ?? false}>
-      <slot />
-    </SecondaryButton>
-  )
-}
+<a
+  href={disabled ? undefined : href}
+  download={downloadAttr}
+  class={primary ? "okuma-btn-primary" : "okuma-btn-secondary"}
+  style={`--color: ${color}`}
+  aria-disabled={disabled}><slot /></a
+>

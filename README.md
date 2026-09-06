@@ -4,13 +4,14 @@ MIT-licensed monorepo for a two-page PDF/image book reader.
 
 ## Packages
 
-| Package                                                 | Description                      |
-| ------------------------------------------------------- | -------------------------------- |
-| [`@okuma-reader/core`](packages/core)                   | Reader controller + DOM contract |
-| [`@okuma-reader/source-pdf`](packages/source-pdf)       | pdf.js `BookSource`              |
-| [`@okuma-reader/source-images`](packages/source-images) | Image-set `BookSource`           |
-| [`@okuma-reader/astro`](packages/astro)                 | Astro UI shell + auto-mount      |
-| [`@okuma-reader/react`](packages/react)                 | React UI shell + auto-mount      |
+| Package                                                 | Description                                |
+| ------------------------------------------------------- | ------------------------------------------ |
+| [`@okuma-reader/core`](packages/core)                   | Reader controller + DOM contract           |
+| [`@okuma-reader/source-pdf`](packages/source-pdf)       | pdf.js `BookSource`                        |
+| [`@okuma-reader/source-images`](packages/source-images) | Image-set `BookSource`                     |
+| [`@okuma-reader/shell`](packages/shell)                 | Shared UI types, mount helpers, chrome CSS |
+| [`@okuma-reader/astro`](packages/astro)                 | Astro UI shell + auto-mount                |
+| [`@okuma-reader/react`](packages/react)                 | React UI shell + auto-mount                |
 
 ## Apps
 
@@ -79,7 +80,7 @@ import { OkumaReader } from "@okuma-reader/astro";
 />
 ```
 
-`accentColor` defaults to `"black"`; `scrubberTrackColor` defaults to `"#d4d4d4"`. Both are optional.
+Optional chrome defaults live in `OKUMA_READER_DEFAULTS` (`accentColor: "black"`, `scrubberTrackColor: "#d4d4d4"`, `ownPage: true`).
 
 The component is also available as a direct subpath if you prefer:
 
@@ -152,10 +153,12 @@ if (root) void mountOkumaReader(root, { source, bookId: "my-book" });
 
 `BookSource` supplies page rasters (and optionally text, links, chapters). Core owns spreads, zoom, search UI, scrubber, and progress in `localStorage` under `okuma-reader:progress:${bookId}`.
 
+`@okuma-reader/shell` holds the shared UI contract: prop/source types, `mountOkumaReader` helpers, and chrome CSS. The Astro and React packages are framework-specific markup + lifecycle adapters over that shell.
+
 ## Publish
 
 1. Create the npm organization **`okuma-reader`** on npmjs.com
-2. Publish `@okuma-reader/core`, `source-pdf`, `source-images`, `astro`, `react`
+2. Publish `@okuma-reader/core`, `source-pdf`, `source-images`, `shell`, `astro`, `react`
 
 ## License
 

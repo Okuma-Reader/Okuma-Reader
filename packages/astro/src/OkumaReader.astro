@@ -4,51 +4,35 @@ import ReaderToolbar from "./components/ReaderToolbar.astro";
 import ReaderSpread from "./components/ReaderSpread.astro";
 import ShortcutsDialog from "./components/ShortcutsDialog.astro";
 import SmallScreenOverlay from "./components/SmallScreenOverlay.astro";
-import paper2 from "@okuma-reader/core/assets/paper2.webp";
-import paperBook from "@okuma-reader/core/assets/paper-book-v2.webp";
-import specularSingle from "@okuma-reader/core/assets/specularSinglePage.webp";
-import specularDouble from "@okuma-reader/core/assets/specularDoublePage.webp";
-import sideBook from "@okuma-reader/core/assets/side-book.webp";
-import pastedown from "@okuma-reader/core/assets/pastedown.webp";
-import bookFold from "@okuma-reader/core/assets/bookFold.webp";
-import type { OkumaReaderProps } from "./types";
+import {
+  OKUMA_READER_DEFAULTS,
+  okumaShellCssVarsStyle,
+  type OkumaReaderProps,
+} from "@okuma-reader/shell";
+import "@okuma-reader/shell/styles.css";
 
 export type { OkumaReaderProps };
 
 type Props = OkumaReaderProps;
-
-type Asset = string | { src: string };
-
-function cssUrl(asset: Asset): string {
-  const src = typeof asset === "string" ? asset : asset.src;
-  return `url(${JSON.stringify(src)})`;
-}
 
 const {
   bookId,
   title,
   subtitle,
   innerCoverImageUrl,
-  accentColor = "black",
-  scrubberTrackColor = "#d4d4d4",
+  accentColor = OKUMA_READER_DEFAULTS.accentColor,
+  scrubberTrackColor = OKUMA_READER_DEFAULTS.scrubberTrackColor,
   backHref,
   download,
-  ownPage = true,
+  ownPage = OKUMA_READER_DEFAULTS.ownPage,
   source,
 } = Astro.props;
 
-const cssVars = [
-  `--scrubber-track-color: ${scrubberTrackColor}`,
-  `--accent-color: ${accentColor}`,
-  `--inner-cover-image: url(${JSON.stringify(innerCoverImageUrl)})`,
-  `--okuma-paper2: ${cssUrl(paper2)}`,
-  `--okuma-paper-book: ${cssUrl(paperBook)}`,
-  `--okuma-specular-single: ${cssUrl(specularSingle)}`,
-  `--okuma-specular-double: ${cssUrl(specularDouble)}`,
-  `--okuma-side-book: ${cssUrl(sideBook)}`,
-  `--okuma-pastedown: ${cssUrl(pastedown)}`,
-  `--okuma-book-fold: ${cssUrl(bookFold)}`,
-].join("; ");
+const cssVars = okumaShellCssVarsStyle({
+  innerCoverImageUrl,
+  accentColor,
+  scrubberTrackColor,
+});
 
 const sourceJson = source ? JSON.stringify(source) : undefined;
 ---
@@ -77,7 +61,7 @@ const sourceJson = source ? JSON.stringify(source) : undefined;
 </div>
 
 <script>
-  import { mountOkumaReaderFromConfig } from "./client";
+  import { mountOkumaReaderFromConfig } from "@okuma-reader/shell/mount";
 
   const root = document.getElementById("reader");
   const raw = root?.dataset.okumaSource;
@@ -91,40 +75,3 @@ const sourceJson = source ? JSON.stringify(source) : undefined;
     });
   }
 </script>
-
-<style is:global>
-  @import "@okuma-reader/core/styles.css";
-
-  html:has(#reader.okuma-own-page),
-  body:has(#reader.okuma-own-page) {
-    margin: 0;
-    height: 100%;
-    overflow: hidden;
-  }
-
-  body:has(#reader.okuma-own-page) {
-    height: 100dvh;
-  }
-</style>
-
-<style>
-  #reader {
-    box-sizing: border-box;
-    height: 100dvh;
-    display: grid;
-    grid-template-rows: auto auto 1fr;
-    gap: 1.1rem;
-    position: relative;
-  }
-
-  #reader.okuma-own-page {
-    background-image:
-      var(--okuma-paper2),
-      radial-gradient(circle at top, white, rgb(0 0 0 / 0.2));
-    background-blend-mode: multiply;
-    background-size:
-      25cm,
-      100% 100%;
-    background-repeat: round, no-repeat;
-  }
-</style>

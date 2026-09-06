@@ -1,4 +1,4 @@
-/* Okuma React reader shell — ported from Astro component styles */
+/* Okuma reader shell chrome — shared by Astro and React UI packages */
 
 @import "@okuma-reader/core/styles.css";
 
@@ -1141,36 +1141,5 @@ a.okuma-btn-secondary {
     color: var(--color);
     background-color: white;
     cursor: not-allowed;
-  }
-}
-
-/* Shared toolbar / spread chrome buttons */
-#reader > header .icon-button,
-#spread-area > .icon-button {
-  box-sizing: border-box;
-  width: 50px;
-  height: 50px;
-  border: 3px solid var(--accent-color);
-  background: white;
-  color: var(--accent-color);
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  & svg {
-    width: 28px;
-    height: 28px;
-  }
-
-  &:disabled {
-    cursor: not-allowed;
-  }
-
-  &:hover:not(:disabled),
-  &:focus-visible:not(:disabled),
-  &[aria-expanded="true"]:not(:disabled) {
-    background: var(--accent-color);
-    color: white;
   }
 }
